@@ -1,13 +1,36 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+
+import ExternalLayout from '@/components/layouts/ExternalLayout.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    // {
+    //   path: '/',
+    //   name: 'home',
+    //   component: HomeView
+    // },
     {
-      path: '/',
-      name: 'home',
-      component: HomeView
+      path: '/session',
+      component: ExternalLayout,
+      children: [
+        {
+          name: 'SessionLogin',
+          path: 'login',
+          component: () => import('@/views/session/login/LoginView.vue')
+        },
+        {
+          name: 'SessionForgot',
+
+          path: 'forgot',
+          component: () => import('@/views/session/forgot/ForgotView.vue')
+        },
+        {
+          name: 'SessionSignup',
+          path: 'signup',
+          component: () => import('@/views/session/signup/SignupView.vue')
+        }
+      ]
     },
     {
       path: '/about',

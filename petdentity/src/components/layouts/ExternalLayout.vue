@@ -1,0 +1,26 @@
+<template>
+  <v-app>
+    <v-main>
+      <ProgressLine :indeterminate="progressLine.status" :visible="progressLine.status" />
+      <router-view v-slot="{ Component }">
+        <!-- <v-fade-transition> -->
+        <component :is="Component" />
+        <!-- </v-fade-transition> -->
+      </router-view>
+    </v-main>
+  </v-app>
+</template>
+
+<script setup>
+import ProgressLine from '@/components/common/ProgressLine.vue'
+
+import { useProgressLineStore } from '@/stores/progress-line'
+const progressLine = useProgressLineStore()
+
+import { onMounted } from 'vue'
+
+onMounted(() => {
+  progressLine.on()
+  progressLine.off()
+})
+</script>
