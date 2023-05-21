@@ -1,8 +1,5 @@
 <template>
-  <div>
-    <v-img :src="source" :lazy-src="source" cover :width="width" :aspect-ratio="aspectRatio">
-    </v-img>
-  </div>
+  <v-img v-bind="properties" :src="source" />
 </template>
 
 <script setup>
@@ -11,13 +8,12 @@ import { computed } from 'vue'
 import vertical from '@/assets/logo/vertical_1.png'
 import horizontal from '@/assets/logo/horizontal_1.png'
 
+const properties = {
+  width: 150,
+  aspectRatio: 1
+}
+
 const props = defineProps({
-  width: {
-    default: null
-  },
-  aspectRatio: {
-    default: null
-  },
   position: {
     type: String
   }
@@ -25,7 +21,7 @@ const props = defineProps({
 
 const source = computed(() => {
   if (props.position == 'vertical') return vertical
-  else return horizontal
+  if (props.position == 'horizontal') return horizontal
 })
 import { onMounted } from 'vue'
 

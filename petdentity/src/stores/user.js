@@ -1,21 +1,10 @@
 import { defineStore } from 'pinia'
+import { getUser } from '@/utils/session'
 
 export const useUserStore = defineStore('user', {
   state: () => {
     return {
-      user: null
+      user: getUser()
     }
-  },
-  actions: {
-    on() {
-      this.status = true
-    },
-    off() {
-      const timeout = setTimeout(() => {
-        this.status = false
-        clearTimeout(timeout)
-      }, this.timeout)
-    }
-  },
-  getters: {}
+  }
 })

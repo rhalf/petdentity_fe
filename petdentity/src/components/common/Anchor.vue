@@ -1,21 +1,15 @@
 <template>
-  <span :class="classes" @click="emit('click')" :variant="variant" :block="block" :color="color">
+  <span @click="emit('click')" v-bind="props">
     <slot></slot>
   </span>
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
-
-import { baseProps } from '@/mixins/props'
-
-defineProps({ ...baseProps })
-
 const emit = defineEmits(['click'])
 
-onMounted(() => {
-  // console.log(props)
-})
+const props = {
+  class: 'text-primary'
+}
 </script>
 
 <style scoped>

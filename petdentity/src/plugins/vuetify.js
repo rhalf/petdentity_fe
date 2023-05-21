@@ -10,7 +10,8 @@ const darkTheme = {
   colors: {
     background: '#000000',
     surface: '#1a1a1a',
-    primary: '#FADA3A',
+    // primary: '#FADA3A',
+    primary: '#FFCC33',
     'primary-darken-1': '#3700B3',
     secondary: '#FFFFFF',
     'secondary-darken-1': '#018786',

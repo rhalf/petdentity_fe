@@ -8,7 +8,7 @@ export const baseProps = {
     default: ''
   },
   variant: {
-    default: 'elevated'
+    default: null
   },
   required: {
     type: Boolean,
@@ -80,34 +80,26 @@ export const baseProps = {
     type: String,
     default: null
   },
-  outlined: Boolean,
-  visible: Boolean
-}
 
-export const inputProps = {
-  modelValue: {
+  icon: {
+    type: String,
     default: null
   },
-  name: String,
-
+  size: {
+    type: String,
+    default: null
+  },
+  outlined: {
+    type: Boolean,
+    default: null
+  },
+  visible: {
+    type: Boolean,
+    default: null
+  },
   type: {
     type: String,
     default: undefined
-  },
-  placeholder: {
-    type: String
-  },
-  label: {
-    type: String
-  },
-  filled: {
-    type: Boolean,
-    default: false
-  },
-
-  readonly: {
-    type: Boolean,
-    default: false
   },
   prependIcon: {
     type: String,
@@ -124,6 +116,30 @@ export const inputProps = {
   appendInnerIcon: {
     type: String,
     default: undefined
+  }
+}
+
+export const inputProps = {
+  modelValue: {
+    default: null
+  },
+  name: {
+    type: String
+  },
+  placeholder: {
+    type: String
+  },
+  label: {
+    type: String
+  },
+  filled: {
+    type: Boolean,
+    default: false
+  },
+
+  readonly: {
+    type: Boolean,
+    default: false
   },
   hint: {
     type: String,

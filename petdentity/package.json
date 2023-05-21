@@ -19,7 +19,8 @@
     "vue": "^3.2.47",
     "vue-router": "^4.1.6",
     "vuetify": "^3.1.0",
-    "webfontloader": "^1.0.0"
+    "webfontloader": "^1.0.0",
+    "yup": "^1.1.1"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.2.0",

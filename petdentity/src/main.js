@@ -9,7 +9,7 @@ import './scss/variables.scss'
 loadFonts()
 
 const app = createApp(App)
-app.use(stores)
 app.use(router)
+app.use(stores)
 app.use(vuetify)
 app.mount('#app')
