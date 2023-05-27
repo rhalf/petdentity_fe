@@ -16,14 +16,3 @@ auth.onAuthStateChanged((user) => {
   setUser(user)
 })
 </script>
-
-<style>
-html,
-body {
-  font-family: 'Poppins', sans-serif;
-}
-
-#app {
-  font-family: 'Poppins', sans-serif;
-}
-</style>

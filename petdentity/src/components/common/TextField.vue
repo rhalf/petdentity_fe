@@ -8,7 +8,8 @@ import { computed, onMounted } from 'vue'
 const properties = {
   density: 'comfortable',
   persistentPlaceholder: true,
-  hideDetails: 'auto'
+  hideDetails: 'auto',
+  class: 'text-primary'
 }
 
 onMounted(() => {
