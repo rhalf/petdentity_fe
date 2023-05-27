@@ -13,7 +13,7 @@
                     <Image />
                   </v-col>
                   <v-col :cols="xs ? 12 : 4">
-                    <Sheet :height="700">
+                    <Sheet :min-height="700">
                       <v-fade-transition leave-absolute :mode="'out-in'">
                         <component :is="Component" />
                       </v-fade-transition>
