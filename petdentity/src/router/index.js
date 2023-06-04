@@ -1,8 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 import SessionLayout from '@/components/layouts/session/SessionLayout.vue'
-import AuthenticatedLayout from '@/components/layouts/authenticated/AuthenticatedLayout.vue'
 import HomeLayout from '@/components/layouts/home/HomeLayout.vue'
+
+import { user } from './modules/user'
+import { admin } from './modules/admin'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -43,27 +45,8 @@ const router = createRouter({
         }
       ]
     },
-    {
-      path: '/user',
-      component: AuthenticatedLayout,
-      children: [
-        {
-          path: 'dashboard',
-          name: 'UserDashboard',
-          component: () => import('@/views/user/dashboard/DashboardView.vue'),
-          meta: { authenticated: true }
-        }
-      ]
-    },
-
-    {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
-    }
+    { ...user },
+    { ...admin }
   ]
 })
 
@@ -71,7 +54,7 @@ import { getUser } from '@/utils/local-storage/session'
 router.beforeEach((to, from, next) => {
   const user = getUser()
 
-  document.title = `Petdentity - ${to.name}`;
+  document.title = `Petdentity - ${to.name}`
 
   if (!to.meta.authenticated && !user) next()
   if (to.meta.authenticated && !user) next({ name: 'SessionLogin' })

@@ -46,6 +46,7 @@ import { onMounted } from 'vue'
 
 onMounted(() => {
   progressLine.on()
+
   progressLine.off()
 })
 </script>

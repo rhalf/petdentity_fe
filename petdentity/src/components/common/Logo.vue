@@ -7,6 +7,7 @@ import { computed } from 'vue'
 
 import vertical from '@/assets/logo/vertical_1.png'
 import horizontal from '@/assets/logo/horizontal_1.png'
+import solo from '@/assets/logo/solo.png'
 
 const properties = {
   width: 150,
@@ -22,6 +23,7 @@ const props = defineProps({
 const source = computed(() => {
   if (props.position == 'vertical') return vertical
   if (props.position == 'horizontal') return horizontal
+  if (props.position == 'solo') return solo
 })
 import { onMounted } from 'vue'
 

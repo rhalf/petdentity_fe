@@ -5,5 +5,15 @@ export const useUserStore = defineStore('user', {
     return {
       user: null
     }
+  },
+  actions: {
+    set(user) {
+      this.user = user
+    }
+  },
+  getters: {
+    getRoles: (state) => {
+      return state.user?.roles
+    }
   }
 })
