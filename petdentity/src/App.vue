@@ -10,8 +10,9 @@
 <script setup>
 import Snackbar from '@/components/common/Snackbar.vue'
 
-import { setUser } from '@/utils/session'
+import { setUser } from '@/utils/local-storage/session'
 import { auth } from '@/plugins/firebase'
+
 auth.onAuthStateChanged((user) => {
   setUser(user)
 })

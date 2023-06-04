@@ -67,9 +67,11 @@ const router = createRouter({
   ]
 })
 
-import { getUser } from '@/utils/session'
+import { getUser } from '@/utils/local-storage/session'
 router.beforeEach((to, from, next) => {
   const user = getUser()
+
+  document.title = `Petdentity - ${to.name}`;
 
   if (!to.meta.authenticated && !user) next()
   if (to.meta.authenticated && !user) next({ name: 'SessionLogin' })
