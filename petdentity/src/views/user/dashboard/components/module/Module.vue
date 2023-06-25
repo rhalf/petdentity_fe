@@ -17,7 +17,7 @@
 
     <v-row dense>
       <v-col class="text-center">
-        <Label header uppercase class="mt-2">{{ item.title }}</Label>
+        <Label header uppercase medium class="mt-2">{{ item.title }}</Label>
       </v-col>
     </v-row>
 

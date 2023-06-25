@@ -1,60 +1,6 @@
 <template>
   <v-row v-if="user" class="mt-5">
-    <v-col cols="12" md="5">
-      <div class="text-center">
-        <FileInput
-          id="fileUpload"
-          ref="file"
-          v-show="false"
-          v-model="imagePath"
-        />
-        <Avatar :src="user.profile.photoUrl" @click="photoHandler" size="200" />
-      </div>
-
-      <v-row dense class="mt-5">
-        <v-col cols="12" md="">
-          <Label text class="text-primary">UID</Label>
-        </v-col>
-        <v-col cols="12" md="9"> {{ user.uid }} </v-col>
-      </v-row>
-
-      <v-row dense>
-        <v-col cols="12" md="">
-          <Label text class="text-primary">Email</Label>
-        </v-col>
-        <v-col cols="12" md="9"> {{ user.email }} </v-col>
-      </v-row>
-      <v-row dense>
-        <v-col cols="12" md="">
-          <Label text class="text-primary">Verified</Label>
-        </v-col>
-        <v-col cols="12" md="9">
-          {{ user.emailVerified ? "Yes" : "No" }}
-        </v-col>
-      </v-row>
-      <v-row dense>
-        <v-col cols="12" md="">
-          <Label text class="text-primary">Status</Label>
-        </v-col>
-        <v-col cols="12" md="9"> {{ user.status }} </v-col>
-      </v-row>
-      <v-row dense>
-        <v-col cols="12" md="">
-          <Label text class="text-primary">Roles</Label>
-        </v-col>
-        <v-col cols="12" md="9">
-          <Chip
-            color="primary mr-1"
-            v-for="(role, index) in user.roles"
-            :key="index"
-          >
-            {{ role }}
-          </Chip>
-        </v-col>
-      </v-row>
-    </v-col>
-
-    <v-col cols="12" md="7">
+    <v-col cols="12" md="6">
       <Label text class="text-primary">
         Name
         <ButtonIcon
@@ -74,81 +20,135 @@
 
       <DialogName v-model="dialogName" :name="user.profile.name" />
 
-      <div class="mt-5">
-        <Label text class="text-primary">
-          Gender
-          <ButtonIcon
-            icon="mdi-pencil"
-            class="text-primary"
-            @click="dialogGender = true"
-          />
-        </Label>
-
-        <v-row dense>
-          <v-col>
-            <Label text> {{ user.profile.gender ? "Male" : "Female" }} </Label>
-          </v-col>
-        </v-row>
-
-        <DialogGender
-          v-model="dialogGender"
-          v-model:gender="user.profile.gender"
+      <Label text class="text-primary mt-5">
+        Gender
+        <ButtonIcon
+          icon="mdi-pencil"
+          class="text-primary"
+          @click="dialogGender = true"
         />
-      </div>
+      </Label>
 
-      <div class="mt-5">
-        <Label text class="text-primary">
-          Birth Date
-          <ButtonIcon
-            icon="mdi-pencil"
-            class="text-primary"
-            @click="dialogDate = true"
-          />
-        </Label>
+      <v-row dense>
+        <v-col>
+          <Label text> {{ user.profile.gender ? "Male" : "Female" }} </Label>
+        </v-col>
+      </v-row>
 
-        <v-row dense>
-          <v-col>
-            <Label text>
-              {{ toStringDate(user.profile.birthDate) }}
-              ({{ getBirthDate(user.profile.birthDate) }} years)
-            </Label>
-          </v-col>
-        </v-row>
-        <DialogDate
-          v-model="dialogDate"
-          v-model:date="user.profile.birthDate"
+      <DialogGender
+        v-model="dialogGender"
+        v-model:gender="user.profile.gender"
+      />
+
+      <Label text class="text-primary mt-5">
+        Birth Date
+        <ButtonIcon
+          icon="mdi-pencil"
+          class="text-primary"
+          @click="dialogDate = true"
         />
-      </div>
+      </Label>
 
-      <div class="mt-5">
-        <Label text class="text-primary">
-          Address
-          <ButtonIcon
-            icon="mdi-pencil"
-            class="text-primary"
-            @click="dialogAddress = true"
-          />
-        </Label>
+      <v-row dense>
+        <v-col>
+          <Label text>
+            {{ toStringDate(user.profile.birthDate) }}
+            ({{ getBirthDate(user.profile.birthDate) }} years)
+          </Label>
+        </v-col>
+      </v-row>
+      <DialogDate v-model="dialogDate" v-model:date="user.profile.birthDate" />
 
-        <Label text>
-          {{ user.profile.address.exact }}
-          {{ user.profile.address.division }}
-        </Label>
-        <Label caption class="text-grey">
-          {{ user.profile.address.barangay }}, {{ user.profile.address.city }},
-          {{ user.profile.address.province }},
-          {{ user.profile.address.region }}, {{ user.profile.address.country }},
-          {{ user.profile.address.zipcode }}
-        </Label>
-      </div>
+      <Label text class="text-primary mt-5">
+        Address
+        <ButtonIcon
+          icon="mdi-pencil"
+          class="text-primary"
+          @click="dialogAddress = true"
+        />
+      </Label>
+
+      <Label text>
+        {{ user.profile.address.exact }}
+        {{ user.profile.address.division }}
+      </Label>
+      <Label caption class="text-grey">
+        {{ user.profile.address.barangay }}, {{ user.profile.address.city }},
+        {{ user.profile.address.province }}, {{ user.profile.address.region }},
+        {{ user.profile.address.country }},
+        {{ user.profile.address.zipcode }}
+      </Label>
 
       <DialogAddress v-model="dialogAddress" :address="user.profile.address" />
-
-      <div class="mt-5">
-        <Button @click="saveHandler" :loading="isLoading" block>Save</Button>
+    </v-col>
+    <v-col cols="12" md="6">
+      <div class="text-center">
+        <FileInput
+          id="fileUpload"
+          ref="file"
+          v-show="false"
+          v-model="imagePath"
+        />
+        <Avatar :src="user.profile.photoUrl" @click="photoHandler" size="150" />
       </div>
+
+      <v-row dense class="mt-5">
+        <v-col cols="12" md="">
+          <Label text class="text-primary">UID</Label>
+        </v-col>
+        <v-col cols="12" md="9">
+          <Label text>{{ user.uid }}</Label>
+        </v-col>
+      </v-row>
+
+      <v-row dense class="mt-2">
+        <v-col cols="12" md="">
+          <Label text class="text-primary">Email</Label>
+        </v-col>
+        <v-col cols="12" md="9">
+          <Label text>{{ user.email }}</Label>
+        </v-col>
+      </v-row>
+
+      <!-- <v-row dense class="mt-2">
+        <v-col cols="12" md="">
+          <Label text class="text-primary">Verified</Label>
+        </v-col>
+        <v-col cols="12" md="9">
+          <Label text> {{ user.emailVerified ? "Yes" : "No" }}</Label>
+        </v-col>
+      </v-row> -->
+
+      <v-row dense class="mt-2">
+        <v-col cols="12" md="">
+          <Label text class="text-primary">Status</Label>
+        </v-col>
+        <v-col cols="12" md="9">
+          <Label text> {{ user.status }} </Label>
+        </v-col>
+      </v-row>
+
+      <v-row dense class="mt-2">
+        <v-col cols="12" md="">
+          <Label text class="text-primary">Roles</Label>
+        </v-col>
+        <v-col cols="12" md="9">
+          <Chip
+            class="ma-1"
+            color="green"
+            variant="flat"
+            v-for="(role, index) in user.roles"
+            :key="index"
+          >
+            <Label text medium> {{ role }}</Label>
+          </Chip>
+        </v-col>
+      </v-row>
     </v-col>
   </v-row>
+  <Button @click="saveHandler" :loading="isLoading" block class="mt-5">
+    Save
+  </Button>
 </template>
 
 <script setup>
@@ -212,7 +212,7 @@ watch(imagePath, async (current) => {
   } catch (error) {
     console.log("error", error);
   } finally {
-    isLoading = false;
+    isLoading.value = false;
   }
 });
 

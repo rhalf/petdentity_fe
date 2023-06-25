@@ -1,14 +1,14 @@
 <template>
   <Dialog :width="640">
     <Card>
-      <v-card-title class="bg-primary pa-3">
+      <v-card-title class="bg-primary pa-4">
         <Label header class="text-black">Gender</Label>
       </v-card-title>
       <v-card-text>
         <Gender v-model="gender" />
       </v-card-text>
       <v-card-actions>
-        <v-row dense class="py-2 px-4">
+        <v-row dense class="py-3 px-4">
           <v-spacer />
           <v-col cols="auto">
             <Button @click="closeHandler">Ok</Button>

@@ -9,5 +9,6 @@ const emit = defineEmits(["click"]);
 
 const properties = {
   class: "text-primary",
+  persistent: true,
 };
 </script>

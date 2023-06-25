@@ -34,7 +34,7 @@ const props = defineProps({
 });
 
 const customClass = computed(() => {
-  let classes = ["pb-1"];
+  let classes = [];
 
   if (props.title) classes.push("text-h4");
   if (props.subtitle) classes.push("text-subtitle-1");

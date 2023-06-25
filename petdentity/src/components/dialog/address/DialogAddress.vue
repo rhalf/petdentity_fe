@@ -1,14 +1,14 @@
 <template>
   <Dialog :width="1024">
     <Card>
-      <v-card-title class="bg-primary pa-3">
+      <v-card-title class="bg-primary pa-4">
         <Label header medium class="text-black">Address</Label>
       </v-card-title>
       <v-card-text>
         <FormAddress v-model="props.address" />
       </v-card-text>
       <v-card-actions>
-        <v-row dense class="py-2 px-4">
+        <v-row dense class="py-3 px-4">
           <v-spacer />
           <v-col cols="auto">
             <Button @click="closeHandler">Ok</Button>

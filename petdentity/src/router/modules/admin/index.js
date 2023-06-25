@@ -13,9 +13,14 @@ export const admin = {
 
     {
       path: "animals",
-      name: "AdminAnimalsSummary",
-      component: () => import("@/views/admin/animals/AnimalsSummary.vue"),
-      meta: { authenticated: true, authorization: "SYSTEM_ADMIN" },
+      children: [
+        {
+          path: "summary",
+          name: "AdminAnimalsSummary",
+          component: () => import("@/views/admin/animals/AnimalsSummary.vue"),
+          meta: { authenticated: true, authorization: "SYSTEM_ADMIN" },
+        },
+      ],
     },
   ],
 };

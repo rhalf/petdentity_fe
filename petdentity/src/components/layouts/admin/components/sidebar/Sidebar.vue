@@ -1,6 +1,5 @@
 <template>
-  <v-navigation-drawer v-model="drawer" location="left">
-    <!-- v-model:selected="selected" -->
+  <v-navigation-drawer v-model="drawer" location="left" width="300">
     <v-list
       :items="itemsRef"
       lines="two"

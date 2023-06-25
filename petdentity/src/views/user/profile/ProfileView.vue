@@ -7,12 +7,6 @@
         </v-col>
       </v-row>
 
-      <v-row dense class="mt-3">
-        <v-col>
-          <v-divider color="primary" :thickness="3" />
-        </v-col>
-      </v-row>
-
       <v-slide-x-transition hide-on-leave>
         <v-row dense>
           <v-col>

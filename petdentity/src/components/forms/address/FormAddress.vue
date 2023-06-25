@@ -2,7 +2,7 @@
   <div v-if="address">
     <v-row dense>
       <v-col cols="12" :md="isPhilippines ? 4 : 3">
-        <Label text class="text-primary"> Country </Label>
+        <Label text class="text-primary mb-2"> Country </Label>
         <Select
           v-model="address.country"
           :items="countries"
@@ -16,7 +16,7 @@
         />
       </v-col>
       <v-col v-if="!isPhilippines" cols="12" md="3">
-        <Label text class="text-primary"> State </Label>
+        <Label text class="text-primary mb-2"> State </Label>
         <TextField
           v-model="address.state"
           placeholder="State"
@@ -26,7 +26,7 @@
       </v-col>
 
       <v-col cols="12" :md="isPhilippines ? 4 : 3">
-        <Label text class="text-primary"> Region </Label>
+        <Label text class="text-primary mb-2"> Region </Label>
         <Select
           v-if="isPhilippines"
           v-model="address.region"
@@ -49,7 +49,7 @@
       </v-col>
 
       <v-col cols="12" :md="isPhilippines ? 4 : 3">
-        <Label text class="text-primary"> Province </Label>
+        <Label text class="text-primary mb-2"> Province </Label>
 
         <Select
           v-if="isPhilippines"
@@ -73,7 +73,9 @@
 
     <v-row dense class="mt-3">
       <v-col cols="12" md="4">
-        <Label text class="text-primary"> City / Municipality / Town </Label>
+        <Label text class="text-primary mb-2">
+          City / Municipality / Town
+        </Label>
         <Select
           v-if="isPhilippines"
           v-model="address.city"
@@ -94,7 +96,7 @@
       </v-col>
 
       <v-col cols="12" md="4">
-        <Label text class="text-primary"> Barangay </Label>
+        <Label text class="text-primary mb-2"> Barangay </Label>
 
         <Select
           v-if="isPhilippines"
@@ -115,7 +117,7 @@
       </v-col>
 
       <v-col cols="12" md="4">
-        <Label text class="text-primary"> Zip Code </Label>
+        <Label text class="text-primary mb-2"> Zip Code </Label>
 
         <TextField
           v-model="address.zipcode"
@@ -128,7 +130,7 @@
 
     <v-row dense class="mt-3">
       <v-col>
-        <Label text class="text-primary"> Subdivision, Zone, Phase </Label>
+        <Label text class="text-primary mb-2"> Subdivision, Zone, Phase </Label>
       </v-col>
     </v-row>
 
@@ -145,7 +147,7 @@
 
     <v-row dense class="mt-3">
       <v-col>
-        <Label text class="text-primary">
+        <Label text class="text-primary mb-2">
           Unit, Floor, Building Number and Street
         </Label>
       </v-col>
