@@ -1,70 +1,89 @@
-import { USER_ROLES } from '@/data/structure'
-const { PET_OWNER, VETERINARIAN, SYSTEM_ADMIN, LOCAL_GOVERNMENT } = USER_ROLES
+import { UserRoles } from "@/constants";
+const { PET_OWNER, VETERINARIAN, SYSTEM_ADMIN, LOCAL_GOVERNMENT } = UserRoles;
 
 export const dashboardItems = [
   {
-    icon: 'mdi-card-account-details-star-outline',
-    title: 'Pet Owner',
-    height: 200,
+    icon: "mdi-card-account-details-star-outline",
+    title: "Pet Owner",
+    height: 240,
     roles: [PET_OWNER],
-    visible: true
+    visible: true,
+    soon: false,
+    disabled: false,
   },
   {
     // icon: 'mdi-doctor',
-    icon: 'mdi-stethoscope',
-    title: 'Veterinarian Area',
-    height: 200,
+    icon: "mdi-stethoscope",
+    title: "Veterinarian Area",
+    height: 240,
     roles: [VETERINARIAN],
-    visible: true
+    visible: true,
+    soon: false,
+    disabled: false,
   },
   {
-    icon: 'mdi-shield-star',
-    title: 'Local Government',
-    height: 200,
+    icon: "mdi-shield-star",
+    title: "Local Government",
+    height: 240,
     roles: [LOCAL_GOVERNMENT],
-    visible: true
+    visible: true,
+    soon: false,
+    disabled: false,
   },
   {
-    icon: 'mdi-magnify',
-    title: 'Pet Information',
-    height: 200,
+    icon: "mdi-magnify",
+    title: "Search Pets",
+    height: 240,
     roles: [PET_OWNER, VETERINARIAN, LOCAL_GOVERNMENT, SYSTEM_ADMIN],
-    visible: true
+    visible: true,
+    soon: false,
+    disabled: false,
   },
   {
-    icon: 'mdi-paw',
-    title: 'Missing and Found Pets',
-    height: 200,
+    icon: "mdi-paw",
+    title: "Missing and Found Pets",
+    height: 240,
     roles: [PET_OWNER, VETERINARIAN, LOCAL_GOVERNMENT, SYSTEM_ADMIN],
-    visible: false
+    visible: true,
+    soon: true,
+    disabled: true,
   },
   {
-    icon: 'mdi-needle',
-    title: 'Pet Vaccination',
-    height: 200,
+    icon: "mdi-needle",
+    title: "Pet Vaccination",
+    height: 240,
     roles: [PET_OWNER, VETERINARIAN, LOCAL_GOVERNMENT, SYSTEM_ADMIN],
-    visible: false
+    visible: true,
+    soon: true,
+    disabled: true,
   },
   {
-    icon: 'mdi-calendar',
-    title: 'Upcoming Events',
-    height: 200,
+    icon: "mdi-calendar",
+    title: "Upcoming Events",
+    height: 240,
     roles: [PET_OWNER, VETERINARIAN, LOCAL_GOVERNMENT, SYSTEM_ADMIN],
-    visible: false
+    visible: true,
+    soon: true,
+    disabled: true,
   },
   {
-    icon: 'mdi-cash',
-    title: 'Points and Rewards',
-    height: 200,
+    icon: "mdi-cash",
+    title: "Points and Rewards",
+    height: 240,
     roles: [PET_OWNER, VETERINARIAN, LOCAL_GOVERNMENT, SYSTEM_ADMIN],
-    visible: false
+    visible: true,
+    soon: true,
+    disabled: true,
   },
   {
-    icon: 'mdi-account-network',
-    title: 'Administrator',
-    height: 200,
+    icon: "mdi-account-network",
+    title: "Administrator",
+    height: 240,
     roles: [SYSTEM_ADMIN],
     visible: true,
-    to: { name: 'AdminDashboard' }
-  }
-]
+    soon: false,
+    disabled: false,
+
+    to: { name: "AdminDashboard" },
+  },
+];

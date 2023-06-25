@@ -1,7 +1,10 @@
 <template>
   <v-app>
     <v-main>
-      <ProgressLine :indeterminate="progressLine.status" :visible="progressLine.status" />
+      <ProgressLine
+        :indeterminate="progressLine.status"
+        :visible="progressLine.status"
+      />
       <Navbar />
       <router-view v-slot="{ Component }">
         <!-- <v-fade-transition> -->
@@ -13,51 +16,60 @@
 </template>
 
 <script setup>
-import Navbar from './components/navbar/Navbar.vue'
+import _ from "lodash";
+import Navbar from "./components/navbar/Navbar.vue";
 
-import ProgressLine from '@/components/common/ProgressLine.vue'
+import ProgressLine from "@/components/common/ProgressLine.vue";
 
-import { useProgressLineStore } from '@/stores/progress-line'
-const progressLine = useProgressLineStore()
+import { useProgressLineStore } from "@/store/progress-line";
+const progressLine = useProgressLineStore();
+const { start, stop } = useProgressLineStore();
 
-import { useSnackbarStore } from '@/stores/snackbar'
-const { show } = useSnackbarStore()
+import { useSnackbarStore } from "@/store/snackbar";
+const { show } = useSnackbarStore();
 
-import { USER } from '@/data/structure'
+import { USER } from "@/constants";
 
-import { getUser } from '@/utils/local-storage/session'
-import { onMounted } from 'vue'
+import { getCurrentUser } from "@/utils/firebase";
+import { onMounted } from "vue";
 
-import { getByUid, create } from '@/api/users'
+import { get, create } from "@/api/user";
 
-import { useRouter } from 'vue-router'
-const router = useRouter()
+import { useRouter } from "vue-router";
+const router = useRouter();
 
-import { useUserStore } from '@/stores/user'
-const user = useUserStore()
+import { useUserStore } from "@/store/user";
+const user = useUserStore();
+
+const loadUser = async () => {
+  try {
+    start();
+    const authUser = await getCurrentUser();
+    const result = await get(authUser.uid);
+
+    if (result === null) {
+      const user = _.cloneDeep(USER);
+      user.uid = authUser.uid;
+      user.email = authUser.email;
+      user.emailVerified = authUser.emailVerified;
+
+      await create(authUser.uid, user);
+      show("success", "created a user");
+
+      setTimeout(() => {
+        router.go();
+      }, 2000);
+    } else {
+      user.set(result);
+    }
+  } catch ({ message }) {
+    show("error", message);
+  } finally {
+    stop();
+  }
+};
 
 onMounted(() => {
-  progressLine.on()
-  getByUid(getUser().uid)
-    .then(async (data) => {
-      if (data === null) {
-        await create(getUser().uid, USER)
-          .then(() => {
-            show('success', 'created a user')
-            router.go()
-          })
-          .catch(() => {
-            show('error', message)
-          })
-      } else {
-        user.set(data)
-      }
-    })
-    .catch(({ message }) => {
-      show('error', message)
-    })
-    .finally(() => {
-      progressLine.off()
-    })
-})
+  loadUser();
+});
 </script>

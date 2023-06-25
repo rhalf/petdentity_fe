@@ -1,0 +1,37 @@
+<template>
+  <Dialog :width="1024">
+    <Card>
+      <v-card-title class="bg-primary pa-3">
+        <Label header medium class="text-black">Address</Label>
+      </v-card-title>
+      <v-card-text>
+        <FormAddress v-model="props.address" />
+      </v-card-text>
+      <v-card-actions>
+        <v-row dense class="py-2 px-4">
+          <v-spacer />
+          <v-col cols="auto">
+            <Button @click="closeHandler">Ok</Button>
+          </v-col>
+        </v-row>
+      </v-card-actions>
+    </Card>
+  </Dialog>
+</template>
+
+<script setup>
+import Button from "@/components/common/Button.vue";
+import Label from "@/components/common/Label.vue";
+import Dialog from "@/components/common/Dialog.vue";
+import Card from "@/components/common/Card.vue";
+import FormAddress from "@/components/forms/address/FormAddress.vue";
+
+const props = defineProps({ address: Object });
+const emit = defineEmits(["update:modelValue"]);
+
+const closeHandler = () => {
+  emit("update:modelValue", false);
+};
+</script>
+
+<style></style>

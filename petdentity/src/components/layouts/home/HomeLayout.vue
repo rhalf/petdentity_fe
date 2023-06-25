@@ -1,7 +1,10 @@
 <template>
   <v-app>
     <v-main>
-      <ProgressLine :indeterminate="progressLine.status" :visible="progressLine.status" />
+      <ProgressLine
+        :indeterminate="progressLine.status"
+        :visible="progressLine.status"
+      />
       <router-view v-slot="{ Component }">
         <!-- <v-fade-transition> -->
         <component :is="Component" />
@@ -12,15 +15,15 @@
 </template>
 
 <script setup>
-import ProgressLine from '@/components/common/ProgressLine.vue'
+import ProgressLine from "@/components/common/ProgressLine.vue";
 
-import { useProgressLineStore } from '@/stores/progress-line'
-const progressLine = useProgressLineStore()
+import { useProgressLineStore } from "@/store/progress-line";
+const progressLine = useProgressLineStore();
 
-import { onMounted } from 'vue'
+import { onMounted } from "vue";
 
 onMounted(() => {
-  progressLine.on()
-  progressLine.off()
-})
+  progressLine.start();
+  progressLine.stop();
+});
 </script>

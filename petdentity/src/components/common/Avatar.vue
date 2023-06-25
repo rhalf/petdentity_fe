@@ -1,30 +1,29 @@
 <template>
-  <v-btn variant="plain" @click="emit('click')">
-    <v-avatar :class="classes" :variant="variant" :image="preferred" :color="color" />
-  </v-btn>
+  <v-avatar v-bind="properties" @click="emit('click')">
+    <v-img :src="image" cover />
+  </v-avatar>
 </template>
 
 <script setup>
-import { onMounted, computed } from 'vue'
-
-import { baseProps } from '@/mixins/props'
-
-const props = defineProps({ ...baseProps, image: String })
-
-const emit = defineEmits(['click'])
-
-onMounted(() => {
-  // console.log(props)
-})
+import { computed } from 'vue'
 
 import AccountEmpty from '@/assets/images/accounts/account-empty.png'
-const preferred = computed(() => {
-  if (!props.image) return AccountEmpty
+
+const properties = {
+  class: 'text-body-1 text-primary pointer'
+}
+
+const emit = defineEmits(['click'])
+const props = defineProps({ src: String, alt: String, textClass: String })
+
+const image = computed(() => {
+  if (props.src === null) return AccountEmpty
+  else return props.src
 })
 </script>
 
 <style scoped>
-span {
+.pointer {
   cursor: pointer;
 }
 </style>

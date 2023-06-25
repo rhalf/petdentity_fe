@@ -1,5 +1,5 @@
 <template>
-  <v-text-field persistent-placeholder hide-details="auto" v-bind="properties" />
+  <v-text-field v-bind="properties" />
 </template>
 
 <script setup>
@@ -8,8 +8,8 @@ import { computed, onMounted } from 'vue'
 const properties = {
   density: 'comfortable',
   persistentPlaceholder: true,
-  hideDetails: 'auto',
-  class: 'text-primary'
+  hideDetails: 'auto'
+  // class: 'text-primary'
 }
 
 onMounted(() => {
