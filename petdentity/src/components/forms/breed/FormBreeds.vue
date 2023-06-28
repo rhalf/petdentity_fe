@@ -55,6 +55,7 @@ const { show } = useSnackbarStore();
 
 import { computed, toRefs, ref } from "vue";
 import { useModel } from "@/utils/vue";
+import { onMounted } from "vue";
 
 const emit = defineEmits(["update:modelValue"]);
 const props = defineProps({
@@ -66,6 +67,10 @@ const propsRef = toRefs(props);
 const breed = ref();
 
 const breeds = computed(useModel(propsRef, emit, "modelValue"));
+
+onMounted(() => {
+  if (!breeds.value) breeds.value = [];
+});
 
 const removeHandler = (index) => {
   breeds.value?.splice(index, 1);

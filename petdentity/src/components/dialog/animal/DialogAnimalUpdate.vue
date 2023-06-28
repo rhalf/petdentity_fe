@@ -2,7 +2,7 @@
   <Dialog v-model="dialog" :width="1024">
     <Card>
       <v-card-title class="bg-primary pa-4">
-        <Label header class="text-black"> Add </Label>
+        <Label header class="text-black"> Update </Label>
       </v-card-title>
       <v-card-text>
         <FormAnimal v-model="animal" />
@@ -32,37 +32,25 @@ import Card from "@/components/common/Card.vue";
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
-import { create } from "@/api/animal";
+import { update } from "@/api/animal";
 
-import { useModel } from "@/utils/vue";
+import { useModel, syncProp } from "@/utils/vue";
 
-import { ref, toRefs, computed } from "vue";
-const props = defineProps({ modelValue: Boolean });
-const propsRef = toRefs(props);
-const emit = defineEmits(["update:modelValue", "add"]);
+import { ref, computed, toRefs } from "vue";
+const props = defineProps({ modelValue: Boolean, animal: Object });
+const propRef = toRefs(props);
+const emit = defineEmits(["update:modelValue", "update:animal", "update"]);
 
 const isLoading = ref(false);
-const dialog = computed(useModel(propsRef, emit, "modelValue"));
-const animal = ref({
-  // name: "Dog",
-  // type: "Mammal",
-  // breeds: [
-  //   "Dobermann",
-  //   "Shih Tzu ",
-  //   "German Shepherd",
-  //   "Siberian Husky",
-  //   "Golden Retriever",
-  //   "Labrador Retriever",
-  // ],
-});
+const dialog = computed(useModel(propRef, emit, "modelValue"));
+const animal = computed(syncProp(propRef, emit, "animal"));
 
 const submitHandler = async () => {
   try {
     isLoading.value = true;
-    const docRef = await create(animal.value);
-    emit("add");
-    show("success", "Added an animal!");
-    animal.value = {};
+    const docRef = await update(animal.value);
+    emit("update");
+    show("success", "Updated an animal!");
     dialog.value = false;
   } catch ({ message }) {
     show("error", message);

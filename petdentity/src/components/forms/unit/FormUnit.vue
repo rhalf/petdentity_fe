@@ -1,19 +1,26 @@
 <template>
   <v-row dense>
     <v-col cols="12" md="">
-      <Label class="text-primary"> Name </Label>
-      <TextField class="mt-3" v-model="animal.name" placeholder="Name" />
+      <Label class="text-primary"> Uid </Label>
+      <TextField class="mt-3" v-model="unit.uid" placeholder="Uid" />
+    </v-col>
+  </v-row>
+
+  <v-row dense>
+    <v-col cols="12" md="">
+      <Label class="text-primary"> Type </Label>
+      <CommType class="mt-3" v-model="unit.commType" />
     </v-col>
     <v-col cols="12" md="">
       <Label class="text-primary"> Type </Label>
-      <AnimalType class="mt-3" v-model="animal.type" />
+      <UnitType class="mt-3" v-model="unit.type" />
     </v-col>
   </v-row>
 
   <v-row dense class="mt-3">
     <v-col cols="12" md="12">
       <Label class="text-primary"> Breeds </Label>
-      <FormBreeds class="mt-3" v-model="animal.breeds" />
+      <FormBreeds class="mt-3" v-model="unit.breeds" />
     </v-col>
   </v-row>
 </template>
@@ -22,7 +29,8 @@
 import Label from "@/components/common/Label.vue";
 import TextField from "@/components/common/TextField.vue";
 
-import AnimalType from "@/components/pickers/AnimalType.vue";
+import UnitType from "@/components/pickers/UnitType.vue";
+import CommType from "@/components/pickers/CommType.vue";
 
 import FormBreeds from "@/components/forms/breed/FormBreeds.vue";
 
@@ -37,7 +45,7 @@ const props = defineProps({
 
 const propsRef = toRefs(props);
 
-const animal = computed(useModel(propsRef, emit, "modelValue"));
+const unit = computed(useModel(propsRef, emit, "modelValue"));
 </script>
 
 <style></style>

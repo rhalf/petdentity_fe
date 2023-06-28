@@ -1,5 +1,11 @@
 export const items = [
   {
+    icon: "mdi-view-dashboard",
+    title: "Dashboard",
+    subtitle: "Managing animals",
+    to: { name: "AdminDashboard" },
+  },
+  {
     icon: "mdi-paw",
     title: "Animals",
     subtitle: "Managing animals",
@@ -9,6 +15,6 @@ export const items = [
     icon: "mdi-nfc",
     title: "Units",
     subtitle: "Managing Units",
-    to: { name: "AdminDashboard" },
+    to: { name: "AdminUnitsSummary" },
   },
 ];

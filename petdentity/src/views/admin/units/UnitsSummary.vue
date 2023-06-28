@@ -3,7 +3,7 @@
     <Sheet class="pa-8">
       <v-row dense>
         <v-col cols="auto">
-          <Label title class="text-primary">Animals</Label>
+          <Label title class="text-primary">Units</Label>
         </v-col>
         <v-spacer />
         <v-col cols="12" md="3">
@@ -22,31 +22,25 @@
             hover
             :loading="isLoading"
             :headers="headers"
-            :items="animals"
+            :items="units"
             :items-per-page="pagination.limit"
             hide-default-footer
             withRemove
             withUpdate
             @remove="removeHandler"
             @update="updateHandler"
-            @add="dialogAnimalAdd = true"
+            @add="dialogUnitAdd = true"
             @next="nextHandler"
             @prev="prevHandler"
           />
         </v-col>
       </v-row>
     </Sheet>
-    <DialogAnimalAdd v-model="dialogAnimalAdd" @add="loadItems" />
-    <DialogAnimalUpdate
-      v-model="dialogAnimalUpdate"
-      v-model:animal="animal"
+    <DialogUnitAdd v-model="dialogUnitAdd" @add="loadItems" />
+    <DialogUnitUpdate
+      v-model="dialogUnitUpdate"
+      v-model:unit="unit"
       @update="loadItems"
-    />
-
-    <DialogAnimalRemove
-      v-model="dialogAnimalRemove"
-      v-model:animal="animal"
-      @remove="loadItems"
     />
   </v-container>
 </template>
@@ -59,24 +53,23 @@ import TextField from "@/components/common/TextField.vue";
 import DataTable from "@/components/tables/DataTable.vue";
 import { headers } from "./data";
 
-import DialogAnimalAdd from "@/components/dialog/animal/DialogAnimalAdd.vue";
-import DialogAnimalUpdate from "@/components/dialog/animal/DialogAnimalUpdate.vue";
-import DialogAnimalRemove from "@/components/dialog/animal/DialogAnimalRemove.vue";
+import DialogUnitAdd from "@/components/dialog/unit/DialogUnitAdd.vue";
+import DialogUnitUpdate from "@/components/dialog/unit/DialogUnitUpdate.vue";
 
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
-import { search, next, prev, remove } from "@/api/animal";
+import { search, next, prev, remove } from "@/api/unit";
 
 import { ref, onMounted } from "vue";
 
-const dialogAnimalAdd = ref(false);
-const dialogAnimalUpdate = ref(false);
-const dialogAnimalRemove = ref(false);
+const dialogUnitAdd = ref(false);
+const dialogUnitUpdate = ref(false);
+const dialogUnitRemove = ref(false);
 
 const isLoading = ref(false);
-const animals = ref();
-const animal = ref();
+const units = ref();
+const unit = ref();
 const pagination = ref({
   searchText: "",
   column: "name",
@@ -101,7 +94,7 @@ const loadItems = async () => {
     pagination.value.first = items[firstIndex][pagination.value.column];
     pagination.value.last = items[lastIndex][pagination.value.column];
 
-    animals.value = items;
+    units.value = items;
   } catch ({ message }) {
     console.log("error", message);
   } finally {
@@ -113,14 +106,14 @@ onMounted(async () => {
   loadItems();
 });
 
-const removeHandler = async (item) => {
-  animal.value = item;
-  dialogAnimalRemove.value = true;
+const removeHandler = async ({ item }) => {
+  unit.value = item;
+  dialogUnitUpdate.value = true;
 };
 
 const updateHandler = (item) => {
-  animal.value = item;
-  dialogAnimalUpdate.value = true;
+  unit.value = item;
+  dialogUnitUpdate.value = true;
 };
 
 const nextHandler = async () => {
@@ -140,7 +133,7 @@ const nextHandler = async () => {
     pagination.value.first = result[firstIndex][pagination.value.column];
     pagination.value.last = result[lastIndex][pagination.value.column];
 
-    animals.value = result;
+    units.value = result;
   } catch ({ message }) {
     show("error", message);
   } finally {
@@ -165,7 +158,7 @@ const prevHandler = async () => {
     pagination.value.first = result[firstIndex][pagination.value.column];
     pagination.value.last = result[lastIndex][pagination.value.column];
 
-    animals.value = result;
+    units.value = result;
   } catch ({ message }) {
     show("error", message);
   } finally {

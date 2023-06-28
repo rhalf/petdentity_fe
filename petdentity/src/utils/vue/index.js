@@ -1,24 +1,3 @@
-// export const useModel = (props, emit) => {
-//   return {
-//     get() {
-//       return props.modelValue;
-//     },
-//     set(value) {
-//       return emit("update:modelValue", value);
-//     },
-//   };
-// };
-
-// import { toRefs } from "vue";
-
-// const props = defineProps({ address: String });
-
-// const propsRef = toRefs(props);
-
-// const emit = defineEmits(["update:address"]);
-
-// const address = computed(syncProp("address", emit, propsRef));
-
 export const useModel = (props, emit, propName) => {
   return {
     get() {
@@ -42,4 +21,12 @@ export const getBirthDate = (date) => {
   const now = dayjs(new Date());
   const dt = dayjs(date);
   return now.diff(dt, "Year");
+};
+
+export const toUtc = (date) => {
+  return dayjs(date, { utc: true });
+};
+
+export const toUtcTimestamp = (date) => {
+  return toUtc(date).unix();
 };

@@ -8,14 +8,14 @@ import { computed, toRefs } from "vue";
 import { useModel } from "@/utils/vue";
 
 const properties = {
-  placeholder: "Animal Type",
+  placeholder: "Comm Type",
 };
 
 const emit = defineEmits(["update:modelValue"]);
 const props = defineProps({ modelValue: String });
 const propsRef = toRefs(props);
 
-const items = ["Amphibian", "Bird", "Fish", "Mammal", "Reptile"];
+const items = ["RFID/UHF", "NFC/NDEF"];
 
 const type = computed(useModel(propsRef, emit, "modelValue"));
 </script>

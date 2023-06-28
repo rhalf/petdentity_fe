@@ -22,7 +22,7 @@ import {
 import { toUtcTimestamp } from "@/utils/vue";
 import { toObject, toArray } from "./index";
 
-const collectionName = "animals";
+const collectionName = "units";
 
 const search = async (searchName, columnName, orderDirection, limitNumber) => {
   const collectionRef = collection(firestore, collectionName);
