@@ -6,7 +6,6 @@
 
 <script setup>
 const properties = {
-  class: 'ma-3',
-  maxWidth: 1280
-}
+  maxWidth: 1280,
+};
 </script>

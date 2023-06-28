@@ -1,14 +1,25 @@
 <template>
-  <v-dialog @click="emit('click')" v-bind="properties">
+  <v-dialog v-bind="properties" :fullscreen="fullscreen">
     <slot></slot>
   </v-dialog>
 </template>
 
 <script setup>
-const emit = defineEmits(["click"]);
+import { useDisplay } from "vuetify";
+const { mobile } = useDisplay();
+
+import { computed } from "vue";
+import { toRefs } from "vue";
+
+const props = defineProps({ expand: Boolean });
+const { expand } = toRefs(props);
 
 const properties = {
   class: "text-primary",
   persistent: true,
 };
+
+const fullscreen = computed(() => {
+  return expand.value && mobile.value;
+});
 </script>

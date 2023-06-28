@@ -1,7 +1,7 @@
 <template>
-  <Dialog :width="1024">
+  <Dialog :width="1024" expand>
     <Card>
-      <v-card-title class="bg-primary pa-4">
+      <v-card-title class="bg-primary pa-4" expand>
         <Label header medium class="text-black">Address</Label>
       </v-card-title>
       <v-card-text>
