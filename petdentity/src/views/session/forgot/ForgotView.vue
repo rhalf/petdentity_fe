@@ -60,8 +60,6 @@ import Anchor from "@/components/common/Anchor.vue";
 import { useDisplay } from "vuetify";
 const { xs } = useDisplay();
 
-// import { ref, watch } from 'vue'
-
 import { passwordResetEmail } from "@/api/session";
 
 import { useField, useForm } from "vee-validate";

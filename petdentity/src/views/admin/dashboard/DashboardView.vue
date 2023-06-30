@@ -1,41 +1,44 @@
 <template>
   <v-container>
-    <v-row class="mt-8">
-      <v-col cols="12" sm="4" md="3" lg="2">
-        <v-card>
-          <v-row dense class="bg-primary">
-            <v-col class="ma-2" align="center" justify="center">
-              <Label header>Animals</Label>
-            </v-col>
-          </v-row>
-          <v-row dense>
-            <v-col class="ma-1" align="center" justify="center">
-              <Label title>{{ counter.animals }}</Label>
-            </v-col>
-          </v-row>
-        </v-card>
-      </v-col>
-      <v-col cols="12" sm="4" md="3" lg="2">
-        <v-card>
-          <v-row dense class="bg-primary">
-            <v-col class="ma-2" align="center" justify="center">
-              <Label header>Units</Label>
-            </v-col>
-          </v-row>
-          <v-row dense>
-            <v-col class="ma-1" align="center" justify="center">
-              <Label title>{{ counter.units }}</Label>
-            </v-col>
-          </v-row>
-        </v-card>
-      </v-col>
-    </v-row>
+    <Sheet class="mt-5 bg-black">
+      <v-row>
+        <v-col cols="12" sm="4" md="3" lg="2">
+          <v-card>
+            <v-row dense class="bg-primary">
+              <v-col class="ma-2" align="center" justify="center">
+                <Label header>Animals</Label>
+              </v-col>
+            </v-row>
+            <v-row dense>
+              <v-col class="ma-1" align="center" justify="center">
+                <Label title>{{ counter.animals }}</Label>
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-col>
+        <v-col cols="12" sm="4" md="3" lg="2">
+          <v-card>
+            <v-row dense class="bg-primary">
+              <v-col class="ma-2" align="center" justify="center">
+                <Label header>Units</Label>
+              </v-col>
+            </v-row>
+            <v-row dense>
+              <v-col class="ma-1" align="center" justify="center">
+                <Label title>{{ counter.units }}</Label>
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-col>
+      </v-row>
+    </Sheet>
   </v-container>
 </template>
 
 <script setup>
 import _ from "lodash";
 import Label from "@/components/common/Label.vue";
+import Sheet from "@/components/common/Sheet.vue";
 
 import { count as countAnimals } from "@/api/animal";
 import { count as countUnits } from "@/api/unit";

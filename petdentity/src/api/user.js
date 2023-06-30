@@ -9,22 +9,69 @@ import {
   doc,
   query,
   where,
+  orderBy,
+  startAfter,
+  startAt,
+  limit,
+  limitToLast,
+  endAt,
 } from "firebase/firestore";
+
+import { toUtcTimestamp } from "@/utils/vue";
+import { toObject, toArray } from "./index";
 
 const collectionName = "users";
 
-const getAll = async () => {
-  const users = [];
+const search = async (searchName, columnName, orderDirection, limitNumber) => {
   const collectionRef = collection(firestore, collectionName);
-  const snapshots = await getDocs(collectionRef);
-  snapshots.forEach(async (snapshots) => {
-    let user = { uid: snapshots.uid, ...snapshots.data() };
-    user.role = await getDoc(user.role.path);
-    user.status = await getDoc(user.status.path);
-    users.push(user);
-  });
-  return users;
+  const q = await query(
+    collectionRef,
+    orderBy(columnName, orderDirection),
+    startAt(searchName),
+    endAt(searchName + "\uf8ff"),
+    limit(limitNumber)
+  );
+  const snapshots = await getDocs(q);
+  return toArray(snapshots);
 };
+
+const next = async (lastVisible, columnName, orderDirection, limitNumber) => {
+  const collectionRef = collection(firestore, collectionName);
+
+  const q = await query(
+    collectionRef,
+    orderBy(columnName, orderDirection),
+    startAfter(lastVisible),
+    limit(limitNumber)
+  );
+  const snapshots = await getDocs(q);
+  return toArray(snapshots);
+};
+
+const prev = async (firstVisible, columnName, orderDirection, limitNumber) => {
+  const collectionRef = collection(firestore, collectionName);
+  const q = await query(
+    collectionRef,
+    orderBy(columnName, orderDirection),
+    endBefore(firstVisible),
+    limitToLast(limitNumber)
+  );
+  const snapshots = await getDocs(q);
+  return toArray(snapshots);
+};
+
+// const getAll = async () => {
+//   const users = [];
+//   const collectionRef = collection(firestore, collectionName);
+//   const snapshots = await getDocs(collectionRef);
+//   snapshots.forEach(async (snapshots) => {
+//     let user = { uid: snapshots.uid, ...snapshots.data() };
+//     user.role = await getDoc(user.role.path);
+//     user.status = await getDoc(user.status.path);
+//     users.push(user);
+//   });
+//   return users;
+// };
 
 const get = async (uid) => {
   const docRef = doc(firestore, collectionName, uid);
@@ -80,4 +127,4 @@ const remove = async (user) => {
   return await deleteDoc(docRef, user);
 };
 
-export { getAll, get, getByUid, create, update, remove };
+export { search, next, prev, get, getByUid, create, update, remove };

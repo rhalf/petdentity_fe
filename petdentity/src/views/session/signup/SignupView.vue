@@ -84,7 +84,7 @@ import Anchor from "@/components/common/Anchor.vue";
 
 import { signUp, emailVerification } from "@/api/session";
 
-import { ref, watch, computed } from "vue";
+import { computed } from "vue";
 
 import { useField, useForm } from "vee-validate";
 import { schema } from "./validationSchema";

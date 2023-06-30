@@ -28,7 +28,7 @@ const { start, stop } = useProgressLineStore();
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
-import { USER } from "@/constants";
+import { User } from "@/constants";
 
 import { getCurrentUser } from "@/utils/firebase";
 import { onMounted } from "vue";
@@ -48,7 +48,7 @@ const loadUser = async () => {
     const result = await get(authUser.uid);
 
     if (result === null) {
-      const user = _.cloneDeep(USER);
+      const user = _.cloneDeep(User);
       user.uid = authUser.uid;
       user.email = authUser.email;
       user.emailVerified = authUser.emailVerified;
@@ -58,7 +58,7 @@ const loadUser = async () => {
 
       setTimeout(() => {
         router.go();
-      }, 2000);
+      }, 1000);
     } else {
       user.set(result);
     }

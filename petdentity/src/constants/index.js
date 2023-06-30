@@ -1,11 +1,5 @@
 import _ from "lodash";
 
-export const USER_STATUS = {
-  DISABLED: "DISABLED",
-  ENABLED: "ENABLED",
-  SUSPENDED: "SUSPENDED",
-};
-
 export const UserRoles = {
   SYSTEM_ADMIN: "SYSTEM_ADMIN",
   PET_OWNER: "PET_OWNER",
@@ -13,33 +7,34 @@ export const UserRoles = {
   LOCAL_GOVERNMENT: "LOCAL_GOVERNMENT",
 };
 
-export const LEVEL = {
-  SUPER: "SUPER",
-  ADMIN: "ADMIN",
-  ENCODER: "ENCODER",
-  DEMO: "DEMO",
+export const Statuses = {
+  ENABLED: "ENABLED",
+  DISABLED: "DISABLED",
+  SUSPENDED: "SUSPENDED",
 };
 
-export const GENDER = {
-  MALE: "MALE",
-  FEMALE: "FEMALE",
-};
+// export const LEVEL = {
+//   SUPER: "SUPER",
+//   ADMIN: "ADMIN",
+//   ENCODER: "ENCODER",
+//   DEMO: "DEMO",
+// };
 
-export const VACCINE = {
-  serial: null,
-  name: null,
-  description: null,
-  location: null,
+// export const VACCINE = {
+//   serial: null,
+//   name: null,
+//   description: null,
+//   location: null,
 
-  applicationDate: null,
-  injectedDate: null,
-  effectivityDate: null,
+//   applicationDate: null,
+//   injectedDate: null,
+//   effectivityDate: null,
 
-  verified: null,
-  verifiedBy: null,
-};
+//   verified: null,
+//   verifiedBy: null,
+// };
 
-export const ADDRESS = {
+export const Address = {
   country: null,
   state: null,
   region: null,
@@ -50,7 +45,7 @@ export const ADDRESS = {
   exact: null,
 };
 
-export const NAME = {
+export const Name = {
   title: null,
   first: null,
   middle: null,
@@ -58,46 +53,46 @@ export const NAME = {
   suffix: null,
 };
 
-export const PROFILE = {
-  name: _.cloneDeep(NAME),
-  address: _.cloneDeep(ADDRESS),
+export const Profile = {
+  name: _.cloneDeep(Name),
+  address: _.cloneDeep(Address),
   gender: null,
   birthDate: null,
   photoUrl: null,
   // optional
 };
 
-export const PET_OWNER = {
-  prcNumber: null,
-};
-export const VETERINARIAN = {
-  prcNumber: null,
-};
-export const LOCAL_GOVERNMENT = {
-  prcNumber: null,
-};
-export const SYSTEM_ADMIN = {
-  prcNumber: null,
-};
+// export const PET_OWNER = {
+//   prcNumber: null,
+// };
+// export const VETERINARIAN = {
+//   prcNumber: null,
+// };
+// export const LOCAL_GOVERNMENT = {
+//   prcNumber: null,
+// };
+// export const SYSTEM_ADMIN = {
+//   prcNumber: null,
+// };
 
 //Default User
-export const USER = {
+export const User = {
   id: null,
   email: null,
   emailVerified: null,
   anonymous: null,
 
   roles: [UserRoles.PET_OWNER],
-  status: USER_STATUS.ENABLED,
-  profile: PROFILE,
+  status: Statuses.ENABLED,
+  profile: _.cloneDeep(Profile),
 };
 
-const ANIMAL = {
-  name: null,
-  scientific: null,
-  desc: null,
-  breed: [],
-};
+// const ANIMAL = {
+//   name: null,
+//   scientific: null,
+//   desc: null,
+//   breed: [],
+// };
 
 //Default Beneficiary
 export const PET = {

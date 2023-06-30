@@ -36,24 +36,20 @@
 </template>
 
 <script setup>
-import Label from '@/components/common/Label.vue'
-import TextField from '@/components/common/TextField.vue'
+import Label from "@/components/common/Label.vue";
+import TextField from "@/components/common/TextField.vue";
 
-import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { useModel } from "@/utils/vue";
+import { toRefs, computed } from "vue";
 
-const emit = defineEmits(['upload'])
+const emit = defineEmits(["update:modelValue", "upload"]);
 const props = defineProps({
-  modelValue: Object
-})
+  modelValue: Object,
+});
 
-const name = computed({
-  get() {
-    return props.modelValue
-  },
-  set(value) {
-    emit('update:modelValue', value)
-  }
-})
+const propsRef = toRefs(props);
+
+const name = computed(useModel(propsRef, emit, "modelValue"));
 </script>
 
 <style></style>

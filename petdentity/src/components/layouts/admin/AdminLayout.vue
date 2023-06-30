@@ -39,7 +39,6 @@ import { get } from "@/api/user";
 import { getCurrentUser } from "@/utils/firebase";
 
 import { ref, computed, onMounted } from "vue";
-import { logEvent } from "firebase/analytics";
 const drawer = ref(false);
 
 onMounted(async () => {

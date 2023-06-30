@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <Sheet class="pa-8">
+    <Sheet class="mt-5">
       <v-row dense>
         <v-col cols="auto">
           <Label title class="text-primary">Animals</Label>
@@ -42,7 +42,6 @@
       v-model:animal="animal"
       @update="loadItems"
     />
-
     <DialogAnimalRemove
       v-model="dialogAnimalRemove"
       v-model:animal="animal"

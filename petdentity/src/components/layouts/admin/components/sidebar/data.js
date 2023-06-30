@@ -2,7 +2,7 @@ export const items = [
   {
     icon: "mdi-view-dashboard",
     title: "Dashboard",
-    subtitle: "Managing animals",
+    subtitle: "Dashboard View",
     to: { name: "AdminDashboard" },
   },
   {
@@ -16,5 +16,11 @@ export const items = [
     title: "Units",
     subtitle: "Managing Units",
     to: { name: "AdminUnitsSummary" },
+  },
+  {
+    icon: "mdi-account-multiple",
+    title: "Users",
+    subtitle: "Managing Users",
+    to: { name: "AdminUsersSummary" },
   },
 ];

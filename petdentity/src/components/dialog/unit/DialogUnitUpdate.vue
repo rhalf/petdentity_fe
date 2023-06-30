@@ -5,7 +5,7 @@
         <Label header class="text-black"> Update </Label>
       </v-card-title>
       <v-card-text>
-        <FormAnimal v-model="animal" />
+        <FormUnit v-model="unit" />
       </v-card-text>
       <v-card-actions>
         <v-row dense class="py-4 px-4">
@@ -26,31 +26,31 @@
 import Button from "@/components/common/Button.vue";
 import Label from "@/components/common/Label.vue";
 import Dialog from "@/components/common/Dialog.vue";
-import FormAnimal from "@/components/forms/animal/FormAnimal.vue";
+import FormUnit from "@/components/forms/unit/FormUnit.vue";
 import Card from "@/components/common/Card.vue";
 
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
-import { update } from "@/api/animal";
+import { update } from "@/api/unit";
 
 import { useModel, syncProp } from "@/utils/vue";
 
 import { ref, computed, toRefs } from "vue";
-const props = defineProps({ modelValue: Boolean, animal: Object });
+const props = defineProps({ modelValue: Boolean, unit: Object });
 const propRef = toRefs(props);
-const emit = defineEmits(["update:modelValue", "update:animal", "update"]);
+const emit = defineEmits(["update:modelValue", "update:unit", "update"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propRef, emit, "modelValue"));
-const animal = computed(syncProp(propRef, emit, "animal"));
+const unit = computed(syncProp(propRef, emit, "unit"));
 
 const submitHandler = async () => {
   try {
     isLoading.value = true;
-    const docRef = await update(animal.value);
+    const docRef = await update(unit.value);
     emit("update");
-    show("success", "Updated an animal!");
+    show("success", "Updated an unit!");
     dialog.value = false;
   } catch ({ message }) {
     show("error", message);

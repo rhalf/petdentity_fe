@@ -68,15 +68,16 @@ const get = async (id) => {
   return toObject(snapshot);
 };
 
-const create = async (document) => {
-  document.createdAt = toUtcTimestamp(new Date());
+const create = async (item) => {
+  item.createdAt = toUtcTimestamp(new Date());
   const collectionRef = collection(firestore, collectionName);
-  return await addDoc(collectionRef, document);
+  return await addDoc(collectionRef, item);
 };
 
-const update = async (document) => {
-  const documentRef = doc(firestore, collectionName, document.id);
-  return await setDoc(documentRef, document);
+const update = async (item) => {
+  item.updatedAt = toUtcTimestamp(new Date());
+  const documentRef = doc(firestore, collectionName, item.id);
+  return await setDoc(documentRef, item);
 };
 
 const remove = async (id) => {

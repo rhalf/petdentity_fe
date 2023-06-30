@@ -4,20 +4,24 @@
 
 <script setup>
 import Select from "@/components/common/Select.vue";
-import { computed, toRefs } from "vue";
+import { computed, toRefs, onMounted } from "vue";
 import { useModel } from "@/utils/vue";
 
 const properties = {
-  placeholder: "Comm Type",
+  placeholder: "Unit Form Type",
 };
 
 const emit = defineEmits(["update:modelValue"]);
 const props = defineProps({ modelValue: String });
 const propsRef = toRefs(props);
 
-const items = ["RFID/UHF", "NFC/NDEF"];
+const items = ["Injectable", "Tag", "Ring", "Card", "Wristband", "Neclace"];
 
 const type = computed(useModel(propsRef, emit, "modelValue"));
+
+onMounted(() => {
+  if (!type.value) type.value = items[0];
+});
 </script>
 
 <style></style>

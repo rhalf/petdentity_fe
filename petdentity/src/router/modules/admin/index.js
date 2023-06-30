@@ -33,5 +33,16 @@ export const admin = {
         },
       ],
     },
+    {
+      path: "users",
+      children: [
+        {
+          path: "summary",
+          name: "AdminUsersSummary",
+          component: () => import("@/views/admin/users/UsersSummary.vue"),
+          meta: { authenticated: true, authorization: "SYSTEM_ADMIN" },
+        },
+      ],
+    },
   ],
 };

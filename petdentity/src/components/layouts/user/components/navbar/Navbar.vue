@@ -58,7 +58,7 @@ const items = [
     title: "Logout",
     handler: async () => {
       await signOut();
-      location.reload();
+      await location.reload();
     },
   },
 ];

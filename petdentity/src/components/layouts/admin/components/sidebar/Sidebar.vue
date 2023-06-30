@@ -23,18 +23,9 @@ import Label from "@/components/common/Label.vue";
 import { items } from "./data";
 
 import { useModel } from "@/utils/vue";
-import { ref, toRefs, computed, watch } from "vue";
+import { ref, toRefs, computed } from "vue";
 
 const itemsRef = ref(items);
-
-const selected = ref();
-watch(selected, (current) => {
-  console.log(current);
-});
-
-const clickHandler = (item) => {
-  console.log(item);
-};
 
 const props = defineProps({ modelValue: Boolean });
 const emit = defineEmits(["update:modelValue"]);

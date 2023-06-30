@@ -15,7 +15,9 @@ const emit = defineEmits(["update:modelValue"]);
 const props = defineProps({ modelValue: String });
 const propsRef = toRefs(props);
 
-const items = ["RFID", "NFC"];
+import { Statuses } from "@/constants";
+
+const items = Object.keys(Statuses);
 
 const type = computed(useModel(propsRef, emit, "modelValue"));
 

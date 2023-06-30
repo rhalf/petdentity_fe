@@ -174,7 +174,7 @@ import TextField from "@/components/common/TextField.vue";
 import countries from "@/data/countries.json";
 import philippines from "@/data/philippines.json";
 
-import { ADDRESS } from "@/constants";
+import { Address } from "@/constants";
 
 import { useModel } from "@/utils/vue";
 
@@ -219,7 +219,7 @@ const selectedCity = computed(() => {
 });
 
 const onCountry = () => {
-  const { state, region, province, city, barangay } = ADDRESS;
+  const { state, region, province, city, barangay } = Address;
   address.value.state = state;
   address.value.region = region;
   address.value.province = province;
@@ -227,18 +227,18 @@ const onCountry = () => {
   address.value.barangay = barangay;
 };
 const onRegion = () => {
-  const { province, city, barangay } = ADDRESS;
+  const { province, city, barangay } = Address;
   address.value.province = province;
   address.value.city = city;
   address.value.barangay = barangay;
 };
 const onProvince = () => {
-  const { city, barangay } = ADDRESS;
+  const { city, barangay } = Address;
   address.value.city = city;
   address.value.barangay = barangay;
 };
 const onCity = () => {
-  const { barangay } = ADDRESS;
+  const { barangay } = Address;
   address.value.barangay = barangay;
 };
 
