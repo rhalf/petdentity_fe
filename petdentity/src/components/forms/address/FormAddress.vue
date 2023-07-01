@@ -200,7 +200,7 @@ const datas = reactive({
 });
 
 const isPhilippines = computed(() => {
-  return props.modelValue.country === "Philippines";
+  return address.value.country === "Philippines";
 });
 
 const selectedCountry = computed(() => {
@@ -243,7 +243,7 @@ const onCity = () => {
 };
 
 watch(
-  address,
+  selectedCountry,
   async () => {
     if (!isPhilippines.value) return;
 

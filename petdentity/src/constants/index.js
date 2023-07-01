@@ -1,10 +1,10 @@
 import _ from "lodash";
 
-export const UserRoles = {
-  SYSTEM_ADMIN: "SYSTEM_ADMIN",
-  PET_OWNER: "PET_OWNER",
+export const UserGroups = {
+  ADMIN: "ADMIN",
+  OWNER: "OWNER",
   VETERINARIAN: "VETERINARIAN",
-  LOCAL_GOVERNMENT: "LOCAL_GOVERNMENT",
+  GOVERNMENT: "GOVERNMENT",
 };
 
 export const Statuses = {
@@ -62,16 +62,16 @@ export const Profile = {
   // optional
 };
 
-// export const PET_OWNER = {
+// export const OWNER = {
 //   prcNumber: null,
 // };
 // export const VETERINARIAN = {
 //   prcNumber: null,
 // };
-// export const LOCAL_GOVERNMENT = {
+// export const GOVERNMENT = {
 //   prcNumber: null,
 // };
-// export const SYSTEM_ADMIN = {
+// export const ADMIN = {
 //   prcNumber: null,
 // };
 
@@ -82,7 +82,7 @@ export const User = {
   emailVerified: null,
   anonymous: null,
 
-  roles: [UserRoles.PET_OWNER],
+  roles: [UserGroups.OWNER],
   status: Statuses.ENABLED,
   profile: _.cloneDeep(Profile),
 };

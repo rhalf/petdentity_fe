@@ -3,7 +3,11 @@
     <Sheet class="pa-8">
       <v-row dense>
         <v-col>
-          <Label title class="text-primary">Profile</Label>
+          <Label title class="text-primary"> Profile </Label>
+        </v-col>
+        <v-spacer />
+        <v-col cols="auto">
+          <ButtonIcon class="text-primary" icon="mdi-pencil" size="large" />
         </v-col>
       </v-row>
 
@@ -21,6 +25,7 @@
 <script setup>
 import Sheet from "@/components/common/Sheet.vue";
 import Label from "@/components/common/Label.vue";
+import ButtonIcon from "@/components/common/ButtonIcon.vue";
 
 import FormAccount from "@/components/forms/account/FormAccount.vue";
 

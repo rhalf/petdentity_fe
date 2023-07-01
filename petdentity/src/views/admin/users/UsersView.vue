@@ -3,7 +3,7 @@
     <Sheet class="mt-5">
       <v-row dense>
         <v-col cols="auto">
-          <Label title class="text-primary">Units</Label>
+          <Label title class="text-primary">Users</Label>
         </v-col>
         <v-spacer />
         <v-col cols="12" md="3">
@@ -23,7 +23,7 @@
             :loading="isLoading"
             :headers="headers"
             :items="units"
-            :items-per-page="params.limitNumber"
+            :items-per-page="params.limit"
             hide-default-footer
             withRemove
             withUpdate
@@ -65,7 +65,7 @@ import DialogUnitRemove from "@/components/dialog/unit/DialogUnitRemove.vue";
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
-import { search, next, prev } from "@/api/unit";
+import { search, next, prev } from "@/api/user";
 
 import { ref, onMounted } from "vue";
 
@@ -78,7 +78,7 @@ const units = ref();
 const unit = ref();
 const params = ref({
   searchText: "",
-  columnName: "uid",
+  columnName: "id",
   orderDirection: "asc",
   limitNumber: 5,
   firstItem: "",
@@ -92,8 +92,8 @@ const loadItems = async () => {
 
     const firstIndex = 0;
     const lastIndex = items.length - 1;
-    params.value.firstItem = items[firstIndex][params.value.columnName];
-    params.value.lastItem = items[lastIndex][params.value.columnName];
+    params.value.firstItem = items[firstIndex][params.value.column];
+    params.value.lastItem = items[lastIndex][params.value.column];
 
     units.value = items;
   } catch ({ message }) {
@@ -122,12 +122,12 @@ const nextHandler = async () => {
     isLoading.value = true;
     const result = await next(params.value);
 
-    if (result.length === 0) throw new Error("first page!");
+    if (result.length === 0) throw new Error("lastItem page!");
 
     const firstIndex = 0;
     const lastIndex = result.length - 1;
-    params.value.firstItem = result[firstIndex][params.value.columnName];
-    params.value.lastItem = result[lastIndex][params.value.columnName];
+    params.value.firstItem = result[firstIndex][params.value.column];
+    params.value.lastItem = result[lastIndex][params.value.column];
 
     units.value = result;
   } catch ({ message }) {
@@ -142,12 +142,12 @@ const prevHandler = async () => {
     isLoading.value = true;
     const result = await prev(params.value);
 
-    if (result.length === 0) throw new Error("last page!");
+    if (result.length === 0) throw new Error("lastItem page!");
 
     const firstIndex = 0;
     const lastIndex = result.length - 1;
-    params.value.firstItem = result[firstIndex][params.value.columnName];
-    params.value.lastItem = result[lastIndex][params.value.columnName];
+    params.value.firstItem = result[firstIndex][params.value.column];
+    params.value.lastItem = result[lastIndex][params.value.column];
 
     units.value = result;
   } catch ({ message }) {

@@ -49,11 +49,11 @@ const loadUser = async () => {
 
     if (result === null) {
       const user = _.cloneDeep(User);
-      user.uid = authUser.uid;
+      user.id = authUser.uid;
       user.email = authUser.email;
       user.emailVerified = authUser.emailVerified;
 
-      await create(authUser.uid, user);
+      await create(user);
       show("success", "created a user");
 
       setTimeout(() => {

@@ -1,12 +1,12 @@
-import { UserRoles } from "@/constants";
-const { PET_OWNER, VETERINARIAN, SYSTEM_ADMIN, LOCAL_GOVERNMENT } = UserRoles;
+import { UserGroups } from "@/constants";
+const { OWNER, VETERINARIAN, ADMIN, GOVERNMENT } = UserGroups;
 
 export const dashboardItems = [
   {
     icon: "mdi-card-account-details-star-outline",
     title: "Pet Owner",
     height: 240,
-    roles: [PET_OWNER],
+    roles: [OWNER],
     visible: true,
     soon: false,
     disabled: false,
@@ -23,9 +23,9 @@ export const dashboardItems = [
   },
   {
     icon: "mdi-shield-star",
-    title: "Local Government",
+    title: "Government",
     height: 240,
-    roles: [LOCAL_GOVERNMENT],
+    roles: [GOVERNMENT],
     visible: true,
     soon: false,
     disabled: false,
@@ -34,7 +34,7 @@ export const dashboardItems = [
     icon: "mdi-magnify",
     title: "Search Pets",
     height: 240,
-    roles: [PET_OWNER, VETERINARIAN, LOCAL_GOVERNMENT, SYSTEM_ADMIN],
+    roles: [OWNER, VETERINARIAN, GOVERNMENT, ADMIN],
     visible: true,
     soon: false,
     disabled: false,
@@ -43,7 +43,7 @@ export const dashboardItems = [
     icon: "mdi-paw",
     title: "Missing and Found Pets",
     height: 240,
-    roles: [PET_OWNER, VETERINARIAN, LOCAL_GOVERNMENT, SYSTEM_ADMIN],
+    roles: [OWNER, VETERINARIAN, GOVERNMENT, ADMIN],
     visible: true,
     soon: true,
     disabled: true,
@@ -52,7 +52,7 @@ export const dashboardItems = [
     icon: "mdi-needle",
     title: "Pet Vaccination",
     height: 240,
-    roles: [PET_OWNER, VETERINARIAN, LOCAL_GOVERNMENT, SYSTEM_ADMIN],
+    roles: [OWNER, VETERINARIAN, GOVERNMENT, ADMIN],
     visible: true,
     soon: true,
     disabled: true,
@@ -61,7 +61,7 @@ export const dashboardItems = [
     icon: "mdi-calendar",
     title: "Upcoming Events",
     height: 240,
-    roles: [PET_OWNER, VETERINARIAN, LOCAL_GOVERNMENT, SYSTEM_ADMIN],
+    roles: [OWNER, VETERINARIAN, GOVERNMENT, ADMIN],
     visible: true,
     soon: true,
     disabled: true,
@@ -70,16 +70,16 @@ export const dashboardItems = [
     icon: "mdi-cash",
     title: "Points and Rewards",
     height: 240,
-    roles: [PET_OWNER, VETERINARIAN, LOCAL_GOVERNMENT, SYSTEM_ADMIN],
+    roles: [OWNER, VETERINARIAN, GOVERNMENT, ADMIN],
     visible: true,
     soon: true,
     disabled: true,
   },
   {
     icon: "mdi-account-network",
-    title: "Administrator",
+    title: "Admin Panel",
     height: 240,
-    roles: [SYSTEM_ADMIN],
+    roles: [ADMIN],
     visible: true,
     soon: false,
     disabled: false,

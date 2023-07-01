@@ -22,38 +22,53 @@ import { toObject, toArray } from "./index";
 
 const collectionName = "users";
 
-const search = async (searchName, columnName, orderDirection, limitNumber) => {
+export const search = async ({
+  searchText,
+  columnName,
+  orderDirection,
+  limitNumber,
+}) => {
   const collectionRef = collection(firestore, collectionName);
   const q = await query(
     collectionRef,
     orderBy(columnName, orderDirection),
-    startAt(searchName),
-    endAt(searchName + "\uf8ff"),
+    startAt(searchText),
+    endAt(searchText + "\uf8ff"),
     limit(limitNumber)
   );
   const snapshots = await getDocs(q);
   return toArray(snapshots);
 };
 
-const next = async (lastVisible, columnName, orderDirection, limitNumber) => {
+export const next = async ({
+  lastItem,
+  columnName,
+  orderDirection,
+  limitNumber,
+}) => {
   const collectionRef = collection(firestore, collectionName);
 
   const q = await query(
     collectionRef,
     orderBy(columnName, orderDirection),
-    startAfter(lastVisible),
+    startAfter(lastItem),
     limit(limitNumber)
   );
   const snapshots = await getDocs(q);
   return toArray(snapshots);
 };
 
-const prev = async (firstVisible, columnName, orderDirection, limitNumber) => {
+export const prev = async ({
+  firstItem,
+  columnName,
+  orderDirection,
+  limitNumber,
+}) => {
   const collectionRef = collection(firestore, collectionName);
   const q = await query(
     collectionRef,
     orderBy(columnName, orderDirection),
-    endBefore(firstVisible),
+    endBefore(firstItem),
     limitToLast(limitNumber)
   );
   const snapshots = await getDocs(q);
@@ -65,7 +80,7 @@ const prev = async (firstVisible, columnName, orderDirection, limitNumber) => {
 //   const collectionRef = collection(firestore, collectionName);
 //   const snapshots = await getDocs(collectionRef);
 //   snapshots.forEach(async (snapshots) => {
-//     let user = { uid: snapshots.uid, ...snapshots.data() };
+//     let user = { id: snapshots.id, ...snapshots.data() };
 //     user.role = await getDoc(user.role.path);
 //     user.status = await getDoc(user.status.path);
 //     users.push(user);
@@ -73,42 +88,38 @@ const prev = async (firstVisible, columnName, orderDirection, limitNumber) => {
 //   return users;
 // };
 
-const get = async (uid) => {
-  const docRef = doc(firestore, collectionName, uid);
+export const get = async (id) => {
+  const docRef = doc(firestore, collectionName, id);
   const snapshot = await getDoc(docRef);
 
-  if (snapshot.exists()) return { uid: snapshot.uid, ...snapshot.data() };
+  if (snapshot.exists()) return { id: snapshot.id, ...snapshot.data() };
   else return null;
 };
 
-const getByUid = async (uid) => {
-  const colRef = collection(firestore, collectionName);
+// const getByUid = async (id) => {
+//   const colRef = collection(firestore, collectionName);
 
-  const q = await query(colRef, where("uid", "==", uid));
-  const snapshots = await getDocs(q);
+//   const q = await query(colRef, where("id", "==", id));
+//   const snapshots = await getDocs(q);
 
-  if (snapshots.empty) return null;
+//   if (snapshots.empty) return null;
 
-  var snapshot = snapshots.docs[0];
+//   var snapshot = snapshots.docs[0];
 
-  var user = {
-    uid: snapshot.uid,
-    ...snapshot.data(),
-  };
-  return user;
-};
+//   var user = {
+//     id: snapshot.id,
+//     ...snapshot.data(),
+//   };
+//   return user;
+// };
 
-const create = async (uid, data) => {
-  const user = {
-    uid: uid,
-    ...data,
-  };
-  const docRef = doc(firestore, collectionName, uid);
+export const create = async (user) => {
+  const docRef = doc(firestore, collectionName, user.id);
   return setDoc(docRef, user);
 };
 
-// const createDefault = async (uid) => {
-//   let user = { uid: uid };
+// const createDefault = async (id) => {
+//   let user = { id: id };
 //   const docRoleRef = doc(auth, "roles", 0);
 //   const docStatusRef = doc(auth, "statuses", 0);
 //   user.role = docRoleRef;
@@ -116,15 +127,13 @@ const create = async (uid, data) => {
 //   return create(user);
 // };
 
-const update = async (user) => {
-  const docRef = doc(firestore, collectionName, user.uid);
+export const update = async (user) => {
+  const docRef = doc(firestore, collectionName, user.id);
   const result = await setDoc(docRef, user);
   return result;
 };
 
-const remove = async (user) => {
-  const docRef = doc(firestore, collectionName, user.uid);
+export const remove = async (user) => {
+  const docRef = doc(firestore, collectionName, user.id);
   return await deleteDoc(docRef, user);
 };
-
-export { search, next, prev, get, getByUid, create, update, remove };

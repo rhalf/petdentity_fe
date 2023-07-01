@@ -5,7 +5,7 @@
     </template>
 
     <template v-slot:title>
-      <Label header medium> SYSTEM ADMIN </Label>
+      <Label header medium> ADMIN PANEL </Label>
     </template>
 
     <template v-slot:append>
@@ -23,7 +23,7 @@
 import Label from "@/components/common/Label.vue";
 import ButtonIcon from "@/components/common/ButtonIcon.vue";
 
-import { UserRoles } from "@/constants";
+import { UserGroups } from "@/constants";
 
 import { useRouter } from "vue-router";
 const router = useRouter();

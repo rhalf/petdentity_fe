@@ -24,38 +24,44 @@ import { toObject, toArray } from "./index";
 
 const collectionName = "animals";
 
-const search = async (searchName, columnName, orderDirection, limitNumber) => {
+const search = async ({
+  searchText,
+  columnName,
+  orderDirection,
+  limitNumber,
+}) => {
   const collectionRef = collection(firestore, collectionName);
   const q = await query(
     collectionRef,
     orderBy(columnName, orderDirection),
-    startAt(searchName),
-    endAt(searchName + "\uf8ff"),
+    startAt(searchText),
+    endAt(searchText + "\uf8ff"),
     limit(limitNumber)
   );
   const snapshots = await getDocs(q);
   return toArray(snapshots);
 };
 
-const next = async (lastVisible, columnName, orderDirection, limitNumber) => {
+const next = async ({ lastItem, columnName, orderDirection, limitNumber }) => {
   const collectionRef = collection(firestore, collectionName);
 
   const q = await query(
     collectionRef,
     orderBy(columnName, orderDirection),
-    startAfter(lastVisible),
+    startAfter(lastItem),
     limit(limitNumber)
   );
+
   const snapshots = await getDocs(q);
   return toArray(snapshots);
 };
 
-const prev = async (firstVisible, columnName, orderDirection, limitNumber) => {
+const prev = async ({ firstItem, columnName, orderDirection, limitNumber }) => {
   const collectionRef = collection(firestore, collectionName);
   const q = await query(
     collectionRef,
     orderBy(columnName, orderDirection),
-    endBefore(firstVisible),
+    endBefore(firstItem),
     limitToLast(limitNumber)
   );
   const snapshots = await getDocs(q);

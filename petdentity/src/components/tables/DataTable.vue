@@ -40,12 +40,23 @@
         </v-col>
       </v-row>
     </template>
+
+    <template v-slot:item.roles="{ item, index }">
+      <Chip
+        class="primary"
+        v-for="(role, key) in item.selectable.roles"
+        :key="key"
+      >
+        {{ role }}
+      </Chip>
+    </template>
   </v-data-table>
 </template>
 
 <script setup>
 import { VDataTable } from "vuetify/labs/VDataTable";
 
+import Chip from "@/components/common/Chip";
 import ButtonIcon from "@/components/common/ButtonIcon";
 import Button from "@/components/common/Button";
 

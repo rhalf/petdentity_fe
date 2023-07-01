@@ -38,7 +38,7 @@ const route = useRoute();
 import { get } from "@/api/user";
 import { getCurrentUser } from "@/utils/firebase";
 
-import { ref, computed, onMounted } from "vue";
+import { ref, onMounted } from "vue";
 const drawer = ref(false);
 
 onMounted(async () => {

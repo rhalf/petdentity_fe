@@ -19,8 +19,8 @@
 <script setup>
 import Module from "./components/module/Module.vue";
 
-import { UserRoles } from "@/constants";
-const { PET_OWNER, VETERINARIAN, SYSTEM_ADMIN, LOCAL_GOVERNMENT } = UserRoles;
+import { UserGroups } from "@/constants";
+const { OWNER, VETERINARIAN, ADMIN, GOVERNMENT } = UserGroups;
 
 import { useUserStore } from "@/store/user";
 const user = useUserStore();

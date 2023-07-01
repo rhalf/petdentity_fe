@@ -1,30 +1,30 @@
 export const headers = [
   {
-    title: "Uid",
+    title: "Id",
     align: "start",
     sortable: false,
-    key: "uid",
+    key: "id",
     width: "25%",
   },
   {
-    title: "UnitType",
+    title: "Email",
     align: "start",
     sortable: false,
-    key: "unitType",
+    key: "email",
     width: "25%",
   },
   {
-    title: "FormType",
+    title: "Status",
     align: "start",
     sortable: false,
-    key: "formType",
+    key: "status",
     width: "25%",
   },
   {
-    title: "AttachedTo",
+    title: "Roles",
     align: "start",
     sortable: false,
-    key: "attachedTo",
+    key: "roles",
     width: "25%",
   },
 
