@@ -45,7 +45,7 @@ const items = [
   {
     title: "Profile",
     handler: async () => {
-      router.push({ name: "UserProfile" });
+      router.push({ name: "UserProfileView" });
     },
   },
   {

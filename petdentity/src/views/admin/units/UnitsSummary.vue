@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <Sheet class="mt-5">
+    <Sheet>
       <v-row dense>
         <v-col cols="auto">
           <Label title class="text-primary">Units</Label>
@@ -27,6 +27,7 @@
             hide-default-footer
             withRemove
             withUpdate
+            withAdd
             @remove="removeHandler"
             @update="updateHandler"
             @add="dialogUnitAdd = true"
@@ -58,9 +59,9 @@ import TextField from "@/components/common/TextField.vue";
 import DataTable from "@/components/tables/DataTable.vue";
 import { headers } from "./data";
 
-import DialogUnitAdd from "@/components/dialog/unit/DialogUnitAdd.vue";
-import DialogUnitUpdate from "@/components/dialog/unit/DialogUnitUpdate.vue";
-import DialogUnitRemove from "@/components/dialog/unit/DialogUnitRemove.vue";
+import DialogUnitAdd from "@/components/dialogs/unit/DialogUnitAdd.vue";
+import DialogUnitUpdate from "@/components/dialogs/unit/DialogUnitUpdate.vue";
+import DialogUnitRemove from "@/components/dialogs/unit/DialogUnitRemove.vue";
 
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
@@ -122,7 +123,7 @@ const nextHandler = async () => {
     isLoading.value = true;
     const result = await next(params.value);
 
-    if (result.length === 0) throw new Error("first page!");
+    if (result.length === 0) throw new Error("Last page!");
 
     const firstIndex = 0;
     const lastIndex = result.length - 1;
@@ -142,7 +143,7 @@ const prevHandler = async () => {
     isLoading.value = true;
     const result = await prev(params.value);
 
-    if (result.length === 0) throw new Error("last page!");
+    if (result.length === 0) throw new Error("First page!");
 
     const firstIndex = 0;
     const lastIndex = result.length - 1;

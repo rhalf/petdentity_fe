@@ -159,10 +159,10 @@ import Chip from "@/components/common/Chip.vue";
 import FileInput from "@/components/common/FileInput.vue";
 import Avatar from "@/components/common/Avatar.vue";
 
-import DialogAddress from "@/components/dialog/address/DialogAddress.vue";
-import DialogName from "@/components/dialog/name/DialogName.vue";
-import DialogDate from "@/components/dialog/date/DialogDate.vue";
-import DialogGender from "@/components/dialog/gender/DialogGender.vue";
+import DialogAddress from "@/components/dialogs/address/DialogAddress.vue";
+import DialogName from "@/components/dialogs/name/DialogName.vue";
+import DialogDate from "@/components/dialogs/date/DialogDate.vue";
+import DialogGender from "@/components/dialogs/gender/DialogGender.vue";
 
 import { toStringDate, getBirthDate } from "@/utils/vue";
 import { computed, onMounted, reactive, ref, watch } from "vue";

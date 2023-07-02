@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <Sheet class="mt-5">
+    <Sheet>
       <v-row dense>
         <v-col cols="auto">
           <Label title class="text-primary">Users</Label>
@@ -22,11 +22,11 @@
             hover
             :loading="isLoading"
             :headers="headers"
-            :items="units"
+            :items="users"
             :items-per-page="params.limit"
             hide-default-footer
             withView
-            withUpdate
+            withRemove
             @remove="removeHandler"
             @view="viewHandler"
             @next="nextHandler"
@@ -38,7 +38,7 @@
 
     <DialogUnitRemove
       v-model="dialogUnitRemove"
-      v-model:unit="unit"
+      v-model:user="user"
       @remove="loadItems"
     />
   </v-container>
@@ -52,7 +52,7 @@ import TextField from "@/components/common/TextField.vue";
 import DataTable from "@/components/tables/DataTable.vue";
 import { headers } from "./data";
 
-import DialogUnitRemove from "@/components/dialog/unit/DialogUnitRemove.vue";
+import DialogUnitRemove from "@/components/dialogs/user/DialogUnitRemove.vue";
 
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
@@ -65,12 +65,11 @@ import { search, next, prev } from "@/api/user";
 
 import { ref, onMounted } from "vue";
 
-const dialogUnitUpdate = ref(false);
 const dialogUnitRemove = ref(false);
 
 const isLoading = ref(false);
-const units = ref();
-const unit = ref();
+const users = ref();
+const user = ref();
 const params = ref({
   searchText: "",
   columnName: "id",
@@ -87,10 +86,10 @@ const loadItems = async () => {
 
     const firstIndex = 0;
     const lastIndex = items.length - 1;
-    params.value.firstItem = items[firstIndex][params.value.column];
-    params.value.lastItem = items[lastIndex][params.value.column];
+    params.value.firstItem = items[firstIndex][params.value.columnName];
+    params.value.lastItem = items[lastIndex][params.value.columnName];
 
-    units.value = items;
+    users.value = items;
   } catch ({ message }) {
     console.log("error", message);
   } finally {
@@ -103,7 +102,7 @@ onMounted(async () => {
 });
 
 const removeHandler = async (item) => {
-  unit.value = item;
+  user.value = item;
   dialogUnitRemove.value = true;
 };
 
@@ -120,14 +119,14 @@ const nextHandler = async () => {
     isLoading.value = true;
     const result = await next(params.value);
 
-    if (result.length === 0) throw new Error("lastItem page!");
+    if (result.length === 0) throw new Error("Last page!");
 
     const firstIndex = 0;
     const lastIndex = result.length - 1;
-    params.value.firstItem = result[firstIndex][params.value.column];
-    params.value.lastItem = result[lastIndex][params.value.column];
+    params.value.firstItem = result[firstIndex][params.value.columnName];
+    params.value.lastItem = result[lastIndex][params.value.columnName];
 
-    units.value = result;
+    users.value = result;
   } catch ({ message }) {
     show("error", message);
   } finally {
@@ -140,14 +139,14 @@ const prevHandler = async () => {
     isLoading.value = true;
     const result = await prev(params.value);
 
-    if (result.length === 0) throw new Error("lastItem page!");
+    if (result.length === 0) throw new Error("First page!");
 
     const firstIndex = 0;
     const lastIndex = result.length - 1;
-    params.value.firstItem = result[firstIndex][params.value.column];
-    params.value.lastItem = result[lastIndex][params.value.column];
+    params.value.firstItem = result[firstIndex][params.value.columnName];
+    params.value.lastItem = result[lastIndex][params.value.columnName];
 
-    units.value = result;
+    users.value = result;
   } catch ({ message }) {
     show("error", message);
   } finally {

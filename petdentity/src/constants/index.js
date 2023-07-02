@@ -59,40 +59,21 @@ export const Profile = {
   gender: null,
   birthDate: null,
   photoUrl: null,
-  // optional
+  phoneNumber: null,
+  headline: null,
 };
-
-// export const OWNER = {
-//   prcNumber: null,
-// };
-// export const VETERINARIAN = {
-//   prcNumber: null,
-// };
-// export const GOVERNMENT = {
-//   prcNumber: null,
-// };
-// export const ADMIN = {
-//   prcNumber: null,
-// };
 
 //Default User
 export const User = {
   id: null,
   email: null,
   emailVerified: null,
-  anonymous: null,
+  mobileNumber: null,
 
   roles: [UserGroups.OWNER],
   status: Statuses.ENABLED,
   profile: _.cloneDeep(Profile),
 };
-
-// const ANIMAL = {
-//   name: null,
-//   scientific: null,
-//   desc: null,
-//   breed: [],
-// };
 
 //Default Beneficiary
 export const PET = {

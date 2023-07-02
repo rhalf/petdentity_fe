@@ -2,7 +2,7 @@
   <div v-if="address">
     <v-row dense>
       <v-col cols="12" :md="isPhilippines ? 4 : 3">
-        <Label text class="text-primary mb-2"> Country </Label>
+        <Label text class="text-primary"> Country </Label>
         <Select
           v-model="address.country"
           :items="countries"
@@ -12,11 +12,11 @@
           clearable
           :disabled="props.disabled"
           @update:modelValue="onCountry"
-          class="text-truncate"
+          class="text-truncate mt-2"
         />
       </v-col>
       <v-col v-if="!isPhilippines" cols="12" md="3">
-        <Label text class="text-primary mb-2"> State </Label>
+        <Label text class="text-primary"> State </Label>
         <TextField
           v-model="address.state"
           placeholder="State"
@@ -26,7 +26,7 @@
       </v-col>
 
       <v-col cols="12" :md="isPhilippines ? 4 : 3">
-        <Label text class="text-primary mb-2"> Region </Label>
+        <Label text class="text-primary"> Region </Label>
         <Select
           v-if="isPhilippines"
           v-model="address.region"
@@ -37,7 +37,7 @@
           clearable
           :disabled="props.disabled"
           @update:modelValue="onRegion"
-          class="text-truncate"
+          class="text-truncate mt-2"
         />
         <TextField
           v-else
@@ -49,7 +49,7 @@
       </v-col>
 
       <v-col cols="12" :md="isPhilippines ? 4 : 3">
-        <Label text class="text-primary mb-2"> Province </Label>
+        <Label text class="text-primary"> Province </Label>
 
         <Select
           v-if="isPhilippines"
@@ -59,7 +59,7 @@
           clearable
           :disabled="props.disabled"
           @update:modelValue="onProvince"
-          class="text-truncate"
+          class="text-truncate mt-2"
         />
         <TextField
           v-else
@@ -71,11 +71,9 @@
       </v-col>
     </v-row>
 
-    <v-row dense class="mt-3">
+    <v-row dense class="mt-2">
       <v-col cols="12" md="4">
-        <Label text class="text-primary mb-2">
-          City / Municipality / Town
-        </Label>
+        <Label text class="text-primary"> City / Municipality / Town </Label>
         <Select
           v-if="isPhilippines"
           v-model="address.city"
@@ -84,7 +82,7 @@
           clearable
           :disabled="props.disabled"
           @update:modelValue="onCity"
-          class="text-truncate"
+          class="text-truncate mt-2"
         />
         <TextField
           v-else
@@ -96,7 +94,7 @@
       </v-col>
 
       <v-col cols="12" md="4">
-        <Label text class="text-primary mb-2"> Barangay </Label>
+        <Label text class="text-primary"> Barangay </Label>
 
         <Select
           v-if="isPhilippines"
@@ -105,7 +103,7 @@
           placeholder="Barangay"
           clearable
           :disabled="props.disabled"
-          class="text-truncate"
+          class="text-truncate mt-2"
         />
         <TextField
           v-else
@@ -117,49 +115,44 @@
       </v-col>
 
       <v-col cols="12" md="4">
-        <Label text class="text-primary mb-2"> Zip Code </Label>
+        <Label text class="text-primary"> Zip Code </Label>
 
         <TextField
           v-model="address.zipcode"
           placeholder="Zip Code"
           clearable
           :disabled="props.disabled"
+          class="text-truncate mt-2"
         />
       </v-col>
     </v-row>
 
-    <v-row dense class="mt-3">
-      <v-col>
-        <Label text class="text-primary mb-2"> Subdivision, Zone, Phase </Label>
-      </v-col>
-    </v-row>
-
     <v-row dense>
-      <v-col cols="12">
+      <v-col>
+        <Label text class="text-primary"> Subdivision, Zone, Phase </Label>
+
         <TextField
           v-model="address.division"
           placeholder="Subdivision, Zone, Phase"
           clearable
           :disabled="props.disabled"
+          class="text-truncate mt-2"
         />
       </v-col>
     </v-row>
 
-    <v-row dense class="mt-3">
+    <v-row dense class="mt-2">
       <v-col>
-        <Label text class="text-primary mb-2">
+        <Label text class="text-primary">
           Unit, Floor, Building Number and Street
         </Label>
-      </v-col>
-    </v-row>
 
-    <v-row dense>
-      <v-col cols="12">
         <TextField
           v-model="address.exact"
           placeholder="Unit, Floor, Building Number and Street"
           clearable
           :disabled="props.disabled"
+          class="text-truncate mt-2"
         />
       </v-col>
     </v-row>

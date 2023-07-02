@@ -35,7 +35,7 @@
           <Button @click="emit('next')" block>{{ "Next >" }}</Button>
         </v-col>
         <v-col cols="12" md=""></v-col>
-        <v-col cols="12" md="auto" class="d-flex justify-end">
+        <v-col cols="12" md="auto" class="d-flex justify-end" v-if="withAdd">
           <Button @click="emit('add')" block>+ ADD</Button>
         </v-col>
       </v-row>
@@ -47,7 +47,7 @@
         v-for="(role, key) in item.selectable.roles"
         :key="key"
       >
-        {{ role }}
+        <Label caption>{{ role }}</Label>
       </Chip>
     </template>
   </v-data-table>
@@ -57,6 +57,7 @@
 import { VDataTable } from "vuetify/labs/VDataTable";
 
 import Chip from "@/components/common/Chip";
+import Label from "@/components/common/Label";
 import ButtonIcon from "@/components/common/ButtonIcon";
 import Button from "@/components/common/Button";
 
@@ -65,5 +66,6 @@ const props = defineProps({
   withView: Boolean,
   withUpdate: Boolean,
   withRemove: Boolean,
+  withAdd: Boolean,
 });
 </script>

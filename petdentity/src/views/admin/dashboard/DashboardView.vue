@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <Sheet class="mt-5 bg-black">
+    <Sheet class="bg-transparent">
       <v-row>
         <v-col cols="12" sm="4" md="3" lg="2">
           <v-card>

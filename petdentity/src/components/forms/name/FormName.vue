@@ -4,32 +4,32 @@
       <v-col cols="12" md="">
         <Label class="text-primary"> Prefix </Label>
 
-        <TextField v-model="name.prefix" />
+        <TextField class="mt-2" v-model="name.prefix" />
       </v-col>
     </v-row>
 
     <v-row dense>
       <v-col cols="12" md="4">
         <Label class="text-primary"> First </Label>
-        <TextField v-model="name.first" />
+        <TextField class="mt-2" v-model="name.first" />
       </v-col>
 
       <v-col cols="12" md="4">
         <Label class="text-primary"> Middle </Label>
-        <TextField v-model="name.middle" />
+        <TextField class="mt-2" v-model="name.middle" />
       </v-col>
 
       <v-col cols="12" md="4">
         <Label class="text-primary"> Last </Label>
 
-        <TextField v-model="name.last" />
+        <TextField class="mt-2" v-model="name.last" />
       </v-col>
     </v-row>
     <v-row dense>
       <v-col cols="12" md="">
         <Label class="text-primary"> Suffix </Label>
 
-        <TextField v-model="name.suffix" />
+        <TextField class="mt-2" v-model="name.suffix" />
       </v-col>
     </v-row>
   </div>

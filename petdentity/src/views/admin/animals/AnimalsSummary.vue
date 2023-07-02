@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <Sheet class="mt-5">
+    <Sheet>
       <v-row dense>
         <v-col cols="auto">
           <Label title class="text-primary">Animals</Label>
@@ -27,6 +27,7 @@
             hide-default-footer
             withRemove
             withUpdate
+            withAdd
             @remove="removeHandler"
             @update="updateHandler"
             @add="dialogAnimalAdd = true"
@@ -58,9 +59,9 @@ import TextField from "@/components/common/TextField.vue";
 import DataTable from "@/components/tables/DataTable.vue";
 import { headers } from "./data";
 
-import DialogAnimalAdd from "@/components/dialog/animal/DialogAnimalAdd.vue";
-import DialogAnimalUpdate from "@/components/dialog/animal/DialogAnimalUpdate.vue";
-import DialogAnimalRemove from "@/components/dialog/animal/DialogAnimalRemove.vue";
+import DialogAnimalAdd from "@/components/dialogs/animal/DialogAnimalAdd.vue";
+import DialogAnimalUpdate from "@/components/dialogs/animal/DialogAnimalUpdate.vue";
+import DialogAnimalRemove from "@/components/dialogs/animal/DialogAnimalRemove.vue";
 
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
@@ -122,7 +123,7 @@ const nextHandler = async () => {
     isLoading.value = true;
     const result = await next(params.value);
 
-    if (result.length === 0) throw new Error("last page!");
+    if (result.length === 0) throw new Error("Last page!");
 
     const firstItemIndex = 0;
     const lastItemIndex = result.length - 1;
@@ -142,7 +143,7 @@ const prevHandler = async () => {
     isLoading.value = true;
     const result = await prev(params.value);
 
-    if (result.length === 0) throw new Error("first page!");
+    if (result.length === 0) throw new Error("First page!");
 
     const firstItemIndex = 0;
     const lastItemIndex = result.length - 1;
