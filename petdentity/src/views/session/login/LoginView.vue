@@ -86,8 +86,6 @@ const { show } = useSnackbarStore();
 import { useRouter } from "vue-router";
 const router = useRouter();
 
-const loginHandler = async () => {};
-
 const signupHandler = () => {
   router.push({ name: "SessionSignup" });
 };
@@ -108,7 +106,7 @@ const onSubmitHandler = handleSubmit(async (values) => {
       await signOut();
       show("error", "You must verify your email first!");
     } else {
-      router.push({ name: "UserDashboard" });
+      await router.push({ name: "UserDashboard" });
     }
   } catch ({ message }) {
     show("error", message);

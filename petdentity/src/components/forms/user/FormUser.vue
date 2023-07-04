@@ -61,6 +61,20 @@
     <v-row dense class="mt-4">
       <v-col cols="12">
         <div class="bg-primary rounded pa-2">
+          <Label header>Mobile</Label>
+        </div>
+      </v-col>
+    </v-row>
+
+    <v-row dense>
+      <v-col cols="12">
+        <FormMobile v-model="user.profile.mobileNumber" />
+      </v-col>
+    </v-row>
+
+    <v-row dense class="mt-4">
+      <v-col cols="12">
+        <div class="bg-primary rounded pa-2">
           <Label header>Address</Label>
         </div>
       </v-col>
@@ -99,6 +113,7 @@ import FileInput from "@/components/common/FileInput.vue";
 import FormName from "@/components/forms/name/FormName.vue";
 import FormGender from "@/components/forms/gender/FormGender.vue";
 import FormDate from "@/components/forms/date/FormDate.vue";
+import FormMobile from "@/components/forms/mobile/FormMobile.vue";
 import FormAddress from "@/components/forms/address/FormAddress.vue";
 
 import { computed, ref, toRefs, watch } from "vue";

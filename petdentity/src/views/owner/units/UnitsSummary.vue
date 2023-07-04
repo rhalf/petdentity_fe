@@ -3,7 +3,7 @@
     <Sheet>
       <v-row dense>
         <v-col cols="auto">
-          <Label title class="text-primary">Users</Label>
+          <Label title class="text-primary">Units</Label>
         </v-col>
         <v-spacer />
         <v-col cols="12" md="3">
@@ -22,23 +22,30 @@
             hover
             :loading="isLoading"
             :headers="headers"
-            :items="users"
-            :items-per-page="params.limit"
+            :items="units"
+            :items-per-page="params.limitNumber"
             hide-default-footer
-            withView
             withRemove
+            withUpdate
+            withAdd
             @remove="removeHandler"
-            @view="viewHandler"
+            @update="updateHandler"
+            @add="dialogUnitAdd = true"
             @next="nextHandler"
             @prev="prevHandler"
           />
         </v-col>
       </v-row>
     </Sheet>
-
-    <DialogUserRemove
-      v-model="dialogUserRemove"
-      v-model:user="user"
+    <DialogUnitAdd v-model="dialogUnitAdd" @add="loadItems" />
+    <DialogUnitUpdate
+      v-model="dialogUnitUpdate"
+      v-model:unit="unit"
+      @update="loadItems"
+    />
+    <DialogUnitRemove
+      v-model="dialogUnitRemove"
+      v-model:unit="unit"
       @remove="loadItems"
     />
   </v-container>
@@ -52,27 +59,33 @@ import TextField from "@/components/common/TextField.vue";
 import DataTable from "@/components/tables/DataTable.vue";
 import { headers } from "./data";
 
-import DialogUserRemove from "@/components/dialogs/user/DialogUserRemove.vue";
+import DialogUnitAdd from "@/components/dialogs/unit/DialogUnitAdd.vue";
+import DialogUnitUpdate from "@/components/dialogs/unit/DialogUnitUpdate.vue";
+import DialogUnitRemove from "@/components/dialogs/unit/DialogUnitRemove.vue";
 
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
-import { useRouter, useRoute } from "vue-router";
-const router = useRouter();
-const route = useRoute();
+import { useUserStore } from "@/store/user";
+const userStore = useUserStore();
 
-import { search, next, prev } from "@/api/user";
+import { storeToRefs } from "pinia";
+const { user } = storeToRefs(userStore);
+
+import { search, next, prev } from "@/api/unit";
 
 import { ref, onMounted } from "vue";
 
-const dialogUserRemove = ref(false);
+const dialogUnitAdd = ref(false);
+const dialogUnitUpdate = ref(false);
+const dialogUnitRemove = ref(false);
 
 const isLoading = ref(false);
-const users = ref();
-const user = ref();
+const units = ref();
+const unit = ref();
 const params = ref({
   searchText: "",
-  columnName: "id",
+  columnName: "uid",
   orderDirection: "asc",
   limitNumber: 5,
   firstItem: "",
@@ -89,7 +102,7 @@ const loadItems = async () => {
     params.value.firstItem = items[firstIndex][params.value.columnName];
     params.value.lastItem = items[lastIndex][params.value.columnName];
 
-    users.value = items;
+    units.value = items;
   } catch ({ message }) {
     console.log("error", message);
   } finally {
@@ -98,20 +111,19 @@ const loadItems = async () => {
 };
 
 onMounted(async () => {
+  console.log(user);
+
   loadItems();
 });
 
 const removeHandler = async (item) => {
-  user.value = item;
-  dialogUserRemove.value = true;
+  unit.value = item;
+  dialogUnitRemove.value = true;
 };
 
-const viewHandler = ({ id }) => {
-  console.log(id);
-  router.push({
-    name: "AdminUsersView",
-    params: { id: id },
-  });
+const updateHandler = (item) => {
+  unit.value = item;
+  dialogUnitUpdate.value = true;
 };
 
 const nextHandler = async () => {
@@ -126,7 +138,7 @@ const nextHandler = async () => {
     params.value.firstItem = result[firstIndex][params.value.columnName];
     params.value.lastItem = result[lastIndex][params.value.columnName];
 
-    users.value = result;
+    units.value = result;
   } catch ({ message }) {
     show("error", message);
   } finally {
@@ -146,7 +158,7 @@ const prevHandler = async () => {
     params.value.firstItem = result[firstIndex][params.value.columnName];
     params.value.lastItem = result[lastIndex][params.value.columnName];
 
-    users.value = result;
+    units.value = result;
   } catch ({ message }) {
     show("error", message);
   } finally {

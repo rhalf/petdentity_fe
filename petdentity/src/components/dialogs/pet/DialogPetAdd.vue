@@ -5,7 +5,7 @@
         <Label header class="text-black"> Add </Label>
       </v-card-title>
       <v-card-text>
-        <FormUnit v-model="unit" />
+        <FormAnimal v-model="animal" />
       </v-card-text>
       <v-card-actions>
         <v-row dense class="py-4 px-4">
@@ -26,13 +26,13 @@
 import Button from "@/components/common/Button.vue";
 import Label from "@/components/common/Label.vue";
 import Dialog from "@/components/common/Dialog.vue";
-import FormUnit from "@/components/forms/unit/FormUnit.vue";
+import FormAnimal from "@/components/forms/animal/FormAnimal.vue";
 import Card from "@/components/common/Card.vue";
 
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
-import { create } from "@/api/unit";
+import { create } from "@/api/animal";
 
 import { useModel } from "@/utils/vue";
 
@@ -43,7 +43,7 @@ const emit = defineEmits(["update:modelValue", "add"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propsRef, emit, "modelValue"));
-const unit = ref({
+const animal = ref({
   // name: "Dog",
   // type: "Mammal",
   // breeds: [
@@ -59,10 +59,10 @@ const unit = ref({
 const submitHandler = async () => {
   try {
     isLoading.value = true;
-    const docRef = await create(unit.value);
+    const docRef = await create(animal.value);
     emit("add");
-    show("success", "Added an unit!");
-    unit.value = {};
+    show("success", "Added an animal!");
+    animal.value = {};
     dialog.value = false;
   } catch ({ message }) {
     show("error", message);

@@ -62,10 +62,6 @@ const items = [
     },
   },
 ];
-
-const clickHandler = () => {
-  router.push({ name: "UserDashboard" });
-};
 </script>
 
 <style></style>

@@ -5,6 +5,7 @@ import HomeLayout from "@/components/layouts/home/HomeLayout.vue";
 import { user } from "./modules/user";
 import { admin } from "./modules/admin";
 import { session } from "./modules/session";
+import { owner } from "./modules/owner";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,6 +33,7 @@ const router = createRouter({
     { ...session },
     { ...user },
     { ...admin },
+    { ...owner },
   ],
 });
 

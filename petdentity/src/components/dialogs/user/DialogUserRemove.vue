@@ -7,7 +7,7 @@
       <v-card-text>
         <Label text> Are you sure you want to remove this item?</Label>
         <br />
-        <Label header>Uid : "{{ unit.uid }}" </Label>
+        <Label header>Id : "{{ user.id }}" </Label>
       </v-card-text>
       <v-card-actions>
         <v-row dense class="py-4 px-4">
@@ -33,23 +33,23 @@ import Card from "@/components/common/Card.vue";
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
-import { remove } from "@/api/unit";
+import { remove } from "@/api/user";
 
 import { useModel, syncProp } from "@/utils/vue";
 
 import { ref, computed, toRefs } from "vue";
-const props = defineProps({ modelValue: Boolean, unit: Object });
+const props = defineProps({ modelValue: Boolean, user: Object });
 const propRef = toRefs(props);
-const emit = defineEmits(["update:modelValue", "update:unit", "remove"]);
+const emit = defineEmits(["update:modelValue", "update:user", "remove"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propRef, emit, "modelValue"));
-const unit = computed(syncProp(propRef, emit, "unit"));
+const user = computed(syncProp(propRef, emit, "user"));
 
 const submitHandler = async () => {
   try {
     isLoading.value = true;
-    const result = await remove(unit.value.id);
+    const result = await remove(user.value.id);
     show("success", "Removed an item!");
     emit("remove");
     dialog.value = false;

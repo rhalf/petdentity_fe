@@ -43,7 +43,7 @@ import Label from "@/components/common/Label.vue";
 import Chip from "@/components/common/Chip.vue";
 import Avatar from "@/components/common/Avatar.vue";
 
-import { computed, onMounted, toRefs } from "vue";
+import { computed, toRefs } from "vue";
 
 import { useModel } from "@/utils/vue";
 
@@ -54,8 +54,4 @@ const props = defineProps({
 
 const propsRef = toRefs(props);
 const user = computed(useModel(propsRef, emit, "modelValue"));
-
-onMounted(() => {
-  console.log(user.value);
-});
 </script>

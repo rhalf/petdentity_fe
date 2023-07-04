@@ -3,7 +3,7 @@
     <Sheet>
       <v-row dense>
         <v-col cols="auto">
-          <Label title class="text-primary">Users</Label>
+          <Label title class="text-primary">Pets</Label>
         </v-col>
         <v-spacer />
         <v-col cols="12" md="3">
@@ -22,23 +22,30 @@
             hover
             :loading="isLoading"
             :headers="headers"
-            :items="users"
-            :items-per-page="params.limit"
+            :items="pets"
+            :items-per-pageNumber="params.limitNumber"
             hide-default-footer
-            withView
             withRemove
+            withUpdate
+            withAdd
             @remove="removeHandler"
-            @view="viewHandler"
+            @update="updateHandler"
+            @add="dialogPetAdd = true"
             @next="nextHandler"
             @prev="prevHandler"
           />
         </v-col>
       </v-row>
     </Sheet>
-
-    <DialogUserRemove
-      v-model="dialogUserRemove"
-      v-model:user="user"
+    <DialogPetAdd v-model="dialogPetAdd" @add="loadItems" />
+    <DialogPetUpdate
+      v-model="dialogPetUpdate"
+      v-model:pet="pet"
+      @update="loadItems"
+    />
+    <DialogPetRemove
+      v-model="dialogPetRemove"
+      v-model:pet="pet"
       @remove="loadItems"
     />
   </v-container>
@@ -52,27 +59,27 @@ import TextField from "@/components/common/TextField.vue";
 import DataTable from "@/components/tables/DataTable.vue";
 import { headers } from "./data";
 
-import DialogUserRemove from "@/components/dialogs/user/DialogUserRemove.vue";
+import DialogPetAdd from "@/components/dialogs/pet/DialogPetAdd.vue";
+import DialogPetUpdate from "@/components/dialogs/pet/DialogPetUpdate.vue";
+import DialogPetRemove from "@/components/dialogs/pet/DialogPetRemove.vue";
 
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
-import { useRouter, useRoute } from "vue-router";
-const router = useRouter();
-const route = useRoute();
-
-import { search, next, prev } from "@/api/user";
+import { search, next, prev, remove } from "@/api/pet";
 
 import { ref, onMounted } from "vue";
 
-const dialogUserRemove = ref(false);
+const dialogPetAdd = ref(false);
+const dialogPetUpdate = ref(false);
+const dialogPetRemove = ref(false);
 
 const isLoading = ref(false);
-const users = ref();
-const user = ref();
+const pets = ref();
+const pet = ref();
 const params = ref({
   searchText: "",
-  columnName: "id",
+  columnName: "name",
   orderDirection: "asc",
   limitNumber: 5,
   firstItem: "",
@@ -84,12 +91,12 @@ const loadItems = async () => {
     isLoading.value = true;
     const items = await search(params.value);
 
-    const firstIndex = 0;
-    const lastIndex = items.length - 1;
-    params.value.firstItem = items[firstIndex][params.value.columnName];
-    params.value.lastItem = items[lastIndex][params.value.columnName];
+    const firstItemIndex = 0;
+    const lastItemIndex = items.length - 1;
+    params.value.firstItem = items[firstItemIndex][params.value.columnName];
+    params.value.lastItem = items[lastItemIndex][params.value.columnName];
 
-    users.value = items;
+    pets.value = items;
   } catch ({ message }) {
     console.log("error", message);
   } finally {
@@ -102,16 +109,13 @@ onMounted(async () => {
 });
 
 const removeHandler = async (item) => {
-  user.value = item;
-  dialogUserRemove.value = true;
+  pet.value = item;
+  dialogPetRemove.value = true;
 };
 
-const viewHandler = ({ id }) => {
-  console.log(id);
-  router.push({
-    name: "AdminUsersView",
-    params: { id: id },
-  });
+const updateHandler = (item) => {
+  pet.value = item;
+  dialogPetUpdate.value = true;
 };
 
 const nextHandler = async () => {
@@ -121,12 +125,12 @@ const nextHandler = async () => {
 
     if (result.length === 0) throw new Error("Last page!");
 
-    const firstIndex = 0;
-    const lastIndex = result.length - 1;
-    params.value.firstItem = result[firstIndex][params.value.columnName];
-    params.value.lastItem = result[lastIndex][params.value.columnName];
+    const firstItemIndex = 0;
+    const lastItemIndex = result.length - 1;
+    params.value.firstItem = result[firstItemIndex][params.value.columnName];
+    params.value.lastItem = result[lastItemIndex][params.value.columnName];
 
-    users.value = result;
+    pets.value = result;
   } catch ({ message }) {
     show("error", message);
   } finally {
@@ -141,12 +145,12 @@ const prevHandler = async () => {
 
     if (result.length === 0) throw new Error("First page!");
 
-    const firstIndex = 0;
-    const lastIndex = result.length - 1;
-    params.value.firstItem = result[firstIndex][params.value.columnName];
-    params.value.lastItem = result[lastIndex][params.value.columnName];
+    const firstItemIndex = 0;
+    const lastItemIndex = result.length - 1;
+    params.value.firstItem = result[firstItemIndex][params.value.columnName];
+    params.value.lastItem = result[lastItemIndex][params.value.columnName];
 
-    users.value = result;
+    pets.value = result;
   } catch ({ message }) {
     show("error", message);
   } finally {
