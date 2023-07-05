@@ -43,13 +43,15 @@ const drawer = ref(false);
 
 onMounted(async () => {
   try {
+    start();
     const { uid } = await getCurrentUser();
     const user = await get(uid);
-    if (user.roles.includes(route.meta.authorization)) console.log("allowed");
+    if (user.roles.includes(route.meta.authorization)) console.log("ALLOWED");
     else router.push({ name: "ForbiddenView" });
   } catch ({ message }) {
-    console.log("error", message);
+    show("error", message);
   } finally {
+    stop();
   }
 });
 </script>

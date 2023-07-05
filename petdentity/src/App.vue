@@ -24,7 +24,6 @@ const { show } = useSnackbarStore();
 import { User } from "@/constants";
 
 import { getCurrentUser } from "@/utils/firebase";
-import { onMounted } from "vue";
 
 import { get, create } from "@/api/user";
 
@@ -65,7 +64,15 @@ const loadUser = async () => {
   }
 };
 
-onMounted(() => {
-  loadUser();
+import { auth } from "@/plugins/firebase";
+import { onAuthStateChanged } from "firebase/auth";
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    loadUser();
+    console.log("signedIn");
+  } else {
+    console.log("signedOut");
+  }
 });
 </script>

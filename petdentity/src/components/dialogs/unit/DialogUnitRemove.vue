@@ -49,7 +49,7 @@ const unit = computed(syncProp(propRef, emit, "unit"));
 const submitHandler = async () => {
   try {
     isLoading.value = true;
-    const result = await remove(unit.value.id);
+    const result = await remove(unit.value);
     show("success", "Removed an item!");
     emit("remove");
     dialog.value = false;

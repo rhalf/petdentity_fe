@@ -24,15 +24,14 @@ import { toObject, toArray } from "./index";
 
 const collectionName = "units";
 
-export const search = async ({
-  searchText,
-  columnName,
-  orderDirection,
-  limitNumber,
-}) => {
+export const search = async (
+  id,
+  { searchText, columnName, orderDirection, limitNumber }
+) => {
   const collectionRef = collection(firestore, collectionName);
   const q = await query(
     collectionRef,
+    where("owner", "==", id),
     orderBy(columnName, orderDirection),
     startAt(searchText),
     endAt(searchText + "\uf8ff"),

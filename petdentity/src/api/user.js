@@ -82,10 +82,10 @@ export const prev = async ({
 //   const collectionRef = collection(firestore, collectionName);
 //   const snapshots = await getDocs(collectionRef);
 //   snapshots.forEach(async (snapshots) => {
-//     let user = { id: snapshots.id, ...snapshots.data() };
-//     user.role = await getDoc(user.role.path);
-//     user.status = await getDoc(user.status.path);
-//     users.push(user);
+//     let document = { id: snapshots.id, ...snapshots.data() };
+//     document.role = await getDoc(document.role.path);
+//     document.status = await getDoc(document.status.path);
+//     users.push(document);
 //   });
 //   return users;
 // };
@@ -108,34 +108,34 @@ export const get = async (id) => {
 
 //   var snapshot = snapshots.docs[0];
 
-//   var user = {
+//   var document = {
 //     id: snapshot.id,
 //     ...snapshot.data(),
 //   };
-//   return user;
+//   return document;
 // };
 
-export const create = async (user) => {
-  const docRef = doc(firestore, collectionName, user.id);
-  return setDoc(docRef, user);
+export const create = async (document) => {
+  const docRef = doc(firestore, collectionName, document.id);
+  return setDoc(docRef, document);
 };
 
 // const createDefault = async (id) => {
-//   let user = { id: id };
+//   let document = { id: id };
 //   const docRoleRef = doc(auth, "roles", 0);
 //   const docStatusRef = doc(auth, "statuses", 0);
-//   user.role = docRoleRef;
-//   user.status = docStatusRef;
-//   return create(user);
+//   document.role = docRoleRef;
+//   document.status = docStatusRef;
+//   return create(document);
 // };
 
-export const update = async (user) => {
-  const docRef = doc(firestore, collectionName, user.id);
-  const result = await setDoc(docRef, user);
+export const update = async (document) => {
+  const docRef = doc(firestore, collectionName, document.id);
+  const result = await setDoc(docRef, document);
   return result;
 };
 
-export const remove = async (user) => {
-  const docRef = doc(firestore, collectionName, user.id);
-  return await deleteDoc(docRef, user);
+export const remove = async (document) => {
+  const docRef = doc(firestore, collectionName, document.id);
+  return await deleteDoc(docRef, document);
 };

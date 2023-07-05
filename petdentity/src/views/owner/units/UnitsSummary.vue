@@ -72,7 +72,7 @@ const userStore = useUserStore();
 import { storeToRefs } from "pinia";
 const { user } = storeToRefs(userStore);
 
-import { search, next, prev } from "@/api/unit";
+import { search, next, prev } from "@/api/user-unit";
 
 import { ref, onMounted } from "vue";
 
@@ -95,7 +95,8 @@ const params = ref({
 const loadItems = async () => {
   try {
     isLoading.value = true;
-    const items = await search(params.value);
+
+    const items = await search(user.value.id, params.value);
 
     const firstIndex = 0;
     const lastIndex = items.length - 1;
@@ -111,8 +112,6 @@ const loadItems = async () => {
 };
 
 onMounted(async () => {
-  console.log(user);
-
   loadItems();
 });
 

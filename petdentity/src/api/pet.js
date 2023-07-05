@@ -24,7 +24,7 @@ import { toObject, toArray } from "./index";
 
 const collectionName = "pets";
 
-const search = async ({
+export const search = async ({
   searchText,
   columnName,
   orderDirection,
@@ -42,7 +42,12 @@ const search = async ({
   return toArray(snapshots);
 };
 
-const next = async ({ lastItem, columnName, orderDirection, limitNumber }) => {
+export const next = async ({
+  lastItem,
+  columnName,
+  orderDirection,
+  limitNumber,
+}) => {
   const collectionRef = collection(firestore, collectionName);
 
   const q = await query(
@@ -56,7 +61,12 @@ const next = async ({ lastItem, columnName, orderDirection, limitNumber }) => {
   return toArray(snapshots);
 };
 
-const prev = async ({ firstItem, columnName, orderDirection, limitNumber }) => {
+export const prev = async ({
+  firstItem,
+  columnName,
+  orderDirection,
+  limitNumber,
+}) => {
   const collectionRef = collection(firestore, collectionName);
   const q = await query(
     collectionRef,
@@ -68,32 +78,30 @@ const prev = async ({ firstItem, columnName, orderDirection, limitNumber }) => {
   return toArray(snapshots);
 };
 
-const get = async (id) => {
+export const get = async (id) => {
   const documentRef = doc(firestore, collectionName, id);
   const snapshot = await getDoc(documentRef);
   return toObject(snapshot);
 };
 
-const create = async (document) => {
+export const create = async (document) => {
   document.createdAt = toUtcTimestamp(new Date());
   const collectionRef = collection(firestore, collectionName);
   return await addDoc(collectionRef, document);
 };
 
-const update = async (document) => {
+export const update = async (document) => {
   const documentRef = doc(firestore, collectionName, document.id);
   return await setDoc(documentRef, document);
 };
 
-const remove = async (id) => {
-  const documentRef = doc(firestore, collectionName, id);
+export const remove = async (document) => {
+  const documentRef = doc(firestore, collectionName, document.id);
   return await deleteDoc(documentRef);
 };
 
-const count = async () => {
+export const count = async () => {
   const collectionRef = collection(firestore, collectionName);
   const snapshot = await getCountFromServer(collectionRef);
   return snapshot.data().count;
 };
-
-export { count, search, next, prev, get, create, update, remove };
