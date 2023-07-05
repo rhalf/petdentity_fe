@@ -38,13 +38,13 @@
       </v-row>
     </Sheet>
     <DialogUnitAdd v-model="dialogUnitAdd" @add="loadItems" />
-    <DialogUnitUpdate
-      v-model="dialogUnitUpdate"
+    <DialogUnitOwnerUpdate
+      v-model="dialogUnitOwnerUpdate"
       v-model:unit="unit"
       @update="loadItems"
     />
-    <DialogUnitRemove
-      v-model="dialogUnitRemove"
+    <DialogUnitOwnerRemove
+      v-model="dialogUnitOwnerRemove"
       v-model:unit="unit"
       @remove="loadItems"
     />
@@ -60,25 +60,21 @@ import DataTable from "@/components/tables/DataTable.vue";
 import { headers } from "./data";
 
 import DialogUnitAdd from "@/components/dialogs/unit/DialogUnitAdd.vue";
-import DialogUnitUpdate from "@/components/dialogs/unit/DialogUnitUpdate.vue";
-import DialogUnitRemove from "@/components/dialogs/unit/DialogUnitRemove.vue";
+import DialogUnitOwnerUpdate from "@/components/dialogs/unit/DialogUnitOwnerUpdate.vue";
+import DialogUnitOwnerRemove from "@/components/dialogs/unit/DialogUnitOwnerRemove.vue";
 
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
-import { useUserStore } from "@/store/user";
-const userStore = useUserStore();
-
-import { storeToRefs } from "pinia";
-const { user } = storeToRefs(userStore);
+import { getCurrentUser } from "@/utils/firebase";
 
 import { search, next, prev } from "@/api/user-unit";
 
 import { ref, onMounted } from "vue";
 
 const dialogUnitAdd = ref(false);
-const dialogUnitUpdate = ref(false);
-const dialogUnitRemove = ref(false);
+const dialogUnitOwnerUpdate = ref(false);
+const dialogUnitOwnerRemove = ref(false);
 
 const isLoading = ref(false);
 const units = ref();
@@ -96,7 +92,9 @@ const loadItems = async () => {
   try {
     isLoading.value = true;
 
-    const items = await search(user.value.id, params.value);
+    const { uid } = await getCurrentUser();
+    console.log("user", uid);
+    const items = await search(uid, params.value);
 
     const firstIndex = 0;
     const lastIndex = items.length - 1;
@@ -105,6 +103,7 @@ const loadItems = async () => {
 
     units.value = items;
   } catch ({ message }) {
+    units.value = [];
     console.log("error", message);
   } finally {
     isLoading.value = false;
@@ -112,17 +111,19 @@ const loadItems = async () => {
 };
 
 onMounted(async () => {
+  console.log("onMounted");
+
   loadItems();
 });
 
 const removeHandler = async (item) => {
   unit.value = item;
-  dialogUnitRemove.value = true;
+  DialogUnitOwnerRemove.value = true;
 };
 
 const updateHandler = (item) => {
   unit.value = item;
-  dialogUnitUpdate.value = true;
+  dialogUnitOwnerUpdate.value = true;
 };
 
 const nextHandler = async () => {

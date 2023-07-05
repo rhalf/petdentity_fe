@@ -67,9 +67,9 @@ const loadUser = async () => {
 import { auth } from "@/plugins/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
   if (user) {
-    loadUser();
+    await loadUser();
     console.log("signedIn");
   } else {
     console.log("signedOut");

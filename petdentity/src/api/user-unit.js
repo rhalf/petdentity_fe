@@ -95,8 +95,10 @@ export const update = async (item) => {
 };
 
 export const remove = async (document) => {
-  const documentRef = doc(firestore, collectionName, document.id);
-  return await deleteDoc(documentRef);
+  document.owner = null;
+  return update(document);
+  // const documentRef = doc(firestore, collectionName, document.id);
+  // return await deleteDoc(documentRef);
 };
 
 export const count = async () => {
