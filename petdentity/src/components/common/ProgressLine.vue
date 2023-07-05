@@ -1,22 +1,18 @@
 <template>
-  <v-progress-linear
-    v-if="props.visible"
-    color="primary"
-    :indeterminate="props.indeterminate"
-    absolute
-  ></v-progress-linear>
+  <v-progress-linear v-bind="properties" />
 </template>
 
 <script setup>
 import { onMounted } from 'vue'
-
-import { baseProps } from '@/mixins/props'
-
-const props = defineProps({ ...baseProps, indeterminate: Boolean })
 
 const emit = defineEmits(['click'])
 
 onMounted(() => {
   // console.log(props)
 })
+
+const properties = {
+  absolute: true,
+  color: 'primary'
+}
 </script>

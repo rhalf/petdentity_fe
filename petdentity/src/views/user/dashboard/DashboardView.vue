@@ -1,91 +1,46 @@
 <template>
-  <v-container>
-    <v-row class="pa-16">
-      <v-col cols="12" sm="6" md="4" v-for="item in items" :key="item">
-        <v-btn color="primary" class="pa-5" :height="item.height" block :disabled="item.disabled">
-          <template v-slot:default>
-            <v-row>
-              <v-col>
-                <v-icon class="text-h1" size="x-large">{{ item.icon }}</v-icon>
-                <div>{{ item.title }}</div>
-              </v-col>
-            </v-row>
-          </template>
-        </v-btn>
+  <v-container class="mt-5">
+    <v-row>
+      <v-col
+        cols="12"
+        sm="12"
+        md="6"
+        lg="4"
+        xl="3"
+        v-for="(item, index) in items"
+        :key="index"
+      >
+        <Module v-model="items[index]" />
       </v-col>
     </v-row>
-
-    <Button color="primary">sample</Button>
   </v-container>
 </template>
 
 <script setup>
-import Button from '@/components/common/Button.vue'
-const items = [
-  {
-    icon: 'mdi-card-account-details-star-outline',
-    title: 'Pet Owner',
-    height: 200,
-    disabled: false,
-    handler: () => {}
-  },
-  {
-    // icon: 'mdi-doctor',
-    icon: 'mdi-stethoscope',
-    title: 'Veterinarian Area',
-    height: 200,
-    disabled: false,
-    handler: () => {}
-  },
-  {
-    icon: 'mdi-shield-star',
-    title: 'Local Government Unit',
-    height: 200,
-    disabled: false,
-    handler: () => {}
-  },
-  {
-    icon: 'mdi-magnify',
-    title: 'Pet Information',
-    height: 200,
-    disabled: false,
-    handler: () => {}
-  },
-  {
-    icon: 'mdi-paw',
-    title: 'Missing and Found Pets',
-    height: 200,
-    disabled: true,
-    handler: () => {}
-  },
-  {
-    icon: 'mdi-needle',
-    title: 'Pet Vaccination',
-    height: 200,
-    disabled: true,
-    handler: () => {}
-  },
-  {
-    icon: 'mdi-calendar',
-    title: 'Upcoming Events',
-    height: 200,
-    disabled: true,
-    handler: () => {}
-  },
-  {
-    icon: 'mdi-cash',
-    title: 'Points and Rewards',
-    height: 200,
-    disabled: true,
-    handler: () => {}
-  },
+import Module from "./components/module/Module.vue";
 
-  {
-    icon: 'mdi-account-network',
-    title: 'Administrator',
-    height: 200,
-    disabled: false,
-    handler: () => {}
-  }
-]
+import { UserGroups } from "@/constants";
+const { OWNER, VETERINARIAN, ADMIN, GOVERNMENT } = UserGroups;
+
+import { useUserStore } from "@/store/user";
+const user = useUserStore();
+
+import { dashboardItems } from "./data";
+
+import { computed, ref } from "vue";
+
+const dashboardItemsRef = ref(dashboardItems);
+
+const items = computed(() => {
+  return dashboardItemsRef.value.map((item) => {
+    item.unauthorized = true;
+
+    user.getRoles?.forEach((role) => {
+      const state = item.roles.includes(role);
+      if (state) item.unauthorized = false;
+    });
+
+    return item;
+  });
+});
 </script>

@@ -1,28 +1,11 @@
 <template>
-  <v-btn
-    :id="id"
-    :class="classes"
-    :disabled="disabled"
-    @click="emit('click')"
-    :variant="variant"
-    :block="block"
-    :color="color"
-    :icon="icon"
-    :type="type"
-  />
+  <v-btn v-bind="properties" />
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue'
-
-import { baseProps } from '@/mixins/props'
-
-const props = defineProps({ ...baseProps, id: { default: undefined } })
-const emit = defineEmits(['update:modelValue', 'click'])
-
-onMounted(() => {
-  // console.log(props)
-})
+const properties = {
+  //default
+  variant: "plain",
+  size: "small",
+};
 </script>
-
-<style scoped></style>
