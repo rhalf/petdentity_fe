@@ -2,7 +2,7 @@
   <Dialog v-model="dialog" :width="1024" expand>
     <Card>
       <v-card-title class="bg-primary pa-4">
-        <Label header class="text-black"> Update </Label>
+        <Label header class="text-black"> Update User </Label>
       </v-card-title>
       <v-card-text>
         <FormUser v-model="user" />

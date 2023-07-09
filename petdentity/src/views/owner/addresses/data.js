@@ -1,31 +1,24 @@
 export const headers = [
   {
-    title: "Name",
+    title: "Address",
     align: "start",
     sortable: false,
-    key: "name",
-    width: "30%",
+    key: "address",
+    width: "500",
   },
   {
-    title: "Type",
+    title: "Status",
     align: "start",
     sortable: false,
-    key: "type",
-    width: "30%",
-  },
-  {
-    title: "Breeds",
-    align: "start",
-    sortable: false,
-    key: "breeds.length",
-    width: "30%",
+    key: "status",
+    width: "20%",
   },
 
   {
     title: "Actions",
     align: "start",
     sortable: false,
-    width: 200,
+    width: 150,
     key: "actions",
   },
 ];

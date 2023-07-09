@@ -22,6 +22,7 @@
           placeholder="State"
           clearable
           :disabled="props.disabled"
+          class="text-truncate mt-2"
         />
       </v-col>
 
@@ -45,6 +46,7 @@
           placeholder="Region"
           clearable
           :disabled="props.disabled"
+          class="text-truncate mt-2"
         />
       </v-col>
 
@@ -67,6 +69,7 @@
           placeholder="Province"
           clearable
           :disabled="props.disabled"
+          class="text-truncate mt-2"
         />
       </v-col>
     </v-row>
@@ -90,6 +93,7 @@
           placeholder="City / Municipality / Town"
           clearable
           :disabled="props.disabled"
+          class="text-truncate mt-2"
         />
       </v-col>
 
@@ -111,6 +115,7 @@
           placeholder="Barangay"
           clearable
           :disabled="props.disabled"
+          class="text-truncate mt-2"
         />
       </v-col>
 
@@ -172,8 +177,8 @@ import { Address } from "@/constants";
 import { useModel } from "@/utils/vue";
 
 import _ from "lodash";
-import { computed, reactive, watch } from "vue";
-import { toRefs } from "vue";
+
+import { computed, reactive, watch, toRefs } from "vue";
 
 const emit = defineEmits(["update:modelValue"]);
 

@@ -1,13 +1,21 @@
 <template>
-  <Dialog v-model="dialog" :width="640">
+  <Dialog v-model="dialog" :width="640" expand>
     <Card>
       <v-card-title class="bg-primary pa-4">
-        <Label header class="text-black"> Remove Pet </Label>
+        <Label header class="text-black"> Remove Animal</Label>
       </v-card-title>
       <v-card-text>
         <Label text> Are you sure you want to remove this item?</Label>
         <br />
-        <Label header>Name : "{{ pet.name }}"" </Label>
+        <Label text class="mt-2">
+          {{ address.exact }}
+          {{ address.division }}
+        </Label>
+        <Label caption class="text-grey">
+          {{ address.barangay }}, {{ address.city }}, {{ address.province }},
+          {{ address.region }}, {{ address.country }},
+          {{ address.zipcode }}
+        </Label>
       </v-card-text>
       <v-card-actions>
         <v-row dense class="py-4 px-4">
@@ -33,24 +41,23 @@ import Card from "@/components/common/Card.vue";
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
-import { remove } from "@/api/pet";
-
+import { remove } from "@/api/address";
 import { useModel, syncProp } from "@/utils/vue";
+import { ref, toRefs, computed } from "vue";
 
-import { ref, computed, toRefs } from "vue";
-const props = defineProps({ modelValue: Boolean, pet: Object });
-const propRef = toRefs(props);
-const emit = defineEmits(["update:modelValue", "update:pet", "done"]);
+const props = defineProps({ modelValue: Boolean, address: Object });
+const propsRef = toRefs(props);
+const emit = defineEmits(["update:modelValue", "done"]);
 
 const isLoading = ref(false);
-const dialog = computed(useModel(propRef, emit, "modelValue"));
-const pet = computed(syncProp(propRef, emit, "pet"));
+const dialog = computed(useModel(propsRef, emit, "modelValue"));
+const address = computed(syncProp(propsRef, emit, "address"));
 
 const submitHandler = async () => {
   try {
     isLoading.value = true;
-    const result = await remove(pet.value);
-    show("success", "Removed an item!");
+    const result = await remove(address.value);
+    show("success", "Removed an address!");
     emit("done");
     dialog.value = false;
   } catch ({ message }) {
@@ -59,7 +66,6 @@ const submitHandler = async () => {
     isLoading.value = false;
   }
 };
-
 const closeHandler = () => {
   dialog.value = false;
 };

@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <v-virtual-scroll
-      :height="240"
+  <div class="mt-2">
+    <VirtualScroll
+      :height="250"
       :items="breeds"
       class="bg-grey-darken-4 px-1 py-1"
     >
@@ -14,7 +14,7 @@
           ]"
         >
           <v-col class="d-flex align-center">
-            <Label text>{{ index + 1 }}. {{ item }}</Label>
+            <Label text>{{ index + 1 }}. {{ item.name }}</Label>
           </v-col>
           <v-col cols="auto" class="d-flex align-center">
             <ButtonIcon
@@ -25,17 +25,17 @@
           </v-col>
         </v-row>
       </template>
-    </v-virtual-scroll>
+    </VirtualScroll>
 
     <v-row dense class="mt-3">
       <v-col>
-        <TextField v-model="breed" placeholder="Enter breed here!" />
+        <TextField v-model="breed.name" placeholder="Enter breed here!" />
       </v-col>
     </v-row>
 
     <v-row dense class="mt-3">
       <v-col>
-        <Button block @click="addHandler">
+        <Button block @click="addHandler" :loading="isLoading">
           <v-icon>mdi-plus</v-icon>
           Add Breed
         </Button>
@@ -49,6 +49,9 @@ import Label from "@/components/common/Label.vue";
 import Button from "@/components/common/Button.vue";
 import ButtonIcon from "@/components/common/ButtonIcon.vue";
 import TextField from "@/components/common/TextField.vue";
+import VirtualScroll from "@/components/tables/VirtualScroll.vue";
+
+import { search, create } from "@/api/breed";
 
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
@@ -59,33 +62,68 @@ import { onMounted } from "vue";
 
 const emit = defineEmits(["update:modelValue"]);
 const props = defineProps({
-  modelValue: Array,
+  modelValue: Object,
 });
 
 const propsRef = toRefs(props);
 
-const breed = ref();
+const animal = computed(useModel(propsRef, emit, "modelValue"));
 
-const breeds = computed(useModel(propsRef, emit, "modelValue"));
+const isLoading = ref(false);
+const breed = ref({});
+const breeds = ref([]);
 
-onMounted(() => {
-  if (!breeds.value) breeds.value = [];
+const params = ref({
+  searchText: "",
+  columnName: "name",
+  orderDirection: "asc",
+  limitNumber: 300,
+  firstItem: "",
+  lastItem: "",
 });
 
-const removeHandler = (index) => {
-  breeds.value?.splice(index, 1);
-};
+const loadItems = async () => {
+  try {
+    isLoading.value = true;
 
-const addHandler = () => {
-  if (!breed.value) return;
-  if (breeds.value?.includes(breed.value)) {
-    show("error", `${breed.value} already exists!`);
-    return;
+    const items = await search(animal.value.id, params.value);
+    if (items.length === 0) {
+      return [];
+    }
+
+    const firstItemIndex = 0;
+    const lastItemIndex = items.length - 1;
+    params.value.firstItem = items[firstItemIndex][params.value.columnName];
+    params.value.lastItem = items[lastItemIndex][params.value.columnName];
+
+    breeds.value = items;
+  } catch ({ message }) {
+    console.log("error", message);
+  } finally {
+    isLoading.value = false;
   }
-
-  breeds.value?.push(breed.value);
-  breed.value = null;
 };
+
+const addHandler = async () => {
+  try {
+    isLoading.value = true;
+
+    breed.value.animal = animal.value.id;
+
+    const item = await create(breed.value);
+    show("success", "Added a breed!");
+
+    await loadItems();
+  } catch ({ message }) {
+    console.log("error", message);
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+onMounted(() => {
+  loadItems();
+});
 </script>
 
 <style></style>

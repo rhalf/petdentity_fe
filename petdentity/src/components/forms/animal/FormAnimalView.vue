@@ -1,21 +1,18 @@
 <template>
   <v-row dense>
-    <v-col cols="12">
-      <Label class="text-primary"> Name </Label>
-      <TextField class="mt-3" v-model="animal.name" placeholder="Name" />
+    <v-col>
+      <Label header class="text-primary">
+        {{ animal.name }}
+      </Label>
     </v-col>
-    <v-col cols="12">
-      <Label class="text-primary"> Type </Label>
-      <AnimalType class="mt-3" v-model="animal.type" />
+    <v-col class="text-right">
+      <Label header class="text-grey"> {{ animal.type }} </Label>
     </v-col>
   </v-row>
 </template>
 
 <script setup>
 import Label from "@/components/common/Label.vue";
-import TextField from "@/components/common/TextField.vue";
-
-import AnimalType from "@/components/pickers/AnimalType.vue";
 
 import { computed, toRefs } from "vue";
 

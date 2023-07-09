@@ -17,10 +17,15 @@ export const toStringDate = (date) => {
   return dayjs(date).format("MMM DD, YYYY");
 };
 
-export const getBirthDate = (date) => {
+export const getAge = (date) => {
   const now = dayjs(new Date());
   const dt = dayjs(date);
-  return now.diff(dt, "Year");
+
+  const days = now.diff(dt, "days");
+  const months = now.diff(dt, "month");
+  const years = now.diff(dt, "year");
+
+  return { years: years, months: months % 12, days: days % 30 };
 };
 
 export const toUtc = (date) => {

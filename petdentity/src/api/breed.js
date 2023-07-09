@@ -22,17 +22,16 @@ import {
 import { toUtcTimestamp } from "@/utils/vue";
 import { toObject, toArray } from "./index";
 
-const collectionName = "animals";
+const collectionName = "breeds";
 
-export const search = async ({
-  searchText,
-  columnName,
-  orderDirection,
-  limitNumber,
-}) => {
+export const search = async (
+  id,
+  { searchText, columnName, orderDirection, limitNumber }
+) => {
   const collectionRef = collection(firestore, collectionName);
   const q = await query(
     collectionRef,
+    where("animal", "==", id),
     orderBy(columnName, orderDirection),
     startAt(searchText),
     endAt(searchText + "\uf8ff"),
@@ -42,16 +41,15 @@ export const search = async ({
   return toArray(snapshots);
 };
 
-export const next = async ({
-  lastItem,
-  columnName,
-  orderDirection,
-  limitNumber,
-}) => {
+export const next = async (
+  id,
+  { lastItem, columnName, orderDirection, limitNumber }
+) => {
   const collectionRef = collection(firestore, collectionName);
 
   const q = await query(
     collectionRef,
+    where("animal", "==", id),
     orderBy(columnName, orderDirection),
     startAfter(lastItem),
     limit(limitNumber)
@@ -78,17 +76,21 @@ export const prev = async ({
   return toArray(snapshots);
 };
 
-export const getAll = async () => {
-  const collectionRef = collection(firestore, collectionName);
-  const q = await query(collectionRef, orderBy("name", "asc"));
-  const snapshots = await getDocs(q);
-  return toArray(snapshots);
-};
-
 export const get = async (id) => {
   const documentRef = doc(firestore, collectionName, id);
   const snapshot = await getDoc(documentRef);
   return toObject(snapshot);
+};
+
+export const getAll = async (id) => {
+  const collectionRef = collection(firestore, collectionName);
+  const q = await query(
+    collectionRef,
+    where("animal", "==", id),
+    orderBy("name", "asc")
+  );
+  const snapshots = await getDocs(q);
+  return toArray(snapshots);
 };
 
 export const create = async (document) => {

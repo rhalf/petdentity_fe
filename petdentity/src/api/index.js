@@ -1,5 +1,8 @@
 export const toObject = (snapshot) => {
-  if (!snapshot.exists) return null;
+  if (Object.hasOwnProperty(snapshot, "exists"))
+    if (!snapshot.exists) return null;
+
+  console.log(snapshot);
   return { id: snapshot.id, ...snapshot.data() };
 };
 

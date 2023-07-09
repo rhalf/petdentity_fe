@@ -53,7 +53,7 @@
         <v-col>
           <Label text>
             {{ toStringDate(user.profile.birthDate) }}
-            ({{ getBirthDate(user.profile.birthDate) }} years)
+            ({{ getAge(user.profile.birthDate) }} years)
           </Label>
         </v-col>
       </v-row>
@@ -164,7 +164,7 @@ import DialogName from "@/components/dialogs/name/DialogName.vue";
 import DialogDate from "@/components/dialogs/date/DialogDate.vue";
 import DialogGender from "@/components/dialogs/gender/DialogGender.vue";
 
-import { toStringDate, getBirthDate } from "@/utils/vue";
+import { toStringDate, getAge } from "@/utils/vue";
 import { computed, onMounted, reactive, ref, watch } from "vue";
 import { update } from "@/api/user";
 

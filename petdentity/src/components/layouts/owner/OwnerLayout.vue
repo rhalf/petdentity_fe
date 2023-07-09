@@ -1,10 +1,6 @@
 <template>
   <v-app>
     <v-main>
-      <ProgressLine
-        :indeterminate="progressLine.status"
-        :visible="progressLine.status"
-      />
       <Navbar v-model:drawer="drawer" />
       <Sidebar v-model="drawer" />
 
@@ -22,10 +18,7 @@ import _ from "lodash";
 import Navbar from "./components/navbar/Navbar.vue";
 import Sidebar from "./components/sidebar/Sidebar.vue";
 
-import ProgressLine from "@/components/common/ProgressLine.vue";
-
 import { useProgressLineStore } from "@/store/progress-line";
-const progressLine = useProgressLineStore();
 const { start, stop } = useProgressLineStore();
 
 import { useSnackbarStore } from "@/store/snackbar";

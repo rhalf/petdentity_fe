@@ -19,7 +19,7 @@
         <v-row dense class="py-3 px-4">
           <v-spacer />
           <v-col cols="auto">
-            <Button @click="closeHandler">Ok</Button>
+            <Button @click="closeHandler">Okay</Button>
           </v-col>
         </v-row>
       </v-card-actions>

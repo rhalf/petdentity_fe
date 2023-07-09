@@ -7,7 +7,7 @@
 
           <div class="pa-2 bg-black">
             <Logo
-              :width="480"
+              :width="1024"
               :aspect-ratio="10 / 2"
               position="horizontal"
               class="text-center"

@@ -1,22 +1,22 @@
 <template>
-  <Dialog v-model="dialog" :width="640">
+  <Dialog v-model="dialog" :width="1024" expand>
     <Card>
       <v-card-title class="bg-primary pa-4">
-        <Label header class="text-black"> Remove Pet </Label>
+        <Label header class="text-black"> View Animal</Label>
       </v-card-title>
       <v-card-text>
-        <Label text> Are you sure you want to remove this item?</Label>
-        <br />
-        <Label header>Name : "{{ pet.name }}"" </Label>
+        <FormAnimalView v-model="animal" />
+        <Label class="mt-4 text-primary">Breeds</Label>
+        <FormBreeds v-model="animal" />
       </v-card-text>
       <v-card-actions>
         <v-row dense class="py-4 px-4">
           <v-spacer />
           <v-col cols="auto">
-            <Button @click="submitHandler" :loading="isLoading">Yes</Button>
+            <Button @click="submitHandler" :loading="isLoading">Submit</Button>
           </v-col>
           <v-col cols="auto">
-            <Button @click="closeHandler" variant="outlined">No</Button>
+            <Button @click="closeHandler" variant="outlined">Close</Button>
           </v-col>
         </v-row>
       </v-card-actions>
@@ -28,30 +28,33 @@
 import Button from "@/components/common/Button.vue";
 import Label from "@/components/common/Label.vue";
 import Dialog from "@/components/common/Dialog.vue";
+import FormAnimalView from "@/components/forms/animal/FormAnimalView.vue";
+import FormBreeds from "@/components/forms/breed/FormBreeds.vue";
 import Card from "@/components/common/Card.vue";
 
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
-import { remove } from "@/api/pet";
+import { create } from "@/api/animal";
 
 import { useModel, syncProp } from "@/utils/vue";
 
-import { ref, computed, toRefs } from "vue";
-const props = defineProps({ modelValue: Boolean, pet: Object });
-const propRef = toRefs(props);
-const emit = defineEmits(["update:modelValue", "update:pet", "done"]);
+import { ref, toRefs, computed } from "vue";
+const props = defineProps({ modelValue: Boolean, animal: Object });
+const propsRef = toRefs(props);
+const emit = defineEmits(["update:modelValue", "update:animal", "view"]);
 
 const isLoading = ref(false);
-const dialog = computed(useModel(propRef, emit, "modelValue"));
-const pet = computed(syncProp(propRef, emit, "pet"));
+const dialog = computed(useModel(propsRef, emit, "modelValue"));
+const animal = computed(syncProp(propsRef, emit, "animal"));
 
 const submitHandler = async () => {
   try {
     isLoading.value = true;
-    const result = await remove(pet.value);
-    show("success", "Removed an item!");
-    emit("done");
+    const docRef = await create(animal.value);
+    emit("view");
+    show("success", "Added an animal!");
+    animal.value = {};
     dialog.value = false;
   } catch ({ message }) {
     show("error", message);

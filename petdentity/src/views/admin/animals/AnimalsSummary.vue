@@ -28,9 +28,11 @@
             withRemove
             withUpdate
             withAdd
+            withView
             @remove="removeHandler"
             @update="updateHandler"
-            @add="dialogAnimalAdd = true"
+            @view="viewHandler"
+            @add="addHandler"
             @next="nextHandler"
             @prev="prevHandler"
           />
@@ -38,6 +40,11 @@
       </v-row>
     </Sheet>
     <DialogAnimalAdd v-model="dialogAnimalAdd" @add="loadItems" />
+    <DialogAnimalView
+      v-model="dialogAnimalView"
+      v-model:animal="animal"
+      @view="loadItems"
+    />
     <DialogAnimalUpdate
       v-model="dialogAnimalUpdate"
       v-model:animal="animal"
@@ -62,6 +69,7 @@ import { headers } from "./data";
 import DialogAnimalAdd from "@/components/dialogs/animal/DialogAnimalAdd.vue";
 import DialogAnimalUpdate from "@/components/dialogs/animal/DialogAnimalUpdate.vue";
 import DialogAnimalRemove from "@/components/dialogs/animal/DialogAnimalRemove.vue";
+import DialogAnimalView from "@/components/dialogs/animal/DialogAnimalView.vue";
 
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
@@ -73,6 +81,7 @@ import { ref, onMounted } from "vue";
 const dialogAnimalAdd = ref(false);
 const dialogAnimalUpdate = ref(false);
 const dialogAnimalRemove = ref(false);
+const dialogAnimalView = ref(false);
 
 const isLoading = ref(false);
 const animals = ref();
@@ -108,6 +117,10 @@ onMounted(async () => {
   loadItems();
 });
 
+const addHandler = async () => {
+  dialogAnimalAdd.value = true;
+};
+
 const removeHandler = async (item) => {
   animal.value = item;
   dialogAnimalRemove.value = true;
@@ -116,6 +129,11 @@ const removeHandler = async (item) => {
 const updateHandler = (item) => {
   animal.value = item;
   dialogAnimalUpdate.value = true;
+};
+
+const viewHandler = (item) => {
+  animal.value = item;
+  dialogAnimalView.value = true;
 };
 
 const nextHandler = async () => {

@@ -1,11 +1,11 @@
 <template>
-  <Dialog :width="1024" expand>
+  <Dialog v-model="dialog" :width="350" expand>
     <Card>
       <v-card-title class="bg-primary pa-4">
-        <Label header class="text-black">Name</Label>
+        <Label header class="text-black">Color</Label>
       </v-card-title>
       <v-card-text>
-        <FormName v-model="props.name" />
+        <Color v-model="color" />
       </v-card-text>
       <v-card-actions>
         <v-row dense class="py-3 px-4">
@@ -24,13 +24,19 @@ import Button from "@/components/common/Button.vue";
 import Label from "@/components/common/Label.vue";
 import Dialog from "@/components/common/Dialog.vue";
 import Card from "@/components/common/Card.vue";
-import FormName from "@/components/forms/name/FormName.vue";
+import Color from "@/components/pickers/Color.vue";
+import { computed, toRefs } from "vue";
+import { useModel, syncProp } from "@/utils/vue";
 
-const props = defineProps({ name: Object });
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(["update:modelValue", "update:color"]);
+const props = defineProps({ modelValue: Boolean, color: String });
+const propsRef = toRefs(props);
+
+const dialog = computed(useModel(propsRef, emit, "modelValue"));
+const color = computed(syncProp(propsRef, emit, "color"));
 
 const closeHandler = () => {
-  emit("update:modelValue", false);
+  dialog.value = false;
 };
 </script>
 

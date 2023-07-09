@@ -1,29 +1,20 @@
 <template>
   <Dialog v-model="dialog" :width="1024" expand>
     <Card>
-      <v-card-title class="bg-primary pa-4">
-        <Label header class="text-black"> Update Unit </Label>
+      <v-card-title class="bg-primary pa-4" expand>
+        <Label header medium class="text-black">Add Address</Label>
       </v-card-title>
       <v-card-text>
-        <FormUnit
-          v-model="unit"
-          :disabled-option="[
-            'uid',
-            'unitType',
-            'formType',
-            'status',
-            'government',
-          ]"
-        />
+        <FormAddress v-model="address" />
       </v-card-text>
       <v-card-actions>
-        <v-row dense class="py-4 px-4">
+        <v-row dense class="py-3 px-4">
           <v-spacer />
           <v-col cols="auto">
             <Button @click="submitHandler" :loading="isLoading">Submit</Button>
           </v-col>
           <v-col cols="auto">
-            <Button @click="closeHandler" variant="outlined">Close</Button>
+            <Button @click="closeHandler" variant="outlined">Cancel</Button>
           </v-col>
         </v-row>
       </v-card-actions>
@@ -35,31 +26,31 @@
 import Button from "@/components/common/Button.vue";
 import Label from "@/components/common/Label.vue";
 import Dialog from "@/components/common/Dialog.vue";
-import FormUnit from "@/components/forms/unit/FormUnit.vue";
 import Card from "@/components/common/Card.vue";
+
+import FormAddress from "@/components/forms/address/FormAddress.vue";
 
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
-import { update } from "@/api/unit";
+import { create } from "@/api/address";
+import { ref, toRefs, computed } from "vue";
+import { useModel } from "@/utils/vue";
 
-import { useModel, syncProp } from "@/utils/vue";
-
-import { ref, computed, toRefs } from "vue";
-const props = defineProps({ modelValue: Boolean, unit: Object });
-const propRef = toRefs(props);
-const emit = defineEmits(["update:modelValue", "update:unit", "update"]);
+const props = defineProps({ modelValue: Boolean, address: Object });
+const propsRef = toRefs(props);
+const emit = defineEmits(["update:modelValue", "done"]);
 
 const isLoading = ref(false);
-const dialog = computed(useModel(propRef, emit, "modelValue"));
-const unit = computed(syncProp(propRef, emit, "unit"));
+const dialog = computed(useModel(propsRef, emit, "modelValue"));
+const address = ref({});
 
 const submitHandler = async () => {
   try {
     isLoading.value = true;
-    const docRef = await update(unit.value);
-    emit("update");
-    show("success", "Updated an unit!");
+    const result = await create(address.value);
+    show("success", "Added an address!");
+    emit("done");
     dialog.value = false;
   } catch ({ message }) {
     show("error", message);
@@ -67,7 +58,6 @@ const submitHandler = async () => {
     isLoading.value = false;
   }
 };
-
 const closeHandler = () => {
   dialog.value = false;
 };

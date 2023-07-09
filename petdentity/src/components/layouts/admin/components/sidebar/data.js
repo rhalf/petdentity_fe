@@ -8,19 +8,19 @@ export const items = [
   {
     icon: "mdi-paw",
     title: "Animals",
-    subtitle: "Managing animals",
+    subtitle: "Manage animals",
     to: { name: "AdminAnimalsSummary" },
   },
   {
     icon: "mdi-nfc",
     title: "Units",
-    subtitle: "Managing Units",
+    subtitle: "Manage Units",
     to: { name: "AdminUnitsSummary" },
   },
   {
     icon: "mdi-account-multiple",
     title: "Users",
-    subtitle: "Managing Users",
+    subtitle: "Manage Users",
     to: { name: "AdminUsersSummary" },
   },
 ];

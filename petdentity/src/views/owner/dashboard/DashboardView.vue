@@ -34,14 +34,16 @@ import Label from "@/components/common/Label.vue";
 import Sheet from "@/components/common/Sheet.vue";
 
 import { count as countAnimals } from "@/api/animal";
-import { count as countUnits } from "@/api/unit";
-import { count as countUsers } from "@/api/unit";
+import { count as countUnits } from "@/api/owner-unit";
+import { count as countAddresses } from "@/api/address";
 
 import { ref, onMounted } from "vue";
+import { getCurrentUser } from "@/utils/firebase";
 
 const counters = ref([]);
 
 onMounted(async () => {
+  const { uid } = await getCurrentUser();
   const array = [
     {
       title: "Animals",
@@ -50,13 +52,13 @@ onMounted(async () => {
     },
     {
       title: "Units",
-      count: await countUnits(),
+      count: await countUnits(uid),
       // count: _.padStart(await countUnits(), 7, "0"),
     },
     {
-      title: "Users",
-      count: await countUsers(),
-      // count: _.padStart(await countUsers(), 7, "0"),
+      title: "Addresses",
+      count: await countAddresses(),
+      // count: _.padStart(await countUnits(), 7, "0"),
     },
   ];
 

@@ -6,15 +6,21 @@ export const items = [
     to: { name: "OwnerDashboard" },
   },
   {
-    icon: "mdi-paw-outline",
+    icon: "mdi-map-marker",
+    title: "Addresses",
+    subtitle: "Manage addresses",
+    to: { name: "OwnerAddressesSummary" },
+  },
+  {
+    icon: "mdi-paw",
     title: "Pets",
-    subtitle: "Managing pets",
+    subtitle: "Manage pets",
     to: { name: "OwnerPetsSummary" },
   },
   {
     icon: "mdi-nfc",
     title: "Units",
-    subtitle: "Managing Units",
+    subtitle: "Manage Units",
     to: { name: "OwnerUnitsSummary" },
   },
 ];

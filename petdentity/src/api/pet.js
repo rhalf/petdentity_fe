@@ -21,8 +21,10 @@ import {
 
 import { toUtcTimestamp } from "@/utils/vue";
 import { toObject, toArray } from "./index";
+import { getCurrentUser } from "@/utils/firebase";
 
 const collectionName = "pets";
+const { uid } = await getCurrentUser();
 
 export const search = async ({
   searchText,
@@ -86,6 +88,7 @@ export const get = async (id) => {
 
 export const create = async (document) => {
   document.createdAt = toUtcTimestamp(new Date());
+  document.owner = uid;
   const collectionRef = collection(firestore, collectionName);
   return await addDoc(collectionRef, document);
 };

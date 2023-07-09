@@ -21,20 +21,24 @@ import {
 
 import { toUtcTimestamp } from "@/utils/vue";
 import { toObject, toArray } from "./index";
+import { getCurrentUser } from "@/utils/firebase";
 
-const collectionName = "units";
+const collectionName = "addresses";
+const { uid } = await getCurrentUser();
 
-export const search = async (
-  id,
-  { searchText, columnName, orderDirection, limitNumber }
-) => {
+export const search = async ({
+  searchText,
+  columnName,
+  orderDirection,
+  limitNumber,
+}) => {
   const collectionRef = collection(firestore, collectionName);
   const q = await query(
     collectionRef,
-    where("owner", "==", id),
+    where("owner", "==", uid),
     orderBy(columnName, orderDirection),
-    startAt(searchText),
-    endAt(searchText + "\uf8ff"),
+    // startAt(searchText),
+    // endAt(searchText + "\uf8ff"),
     limit(limitNumber)
   );
   const snapshots = await getDocs(q);
@@ -84,6 +88,7 @@ export const get = async (id) => {
 
 export const create = async (item) => {
   item.createdAt = toUtcTimestamp(new Date());
+  item.owner = uid;
   const collectionRef = collection(firestore, collectionName);
   return await addDoc(collectionRef, item);
 };
@@ -95,14 +100,13 @@ export const update = async (item) => {
 };
 
 export const remove = async (document) => {
-  document.owner = null;
-  return update(document);
-  // const documentRef = doc(firestore, collectionName, document.id);
-  // return await deleteDoc(documentRef);
+  const documentRef = doc(firestore, collectionName, document.id);
+  return await deleteDoc(documentRef);
 };
 
 export const count = async () => {
   const collectionRef = collection(firestore, collectionName);
-  const snapshot = await getCountFromServer(collectionRef);
+  const q = query(collectionRef, where("owner", "==", uid));
+  const snapshot = await getCountFromServer(q);
   return snapshot.data().count;
 };

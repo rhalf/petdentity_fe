@@ -11,6 +11,19 @@ export const owner = {
       meta: { authenticated: true, authorization: "OWNER" },
     },
     {
+      path: "addresses",
+      children: [
+        {
+          path: "summary",
+          name: "OwnerAddressesSummary",
+          component: () =>
+            import("@/views/owner/addresses/AddressesSummary.vue"),
+          meta: { authenticated: true, authorization: "ADMIN" },
+        },
+      ],
+    },
+
+    {
       path: "pets",
       children: [
         {

@@ -25,7 +25,7 @@
       <Label text class="text-primary"> Birth Date </Label>
       <Label text class="mt-2">
         {{ toStringDate(profile.birthDate) }}
-        ({{ getBirthDate(profile.birthDate) }} years)
+        ({{ toAge(profile.birthDate) }})
       </Label>
     </div>
 
@@ -63,7 +63,7 @@ import Label from "@/components/common/Label.vue";
 
 import { toRefs } from "vue";
 
-import { toStringDate, getBirthDate } from "@/utils/vue";
+import { toStringDate, getAge } from "@/utils/vue";
 import { computed } from "vue";
 
 import { useModel } from "@/utils/vue";
@@ -75,4 +75,9 @@ const props = defineProps({
 
 const propsRef = toRefs(props);
 const profile = computed(useModel(propsRef, emit, "modelValue"));
+
+const toAge = (age) => {
+  const { years, months, days } = getAge(age);
+  return `${years} years, ${months} months, ${days} days`;
+};
 </script>

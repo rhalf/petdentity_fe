@@ -83,6 +83,13 @@ export const get = async (id) => {
   return toObject(snapshot);
 };
 
+export const getByUid = async (uid) => {
+  const collectionRef = collection(firestore, collectionName);
+  const q = await query(collectionRef, where("uid", "==", uid));
+  const snapshots = await getDocs(q);
+  return toArray(snapshots);
+};
+
 export const create = async (item) => {
   item.createdAt = toUtcTimestamp(new Date());
   const collectionRef = collection(firestore, collectionName);

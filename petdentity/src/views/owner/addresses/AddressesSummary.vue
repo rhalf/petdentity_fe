@@ -3,7 +3,7 @@
     <Sheet>
       <v-row dense>
         <v-col cols="auto">
-          <Label title class="text-primary">Pets</Label>
+          <Label title class="text-primary">Addresses</Label>
         </v-col>
         <v-spacer />
         <v-col cols="12" md="3">
@@ -22,7 +22,7 @@
             hover
             :loading="isLoading"
             :headers="headers"
-            :items="pets"
+            :items="addresses"
             :items-per-pageNumber="params.limitNumber"
             hide-default-footer
             withRemove
@@ -37,15 +37,15 @@
         </v-col>
       </v-row>
     </Sheet>
-    <DialogPetAdd v-model="dialogPetAdd" @done="loadItems" />
-    <DialogPetUpdate
-      v-model="dialogPetUpdate"
-      v-model:pet="pet"
+    <DialogAddressAdd v-model="dialogAddressAdd" @done="loadItems" />
+    <DialogAddressUpdate
+      v-model="dialogAddressUpdate"
+      v-model:address="address"
       @done="loadItems"
     />
-    <DialogPetRemove
-      v-model="dialogPetRemove"
-      v-model:pet="pet"
+    <DialogAddressRemove
+      v-model="dialogAddressRemove"
+      v-model:address="address"
       @done="loadItems"
     />
   </v-container>
@@ -59,27 +59,27 @@ import TextField from "@/components/common/TextField.vue";
 import DataTable from "@/components/tables/DataTable.vue";
 import { headers } from "./data";
 
-import DialogPetAdd from "@/components/dialogs/pet/DialogPetAdd.vue";
-import DialogPetUpdate from "@/components/dialogs/pet/DialogPetUpdate.vue";
-import DialogPetRemove from "@/components/dialogs/pet/DialogPetRemove.vue";
+import DialogAddressAdd from "@/components/dialogs/address/DialogAddressAdd.vue";
+import DialogAddressUpdate from "@/components/dialogs/address/DialogAddressUpdate.vue";
+import DialogAddressRemove from "@/components/dialogs/address/DialogAddressRemove.vue";
 
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
-import { search, next, prev } from "@/api/pet";
+import { search, next, prev, remove } from "@/api/address";
 
 import { ref, onMounted } from "vue";
 
-const dialogPetAdd = ref(false);
-const dialogPetUpdate = ref(false);
-const dialogPetRemove = ref(false);
+const dialogAddressAdd = ref(false);
+const dialogAddressUpdate = ref(false);
+const dialogAddressRemove = ref(false);
 
 const isLoading = ref(false);
-const pets = ref();
-const pet = ref();
+const addresses = ref([]);
+const address = ref({});
 const params = ref({
   searchText: "",
-  columnName: "name",
+  columnName: "createdAt",
   orderDirection: "asc",
   limitNumber: 5,
   firstItem: "",
@@ -91,12 +91,14 @@ const loadItems = async () => {
     isLoading.value = true;
     const items = await search(params.value);
 
+    if (!items.length) return;
+
     const firstItemIndex = 0;
     const lastItemIndex = items.length - 1;
     params.value.firstItem = items[firstItemIndex][params.value.columnName];
     params.value.lastItem = items[lastItemIndex][params.value.columnName];
 
-    pets.value = items;
+    addresses.value = items;
   } catch ({ message }) {
     console.log("error", message);
   } finally {
@@ -108,18 +110,18 @@ onMounted(async () => {
   loadItems();
 });
 
-const addHandler = () => {
-  dialogPetAdd.value = true;
+const addHandler = async () => {
+  dialogAddressAdd.value = true;
 };
 
 const updateHandler = (item) => {
-  pet.value = item;
-  dialogPetUpdate.value = true;
+  address.value = item;
+  dialogAddressUpdate.value = true;
 };
 
 const removeHandler = async (item) => {
-  pet.value = item;
-  dialogPetRemove.value = true;
+  address.value = item;
+  dialogAddressRemove.value = true;
 };
 
 const nextHandler = async () => {
@@ -134,7 +136,7 @@ const nextHandler = async () => {
     params.value.firstItem = result[firstItemIndex][params.value.columnName];
     params.value.lastItem = result[lastItemIndex][params.value.columnName];
 
-    pets.value = result;
+    addresses.value = result;
   } catch ({ message }) {
     show("error", message);
   } finally {
@@ -154,7 +156,7 @@ const prevHandler = async () => {
     params.value.firstItem = result[firstItemIndex][params.value.columnName];
     params.value.lastItem = result[lastItemIndex][params.value.columnName];
 
-    pets.value = result;
+    addresses.value = result;
   } catch ({ message }) {
     show("error", message);
   } finally {

@@ -50,6 +50,29 @@
         <Label caption>{{ role }}</Label>
       </Chip>
     </template>
+
+    <template v-slot:item.address="{ item, index }">
+      <v-row class="pa-1">
+        <v-col>
+          <Label text class="mt-2">
+            {{ item.selectable.exact }}
+            {{ item.selectable.division }}
+          </Label>
+          <Label caption class="text-grey">
+            {{ item.selectable.barangay }}, {{ item.selectable.city }},
+            {{ item.selectable.province }}, {{ item.selectable.region }},
+            {{ item.selectable.country }},
+            {{ item.selectable.zipcode }}
+          </Label>
+        </v-col>
+      </v-row>
+    </template>
+
+    <template v-slot:item.age="{ item, index }">
+      <Label text class="mt-2">
+        {{ toAge(item.selectable.birthDate) }}
+      </Label>
+    </template>
   </v-data-table>
 </template>
 
@@ -61,11 +84,19 @@ import Label from "@/components/common/Label";
 import ButtonIcon from "@/components/common/ButtonIcon";
 import Button from "@/components/common/Button";
 
+import { getAge } from "@/utils/vue";
+
 const emit = defineEmits(["view", "update", "remove", "add", "prev", "next"]);
 const props = defineProps({
   withView: Boolean,
   withUpdate: Boolean,
   withRemove: Boolean,
   withAdd: Boolean,
+  customized: Boolean,
 });
+
+const toAge = (age) => {
+  const { years, months, days } = getAge(age);
+  return `${years} years, ${months} months, ${days} days`;
+};
 </script>

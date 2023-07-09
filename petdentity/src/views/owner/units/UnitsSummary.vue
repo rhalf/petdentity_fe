@@ -30,14 +30,14 @@
             withAdd
             @remove="removeHandler"
             @update="updateHandler"
-            @add="dialogUnitAdd = true"
+            @add="dialogUnitOwnerAdd = true"
             @next="nextHandler"
             @prev="prevHandler"
           />
         </v-col>
       </v-row>
     </Sheet>
-    <DialogUnitAdd v-model="dialogUnitAdd" @add="loadItems" />
+    <DialogUnitOwnerAdd v-model="dialogUnitOwnerAdd" @add="loadItems" />
     <DialogUnitOwnerUpdate
       v-model="dialogUnitOwnerUpdate"
       v-model:unit="unit"
@@ -59,7 +59,7 @@ import TextField from "@/components/common/TextField.vue";
 import DataTable from "@/components/tables/DataTable.vue";
 import { headers } from "./data";
 
-import DialogUnitAdd from "@/components/dialogs/unit/DialogUnitAdd.vue";
+import DialogUnitOwnerAdd from "@/components/dialogs/unit/DialogUnitOwnerAdd.vue";
 import DialogUnitOwnerUpdate from "@/components/dialogs/unit/DialogUnitOwnerUpdate.vue";
 import DialogUnitOwnerRemove from "@/components/dialogs/unit/DialogUnitOwnerRemove.vue";
 
@@ -68,11 +68,11 @@ const { show } = useSnackbarStore();
 
 import { getCurrentUser } from "@/utils/firebase";
 
-import { search, next, prev } from "@/api/user-unit";
+import { search, next, prev } from "@/api/owner-unit";
 
 import { ref, onMounted } from "vue";
 
-const dialogUnitAdd = ref(false);
+const dialogUnitOwnerAdd = ref(false);
 const dialogUnitOwnerUpdate = ref(false);
 const dialogUnitOwnerRemove = ref(false);
 
@@ -93,7 +93,6 @@ const loadItems = async () => {
     isLoading.value = true;
 
     const { uid } = await getCurrentUser();
-    console.log("user", uid);
     const items = await search(uid, params.value);
 
     const firstIndex = 0;
@@ -118,7 +117,7 @@ onMounted(async () => {
 
 const removeHandler = async (item) => {
   unit.value = item;
-  DialogUnitOwnerRemove.value = true;
+  dialogUnitOwnerRemove.value = true;
 };
 
 const updateHandler = (item) => {
