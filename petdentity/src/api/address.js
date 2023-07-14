@@ -24,7 +24,7 @@ import { toObject, toArray } from "./index";
 import { getCurrentUser } from "@/utils/firebase";
 
 const collectionName = "addresses";
-const { uid } = await getCurrentUser();
+const collectionRef = collection(firestore, collectionName);
 
 export const search = async ({
   searchText,
@@ -32,7 +32,8 @@ export const search = async ({
   orderDirection,
   limitNumber,
 }) => {
-  const collectionRef = collection(firestore, collectionName);
+  const { uid } = await getCurrentUser();
+
   const q = await query(
     collectionRef,
     where("owner", "==", uid),
@@ -51,8 +52,6 @@ export const next = async ({
   orderDirection,
   limitNumber,
 }) => {
-  const collectionRef = collection(firestore, collectionName);
-
   const q = await query(
     collectionRef,
     orderBy(columnName, orderDirection),
@@ -69,7 +68,6 @@ export const prev = async ({
   orderDirection,
   limitNumber,
 }) => {
-  const collectionRef = collection(firestore, collectionName);
   const q = await query(
     collectionRef,
     orderBy(columnName, orderDirection),
@@ -89,7 +87,6 @@ export const get = async (id) => {
 export const create = async (item) => {
   item.createdAt = toUtcTimestamp(new Date());
   item.owner = uid;
-  const collectionRef = collection(firestore, collectionName);
   return await addDoc(collectionRef, item);
 };
 
@@ -105,7 +102,6 @@ export const remove = async (document) => {
 };
 
 export const count = async () => {
-  const collectionRef = collection(firestore, collectionName);
   const q = query(collectionRef, where("owner", "==", uid));
   const snapshot = await getCountFromServer(q);
   return snapshot.data().count;

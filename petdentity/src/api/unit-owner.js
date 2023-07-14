@@ -22,7 +22,9 @@ import {
 import { toUtcTimestamp } from "@/utils/vue";
 import { toObject, toArray } from "./index";
 
-const collectionName = "animals";
+import { getCurrentUser } from "@/utils/firebase";
+
+const collectionName = "units";
 const collectionRef = collection(firestore, collectionName);
 
 export const search = async ({
@@ -31,8 +33,10 @@ export const search = async ({
   orderDirection,
   limitNumber,
 }) => {
+  const { uid } = await getCurrentUser();
   const q = await query(
     collectionRef,
+    where("owner", "==", uid),
     orderBy(columnName, orderDirection),
     startAt(searchText),
     endAt(searchText + "\uf8ff"),
@@ -48,13 +52,14 @@ export const next = async ({
   orderDirection,
   limitNumber,
 }) => {
+  const { uid } = await getCurrentUser();
   const q = await query(
     collectionRef,
+    where("owner", "==", uid),
     orderBy(columnName, orderDirection),
     startAfter(lastItem),
     limit(limitNumber)
   );
-
   const snapshots = await getDocs(q);
   return toArray(snapshots);
 };
@@ -65,18 +70,14 @@ export const prev = async ({
   orderDirection,
   limitNumber,
 }) => {
+  const { uid } = await getCurrentUser();
   const q = await query(
     collectionRef,
+    where("owner", "==", uid),
     orderBy(columnName, orderDirection),
     endBefore(firstItem),
     limitToLast(limitNumber)
   );
-  const snapshots = await getDocs(q);
-  return toArray(snapshots);
-};
-
-export const getAll = async ({ columnName, orderDirection }) => {
-  const q = await query(collectionRef, orderBy(columnName, orderDirection));
   const snapshots = await getDocs(q);
   return toArray(snapshots);
 };
@@ -89,6 +90,7 @@ export const get = async (id) => {
 
 export const create = async (item) => {
   item.createdAt = toUtcTimestamp(new Date());
+
   return await addDoc(collectionRef, item);
 };
 
@@ -98,12 +100,16 @@ export const update = async (item) => {
   return await setDoc(documentRef, item);
 };
 
-export const remove = async (item) => {
-  const documentRef = doc(firestore, collectionName, item.id);
-  return await deleteDoc(documentRef);
+export const remove = async (document) => {
+  document.owner = null;
+  return update(document);
+  // const documentRef = doc(firestore, collectionName, document.id);
+  // return await deleteDoc(documentRef);
 };
 
 export const count = async () => {
-  const snapshot = await getCountFromServer(collectionRef);
+  const { uid } = await getCurrentUser();
+  const q = query(collectionRef, where("owner", "==", uid));
+  const snapshot = await getCountFromServer(q);
   return snapshot.data().count;
 };

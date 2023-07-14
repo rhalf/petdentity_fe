@@ -82,30 +82,8 @@ const params = ref({
   columnName: "name",
   orderDirection: "asc",
   limitNumber: 5,
-  firstItem: "",
-  lastItem: "",
-});
-
-const loadItems = async () => {
-  try {
-    isLoading.value = true;
-    const items = await search(params.value);
-
-    const firstItemIndex = 0;
-    const lastItemIndex = items.length - 1;
-    params.value.firstItem = items[firstItemIndex][params.value.columnName];
-    params.value.lastItem = items[lastItemIndex][params.value.columnName];
-
-    pets.value = items;
-  } catch ({ message }) {
-    console.log("error", message);
-  } finally {
-    isLoading.value = false;
-  }
-};
-
-onMounted(async () => {
-  loadItems();
+  firstItem: null,
+  lastItem: null,
 });
 
 const addHandler = () => {
@@ -122,19 +100,37 @@ const removeHandler = async (item) => {
   dialogPetRemove.value = true;
 };
 
+onMounted(async () => {
+  await loadItems();
+});
+
+const loadItems = async () => {
+  try {
+    isLoading.value = true;
+    const items = await search(params.value);
+
+    if (!items.length) return;
+
+    setIndexes(items);
+
+    pets.value = items;
+  } catch ({ message }) {
+    show("error", message);
+  } finally {
+    isLoading.value = false;
+  }
+};
+
 const nextHandler = async () => {
   try {
     isLoading.value = true;
-    const result = await next(params.value);
+    const items = await next(params.value);
 
-    if (result.length === 0) throw new Error("Last page!");
+    if (!items.length) throw new Error("Last page!");
 
-    const firstItemIndex = 0;
-    const lastItemIndex = result.length - 1;
-    params.value.firstItem = result[firstItemIndex][params.value.columnName];
-    params.value.lastItem = result[lastItemIndex][params.value.columnName];
+    setIndexes(items);
 
-    pets.value = result;
+    pets.value = items;
   } catch ({ message }) {
     show("error", message);
   } finally {
@@ -145,20 +141,24 @@ const nextHandler = async () => {
 const prevHandler = async () => {
   try {
     isLoading.value = true;
-    const result = await prev(params.value);
+    const items = await prev(params.value);
 
-    if (result.length === 0) throw new Error("First page!");
+    if (!items.length) throw new Error("First page!");
 
-    const firstItemIndex = 0;
-    const lastItemIndex = result.length - 1;
-    params.value.firstItem = result[firstItemIndex][params.value.columnName];
-    params.value.lastItem = result[lastItemIndex][params.value.columnName];
+    setIndexes(items);
 
-    pets.value = result;
+    pets.value = items;
   } catch ({ message }) {
     show("error", message);
   } finally {
     isLoading.value = false;
   }
+};
+
+const setIndexes = (items) => {
+  const firstItem = 0;
+  const lastItem = items.length - 1;
+  params.value.firstItem = items[firstItem][params.value.columnName];
+  params.value.lastItem = items[lastItem][params.value.columnName];
 };
 </script>

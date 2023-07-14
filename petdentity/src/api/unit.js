@@ -22,7 +22,10 @@ import {
 import { toUtcTimestamp } from "@/utils/vue";
 import { toObject, toArray } from "./index";
 
+import { getCurrentUser } from "@/utils/firebase";
+
 const collectionName = "units";
+const collectionRef = collection(firestore, collectionName);
 
 export const search = async ({
   searchText,
@@ -30,7 +33,6 @@ export const search = async ({
   orderDirection,
   limitNumber,
 }) => {
-  const collectionRef = collection(firestore, collectionName);
   const q = await query(
     collectionRef,
     orderBy(columnName, orderDirection),
@@ -48,8 +50,6 @@ export const next = async ({
   orderDirection,
   limitNumber,
 }) => {
-  const collectionRef = collection(firestore, collectionName);
-
   const q = await query(
     collectionRef,
     orderBy(columnName, orderDirection),
@@ -66,7 +66,6 @@ export const prev = async ({
   orderDirection,
   limitNumber,
 }) => {
-  const collectionRef = collection(firestore, collectionName);
   const q = await query(
     collectionRef,
     orderBy(columnName, orderDirection),
@@ -84,7 +83,6 @@ export const get = async (id) => {
 };
 
 export const getByUid = async (uid) => {
-  const collectionRef = collection(firestore, collectionName);
   const q = await query(collectionRef, where("uid", "==", uid));
   const snapshots = await getDocs(q);
   return toArray(snapshots);
@@ -92,7 +90,7 @@ export const getByUid = async (uid) => {
 
 export const create = async (item) => {
   item.createdAt = toUtcTimestamp(new Date());
-  const collectionRef = collection(firestore, collectionName);
+
   return await addDoc(collectionRef, item);
 };
 
@@ -102,13 +100,12 @@ export const update = async (item) => {
   return await setDoc(documentRef, item);
 };
 
-export const remove = async (document) => {
-  const documentRef = doc(firestore, collectionName, document.id);
+export const remove = async (item) => {
+  const documentRef = doc(firestore, collectionName, item.id);
   return await deleteDoc(documentRef);
 };
 
 export const count = async () => {
-  const collectionRef = collection(firestore, collectionName);
   const snapshot = await getCountFromServer(collectionRef);
   return snapshot.data().count;
 };

@@ -50,9 +50,12 @@
 
     <div v-if="profile.headline" class="mt-4">
       <Label text class="text-primary"> Headline </Label>
-      <Alert icon="mdi-account-voice" class="mt-2">
+      <!-- <Alert icon="mdi-account-voice" class="mt-2">
         {{ profile.headline }}
-      </Alert>
+      </Alert> -->
+      <Label text>
+        {{ profile.headline }}
+      </Label>
     </div>
   </Sheet>
 </template>

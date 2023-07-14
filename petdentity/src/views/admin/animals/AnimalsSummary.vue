@@ -74,7 +74,7 @@ import DialogAnimalView from "@/components/dialogs/animal/DialogAnimalView.vue";
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
-import { search, next, prev, remove } from "@/api/animal";
+import { search, next, prev } from "@/api/animal";
 
 import { ref, onMounted } from "vue";
 
@@ -93,28 +93,6 @@ const params = ref({
   limitNumber: 5,
   firstItem: "",
   lastItem: "",
-});
-
-const loadItems = async () => {
-  try {
-    isLoading.value = true;
-    const items = await search(params.value);
-
-    const firstItemIndex = 0;
-    const lastItemIndex = items.length - 1;
-    params.value.firstItem = items[firstItemIndex][params.value.columnName];
-    params.value.lastItem = items[lastItemIndex][params.value.columnName];
-
-    animals.value = items;
-  } catch ({ message }) {
-    console.log("error", message);
-  } finally {
-    isLoading.value = false;
-  }
-};
-
-onMounted(async () => {
-  loadItems();
 });
 
 const addHandler = async () => {
@@ -136,19 +114,37 @@ const viewHandler = (item) => {
   dialogAnimalView.value = true;
 };
 
+onMounted(async () => {
+  loadItems();
+});
+
+const loadItems = async () => {
+  try {
+    isLoading.value = true;
+    const items = await search(params.value);
+
+    if (!items.length) return;
+
+    setIndexes(items);
+
+    animals.value = items;
+  } catch ({ message }) {
+    console.log("error", message);
+  } finally {
+    isLoading.value = false;
+  }
+};
+
 const nextHandler = async () => {
   try {
     isLoading.value = true;
-    const result = await next(params.value);
+    const items = await next(params.value);
 
-    if (result.length === 0) throw new Error("Last page!");
+    if (!items.length) throw new Error("Last page!");
 
-    const firstItemIndex = 0;
-    const lastItemIndex = result.length - 1;
-    params.value.firstItem = result[firstItemIndex][params.value.columnName];
-    params.value.lastItem = result[lastItemIndex][params.value.columnName];
+    setIndexes(items);
 
-    animals.value = result;
+    animals.value = items;
   } catch ({ message }) {
     show("error", message);
   } finally {
@@ -159,20 +155,24 @@ const nextHandler = async () => {
 const prevHandler = async () => {
   try {
     isLoading.value = true;
-    const result = await prev(params.value);
+    const items = await prev(params.value);
 
-    if (result.length === 0) throw new Error("First page!");
+    if (!items.length) throw new Error("First page!");
 
-    const firstItemIndex = 0;
-    const lastItemIndex = result.length - 1;
-    params.value.firstItem = result[firstItemIndex][params.value.columnName];
-    params.value.lastItem = result[lastItemIndex][params.value.columnName];
+    setIndexes(items);
 
-    animals.value = result;
+    animals.value = items;
   } catch ({ message }) {
     show("error", message);
   } finally {
     isLoading.value = false;
   }
+};
+
+const setIndexes = (items) => {
+  const firstItem = 0;
+  const lastItem = items.length - 1;
+  params.value.firstItem = items[firstItem][params.value.columnName];
+  params.value.lastItem = items[lastItem][params.value.columnName];
 };
 </script>

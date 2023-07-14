@@ -168,7 +168,7 @@ import { toStringDate, getAge } from "@/utils/vue";
 import { computed, onMounted, reactive, ref, watch } from "vue";
 import { update } from "@/api/user";
 
-import { uploadProfilePhoto } from "@/api/photo";
+import { uploadOwnerProfile } from "@/api/photo";
 import { toRefs } from "vue";
 
 import { useSnackbarStore } from "@/store/snackbar";
@@ -207,7 +207,7 @@ watch(imagePath, async (current) => {
   if (!current) return;
   try {
     isLoading.value = true;
-    const result = await uploadProfilePhoto(user.value.uid, current);
+    const result = await uploadOwnerProfile(user.value.uid, current);
     emit("upload", result);
   } catch (error) {
     console.log("error", error);

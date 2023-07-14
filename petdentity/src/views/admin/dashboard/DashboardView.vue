@@ -10,18 +10,20 @@
           v-for="(counter, index) in counters"
           :key="index"
         >
-          <v-card>
-            <v-row dense class="bg-primary">
-              <v-col class="ma-2" align="center" justify="center">
-                <Label header>{{ counter.title }}</Label>
-              </v-col>
-            </v-row>
-            <v-row dense>
-              <v-col class="ma-1" align="center" justify="center">
-                <Label title>{{ format(counter.count) }}</Label>
-              </v-col>
-            </v-row>
-          </v-card>
+          <v-slide-x-transition>
+            <v-card v-if="counter">
+              <v-row dense class="bg-primary">
+                <v-col class="ma-2" align="center" justify="center">
+                  <Label header>{{ counter.title }}</Label>
+                </v-col>
+              </v-row>
+              <v-row dense>
+                <v-col class="ma-1" align="center" justify="center">
+                  <Label title>{{ format(counter.count) }}</Label>
+                </v-col>
+              </v-row>
+            </v-card>
+          </v-slide-x-transition>
         </v-col>
       </v-row>
     </Sheet>
@@ -34,33 +36,53 @@ import Label from "@/components/common/Label.vue";
 import Sheet from "@/components/common/Sheet.vue";
 
 import { count as countAnimals } from "@/api/animal";
+import { count as countBreeds } from "@/api/breed";
 import { count as countUnits } from "@/api/unit";
 import { count as countUsers } from "@/api/unit";
 
+import { useSnackbarStore } from "@/store/snackbar";
+const { show } = useSnackbarStore();
+
+import { useProgressLineStore } from "@/store/progress-line";
+const { start, stop } = useProgressLineStore();
+
 import { ref, onMounted } from "vue";
 
-const counters = ref([]);
+const counters = ref();
 
 onMounted(async () => {
-  const array = [
-    {
-      title: "Animals",
-      count: await countAnimals(),
-      // count: _.padStart(await countAnimals(), 7, "0"),
-    },
-    {
-      title: "Units",
-      count: await countUnits(),
-      // count: _.padStart(await countUnits(), 7, "0"),
-    },
-    {
-      title: "Users",
-      count: await countUsers(),
-      // count: _.padStart(await countUsers(), 7, "0"),
-    },
-  ];
+  try {
+    start();
 
-  counters.value = array;
+    const array = [
+      {
+        title: "Animals",
+        count: await countAnimals(),
+        // count: _.padStart(await countAnimals(), 7, "0"),
+      },
+      {
+        title: "Breeds",
+        count: await countBreeds(),
+        // count: _.padStart(await countAnimals(), 7, "0"),
+      },
+      {
+        title: "Units",
+        count: await countUnits(),
+        // count: _.padStart(await countUnits(), 7, "0"),
+      },
+      {
+        title: "Users",
+        count: await countUsers(),
+        // count: _.padStart(await countUsers(), 7, "0"),
+      },
+    ];
+
+    counters.value = array;
+  } catch ({ message }) {
+    show("error", message);
+  } finally {
+    stop();
+  }
 });
 
 const format = (number) => {

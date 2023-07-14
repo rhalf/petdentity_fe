@@ -1,7 +1,7 @@
 <template>
   <Select
     v-model="item"
-    :items="items"
+    :items="breeds"
     placeholder="Breed"
     :loading="isLoading"
     item-title="name"
@@ -27,12 +27,19 @@ const { animal } = propsRef;
 
 const item = computed(useModel(propsRef, emit, "modelValue"));
 const isLoading = ref(false);
-const items = ref([]);
+const breeds = ref();
 
 const loadItems = async () => {
   try {
     isLoading.value = true;
-    items.value = await getAll(animal.value.id);
+
+    if (!animal.value) return;
+
+    const items = await getAll(animal.value.id);
+
+    if (!items.length) return;
+
+    breeds.value = items;
   } catch ({ message }) {
     console.log("error", message);
   } finally {
@@ -40,14 +47,10 @@ const loadItems = async () => {
   }
 };
 
-onMounted(async () => {
-  await loadItems();
-});
-
 watch(
   animal,
-  (current, previous) => {
-    if (current !== previous) loadItems();
+  () => {
+    loadItems();
   },
   { immediate: true, deep: true }
 );

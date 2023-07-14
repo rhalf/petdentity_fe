@@ -5,7 +5,7 @@
         <Label header class="text-black"> Update Pet </Label>
       </v-card-title>
       <v-card-text>
-        <FormPet v-model="pet" />
+        <FormPet v-model="pet" withPhoto />
       </v-card-text>
       <v-card-actions>
         <v-row dense class="py-4 px-4">

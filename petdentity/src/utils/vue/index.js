@@ -35,3 +35,12 @@ export const toUtc = (date) => {
 export const toUtcTimestamp = (date) => {
   return toUtc(date).unix();
 };
+
+// import { readFile } from "fs/promises";
+// export const readJsonFile = async (path) => {
+//   const file = await readFile(path, "utf8");
+//   return JSON.parse(file);
+// };
+// import { readJsonFile } from "@/utils/vue";
+// const countries = readJsonFile("@/data/countries.json");
+// const philippines = readJsonFile("@/data/philippines.json");

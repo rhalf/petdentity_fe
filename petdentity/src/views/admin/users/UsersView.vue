@@ -5,7 +5,6 @@
 </template>
 
 <script setup>
-import Sheet from "@/components/common/Sheet.vue";
 import FormUserView from "@/components/forms/user/FormUserView.vue";
 
 import { useSnackbarStore } from "@/store/snackbar";
@@ -19,7 +18,7 @@ import { get } from "@/api/user";
 import { ref, onMounted } from "vue";
 
 const isLoading = ref(false);
-const user = ref({});
+const user = ref();
 
 const loadItem = async () => {
   try {
@@ -32,7 +31,7 @@ const loadItem = async () => {
   }
 };
 
-onMounted(() => {
-  loadItem();
+onMounted(async () => {
+  await loadItem();
 });
 </script>

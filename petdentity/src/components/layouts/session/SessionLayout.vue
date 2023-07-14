@@ -1,10 +1,6 @@
 <template>
   <v-app>
     <v-main>
-      <ProgressLine
-        :indeterminate="progressLine.status"
-        :visible="progressLine.status"
-      />
       <router-view v-slot="{ Component }">
         <v-layout full-height>
           <v-row dense>
@@ -45,8 +41,8 @@ import { useDisplay } from "vuetify";
 const { xs, sm } = useDisplay();
 
 import ProgressLine from "@/components/common/ProgressLine.vue";
-import { useProgressLineStore } from "@/store/progress-line";
 const progressLine = useProgressLineStore();
+import { useProgressLineStore } from "@/store/progress-line";
 const { start, stop } = useProgressLineStore();
 
 import Sheet from "@/components/common/Sheet.vue";

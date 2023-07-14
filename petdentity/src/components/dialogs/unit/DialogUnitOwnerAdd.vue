@@ -37,7 +37,7 @@ import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
 import { getByUid } from "@/api/unit";
-import { update } from "@/api/owner-unit";
+import { update } from "@/api/unit-owner";
 
 import { useModel } from "@/utils/vue";
 

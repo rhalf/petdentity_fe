@@ -79,15 +79,31 @@ const params = ref({
   lastItem: "",
 });
 
+const viewHandler = ({ id }) => {
+  console.log(id);
+  router.push({
+    name: "AdminUsersView",
+    params: { id: id },
+  });
+};
+
+const removeHandler = async (item) => {
+  user.value = item;
+  dialogUserRemove.value = true;
+};
+
+onMounted(async () => {
+  loadItems();
+});
+
 const loadItems = async () => {
   try {
     isLoading.value = true;
     const items = await search(params.value);
 
-    const firstIndex = 0;
-    const lastIndex = items.length - 1;
-    params.value.firstItem = items[firstIndex][params.value.columnName];
-    params.value.lastItem = items[lastIndex][params.value.columnName];
+    if (!items.length) return;
+
+    setIndexes(items);
 
     users.value = items;
   } catch ({ message }) {
@@ -97,36 +113,16 @@ const loadItems = async () => {
   }
 };
 
-onMounted(async () => {
-  loadItems();
-});
-
-const removeHandler = async (item) => {
-  user.value = item;
-  dialogUserRemove.value = true;
-};
-
-const viewHandler = ({ id }) => {
-  console.log(id);
-  router.push({
-    name: "AdminUsersView",
-    params: { id: id },
-  });
-};
-
 const nextHandler = async () => {
   try {
     isLoading.value = true;
-    const result = await next(params.value);
+    const items = await next(params.value);
 
-    if (result.length === 0) throw new Error("Last page!");
+    if (!items.length) throw new Error("Last page!");
 
-    const firstIndex = 0;
-    const lastIndex = result.length - 1;
-    params.value.firstItem = result[firstIndex][params.value.columnName];
-    params.value.lastItem = result[lastIndex][params.value.columnName];
+    setIndexes(items);
 
-    users.value = result;
+    users.value = items;
   } catch ({ message }) {
     show("error", message);
   } finally {
@@ -137,20 +133,24 @@ const nextHandler = async () => {
 const prevHandler = async () => {
   try {
     isLoading.value = true;
-    const result = await prev(params.value);
+    const items = await prev(params.value);
 
-    if (result.length === 0) throw new Error("First page!");
+    if (!items.length) throw new Error("First page!");
 
-    const firstIndex = 0;
-    const lastIndex = result.length - 1;
-    params.value.firstItem = result[firstIndex][params.value.columnName];
-    params.value.lastItem = result[lastIndex][params.value.columnName];
+    setIndexes(items);
 
-    users.value = result;
+    users.value = items;
   } catch ({ message }) {
     show("error", message);
   } finally {
     isLoading.value = false;
   }
+};
+
+const setIndexes = (items) => {
+  const firstItem = 0;
+  const lastItem = items.length - 1;
+  params.value.firstItem = items[firstItem][params.value.columnName];
+  params.value.lastItem = items[lastItem][params.value.columnName];
 };
 </script>

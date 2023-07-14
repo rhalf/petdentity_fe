@@ -1,4 +1,28 @@
 <template>
+  <div v-if="withPhoto">
+    <FileInput
+      id="fileUpload"
+      v-show="false"
+      @update:modelValue="updateHandler"
+    />
+
+    <v-row dense class="mt-4">
+      <v-col cols="12" class="text-center">
+        <Avatar v-model="pet.photoUrl" :size="200" type="PET" />
+      </v-col>
+    </v-row>
+
+    <v-row dense>
+      <v-col cols="12" class="text-right">
+        <ButtonIcon
+          icon="mdi-pencil"
+          variant="flat"
+          color="primary"
+          @click="clickHandler"
+        />
+      </v-col>
+    </v-row>
+  </div>
   <div>
     <Label class="text-primary"> Name </Label>
   </div>
@@ -55,7 +79,7 @@
   </v-row>
 
   <v-row dense class="mt-2">
-    <v-col md="6">
+    <v-col cols="12" md="6">
       <Label class="text-primary"> Color1 </Label>
       <Sheet
         class="mt-2 py-6"
@@ -63,7 +87,7 @@
         @click="dialogColor1 = true"
       />
     </v-col>
-    <v-col md="6">
+    <v-col cols="12" md="6">
       <Label class="text-primary"> Color2 </Label>
       <Sheet
         class="mt-2 py-6"
@@ -82,6 +106,10 @@ import Sheet from "@/components/common/Sheet.vue";
 import Label from "@/components/common/Label.vue";
 import TextField from "@/components/common/TextField.vue";
 
+import Avatar from "@/components/common/Avatar.vue";
+import FileInput from "@/components/common/FileInput.vue";
+import ButtonIcon from "@/components/common/ButtonIcon.vue";
+
 import Gender from "@/components/pickers/Gender.vue";
 import Date from "@/components/pickers/Date.vue";
 import Animal from "@/components/pickers/Animal.vue";
@@ -89,20 +117,40 @@ import Breed from "@/components/pickers/Breed.vue";
 
 import DialogColor from "@/components/dialogs/color/DialogColor.vue";
 
+import { uploadPetProfile } from "@/api/photo";
+
 import { useModel } from "@/utils/vue";
-import { ref, toRefs, computed, watch } from "vue";
+import { ref, toRefs, computed } from "vue";
 
 const emit = defineEmits(["update:modelValue", "upload"]);
 const props = defineProps({
   modelValue: Object,
+  withPhoto: Boolean,
 });
 
+const isLoading = ref(false);
 const propsRef = toRefs(props);
-
+const { withPhoto } = propsRef;
 const pet = computed(useModel(propsRef, emit, "modelValue"));
 
 const dialogColor1 = ref(false);
 const dialogColor2 = ref(false);
+
+const clickHandler = async () => {
+  let fileUpload = document.getElementById("fileUpload");
+  if (fileUpload != null) await fileUpload.click();
+};
+
+const updateHandler = async (file) => {
+  try {
+    isLoading.value = true;
+    pet.value.photoUrl = await uploadPetProfile(pet.value.id, file);
+  } catch ({ message }) {
+    show("error", message);
+  } finally {
+    isLoading.value = false;
+  }
+};
 </script>
 
 <style></style>

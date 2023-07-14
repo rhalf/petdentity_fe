@@ -21,10 +21,11 @@ import {
 
 import { toUtcTimestamp } from "@/utils/vue";
 import { toObject, toArray } from "./index";
+
 import { getCurrentUser } from "@/utils/firebase";
 
 const collectionName = "pets";
-const { uid } = await getCurrentUser();
+const collectionRef = collection(firestore, collectionName);
 
 export const search = async ({
   searchText,
@@ -32,9 +33,10 @@ export const search = async ({
   orderDirection,
   limitNumber,
 }) => {
-  const collectionRef = collection(firestore, collectionName);
+  const { uid } = await getCurrentUser();
   const q = await query(
     collectionRef,
+    where("owner", "==", uid),
     orderBy(columnName, orderDirection),
     startAt(searchText),
     endAt(searchText + "\uf8ff"),
@@ -50,15 +52,14 @@ export const next = async ({
   orderDirection,
   limitNumber,
 }) => {
-  const collectionRef = collection(firestore, collectionName);
-
+  const { uid } = await getCurrentUser();
   const q = await query(
     collectionRef,
+    where("owner", "==", uid),
     orderBy(columnName, orderDirection),
     startAfter(lastItem),
     limit(limitNumber)
   );
-
   const snapshots = await getDocs(q);
   return toArray(snapshots);
 };
@@ -69,9 +70,10 @@ export const prev = async ({
   orderDirection,
   limitNumber,
 }) => {
-  const collectionRef = collection(firestore, collectionName);
+  const { uid } = await getCurrentUser();
   const q = await query(
     collectionRef,
+    where("owner", "==", uid),
     orderBy(columnName, orderDirection),
     endBefore(firstItem),
     limitToLast(limitNumber)
@@ -87,9 +89,9 @@ export const get = async (id) => {
 };
 
 export const create = async (document) => {
+  const { uid } = await getCurrentUser();
   document.createdAt = toUtcTimestamp(new Date());
   document.owner = uid;
-  const collectionRef = collection(firestore, collectionName);
   return await addDoc(collectionRef, document);
 };
 
@@ -104,7 +106,6 @@ export const remove = async (document) => {
 };
 
 export const count = async () => {
-  const collectionRef = collection(firestore, collectionName);
   const snapshot = await getCountFromServer(collectionRef);
   return snapshot.data().count;
 };

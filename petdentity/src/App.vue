@@ -1,10 +1,13 @@
 <template>
+  <div id="progress-line" />
   <v-app>
-    <ProgressLine
-      :indeterminate="progressLine.status"
-      :visible="progressLine.status"
-    />
-    <router-view />
+    <router-view v-slot="{ Component }">
+      <!-- <v-fade-transition> -->
+      <component :is="Component" />
+      <!-- </v-fade-transition> -->
+    </router-view>
+
+    <ProgressLine />
     <Snackbar />
   </v-app>
 </template>
@@ -15,7 +18,6 @@ import Snackbar from "@/components/common/Snackbar.vue";
 import ProgressLine from "@/components/common/ProgressLine.vue";
 
 import { useProgressLineStore } from "@/store/progress-line";
-const progressLine = useProgressLineStore();
 const { start, stop } = useProgressLineStore();
 
 import { useSnackbarStore } from "@/store/snackbar";

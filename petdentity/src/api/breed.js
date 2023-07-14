@@ -23,12 +23,12 @@ import { toUtcTimestamp } from "@/utils/vue";
 import { toObject, toArray } from "./index";
 
 const collectionName = "breeds";
+const collectionRef = collection(firestore, collectionName);
 
 export const search = async (
   id,
   { searchText, columnName, orderDirection, limitNumber }
 ) => {
-  const collectionRef = collection(firestore, collectionName);
   const q = await query(
     collectionRef,
     where("animal", "==", id),
@@ -45,8 +45,6 @@ export const next = async (
   id,
   { lastItem, columnName, orderDirection, limitNumber }
 ) => {
-  const collectionRef = collection(firestore, collectionName);
-
   const q = await query(
     collectionRef,
     where("animal", "==", id),
@@ -59,15 +57,13 @@ export const next = async (
   return toArray(snapshots);
 };
 
-export const prev = async ({
-  firstItem,
-  columnName,
-  orderDirection,
-  limitNumber,
-}) => {
-  const collectionRef = collection(firestore, collectionName);
+export const prev = async (
+  id,
+  { firstItem, columnName, orderDirection, limitNumber }
+) => {
   const q = await query(
     collectionRef,
+    where("animal", "==", id),
     orderBy(columnName, orderDirection),
     endBefore(firstItem),
     limitToLast(limitNumber)
@@ -83,7 +79,6 @@ export const get = async (id) => {
 };
 
 export const getAll = async (id) => {
-  const collectionRef = collection(firestore, collectionName);
   const q = await query(
     collectionRef,
     where("animal", "==", id),
@@ -93,24 +88,23 @@ export const getAll = async (id) => {
   return toArray(snapshots);
 };
 
-export const create = async (document) => {
-  document.createdAt = toUtcTimestamp(new Date());
-  const collectionRef = collection(firestore, collectionName);
-  return await addDoc(collectionRef, document);
+export const create = async (item) => {
+  item.createdAt = toUtcTimestamp(new Date());
+  return await addDoc(collectionRef, item);
 };
 
-export const update = async (document) => {
-  const documentRef = doc(firestore, collectionName, document.id);
-  return await setDoc(documentRef, document);
+export const update = async (item) => {
+  item.updatedAt = toUtcTimestamp(new Date());
+  const documentRef = doc(firestore, collectionName, item.id);
+  return await setDoc(documentRef, item);
 };
 
-export const remove = async (document) => {
-  const documentRef = doc(firestore, collectionName, document.id);
+export const remove = async (item) => {
+  const documentRef = doc(firestore, collectionName, item.id);
   return await deleteDoc(documentRef);
 };
 
 export const count = async () => {
-  const collectionRef = collection(firestore, collectionName);
   const snapshot = await getCountFromServer(collectionRef);
   return snapshot.data().count;
 };

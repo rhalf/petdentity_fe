@@ -26,12 +26,21 @@ const propsRef = toRefs(props);
 
 const item = computed(useModel(propsRef, emit, "modelValue"));
 const isLoading = ref(false);
-const items = ref([]);
+const items = ref();
+
+const params = ref({
+  searchText: null,
+  columnName: "name",
+  orderDirection: "asc",
+  limitNumber: null,
+  firstItem: null,
+  lastItem: null,
+});
 
 const loadItems = async () => {
   try {
     isLoading.value = true;
-    items.value = await getAll();
+    items.value = await getAll(params.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {

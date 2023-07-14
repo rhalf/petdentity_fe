@@ -33,31 +33,23 @@ import _ from "lodash";
 import Label from "@/components/common/Label.vue";
 import Sheet from "@/components/common/Sheet.vue";
 
-import { count as countAnimals } from "@/api/animal";
-import { count as countUnits } from "@/api/owner-unit";
-import { count as countAddresses } from "@/api/address";
+import { count as countUnits } from "@/api/unit-owner";
+import { count as countPets } from "@/api/pet";
 
 import { ref, onMounted } from "vue";
-import { getCurrentUser } from "@/utils/firebase";
 
 const counters = ref([]);
 
 onMounted(async () => {
-  const { uid } = await getCurrentUser();
   const array = [
     {
-      title: "Animals",
-      count: await countAnimals(),
-      // count: _.padStart(await countAnimals(), 7, "0"),
-    },
-    {
-      title: "Units",
-      count: await countUnits(uid),
+      title: "Pets",
+      count: await countPets(),
       // count: _.padStart(await countUnits(), 7, "0"),
     },
     {
-      title: "Addresses",
-      count: await countAddresses(),
+      title: "Units",
+      count: await countUnits(),
       // count: _.padStart(await countUnits(), 7, "0"),
     },
   ];
