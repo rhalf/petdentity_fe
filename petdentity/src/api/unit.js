@@ -22,7 +22,6 @@ import {
 import { toUtcTimestamp } from "@/utils/vue";
 import { toObject, toArray } from "./index";
 
-import { getCurrentUser } from "@/utils/firebase";
 
 const collectionName = "units";
 const collectionRef = collection(firestore, collectionName);

@@ -1,4 +1,6 @@
 import { firestore } from "@/plugins/firebase";
+import { Timestamp } from "firebase/firestore";
+
 import {
   collection,
   getDocs,
@@ -83,13 +85,13 @@ export const get = async (id) => {
 };
 
 export const create = async (document) => {
-  item.createdAt = toUtcTimestamp(new Date());
+  document.createdAt = toUtcTimestamp(new Date());
   const docRef = doc(firestore, collectionName, document.id);
   return setDoc(docRef, document);
 };
 
 export const update = async (document) => {
-  item.updatedAt = toUtcTimestamp(new Date());
+  document.updatedAt = Timestamp.fromDate(new Date());
   const docRef = doc(firestore, collectionName, document.id);
   const result = await setDoc(docRef, document);
   return result;
