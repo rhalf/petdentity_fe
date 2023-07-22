@@ -1,5 +1,5 @@
 <template>
-  <Dialog v-model="dialog" :width="350" expand>
+  <Dialog v-model="dialog" :width="420" expand>
     <Card>
       <v-card-title class="bg-primary pa-4">
         <Label header class="text-black">Color</Label>

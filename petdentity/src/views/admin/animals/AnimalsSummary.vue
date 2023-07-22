@@ -39,21 +39,21 @@
         </v-col>
       </v-row>
     </Sheet>
-    <DialogAnimalAdd v-model="dialogAnimalAdd" @add="loadItems" />
+    <DialogAnimalAdd v-model="dialogAnimalAdd" @done="loadItems" />
     <DialogAnimalView
       v-model="dialogAnimalView"
       v-model:animal="animal"
-      @view="loadItems"
+      @done="loadItems"
     />
     <DialogAnimalUpdate
       v-model="dialogAnimalUpdate"
       v-model:animal="animal"
-      @update="loadItems"
+      @done="loadItems"
     />
     <DialogAnimalRemove
       v-model="dialogAnimalRemove"
       v-model:animal="animal"
-      @remove="loadItems"
+      @done="loadItems"
     />
   </v-container>
 </template>
@@ -71,8 +71,8 @@ import DialogAnimalUpdate from "@/components/dialogs/animal/DialogAnimalUpdate.v
 import DialogAnimalRemove from "@/components/dialogs/animal/DialogAnimalRemove.vue";
 import DialogAnimalView from "@/components/dialogs/animal/DialogAnimalView.vue";
 
-import { useSnackbarStore } from "@/store/snackbar";
-const { show } = useSnackbarStore();
+// import { useSnackbarStore } from "@/store/snackbar";
+// const { show } = useSnackbarStore();
 
 import { search, next, prev } from "@/api/animal";
 
@@ -86,13 +86,12 @@ const dialogAnimalView = ref(false);
 const isLoading = ref(false);
 const animals = ref();
 const animal = ref();
+
 const params = ref({
   searchText: "",
   columnName: "name",
   orderDirection: "asc",
   limitNumber: 5,
-  firstItem: "",
-  lastItem: "",
 });
 
 const addHandler = async () => {
@@ -121,13 +120,7 @@ onMounted(async () => {
 const loadItems = async () => {
   try {
     isLoading.value = true;
-    const items = await search(params.value);
-
-    if (!items.length) return;
-
-    setIndexes(items);
-
-    animals.value = items;
+    animals.value = await search(params.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {
@@ -138,15 +131,9 @@ const loadItems = async () => {
 const nextHandler = async () => {
   try {
     isLoading.value = true;
-    const items = await next(params.value);
-
-    if (!items.length) throw new Error("Last page!");
-
-    setIndexes(items);
-
-    animals.value = items;
+    animals.value = await next(params.value);
   } catch ({ message }) {
-    show("error", message);
+    console.log("error", message);
   } finally {
     isLoading.value = false;
   }
@@ -155,24 +142,11 @@ const nextHandler = async () => {
 const prevHandler = async () => {
   try {
     isLoading.value = true;
-    const items = await prev(params.value);
-
-    if (!items.length) throw new Error("First page!");
-
-    setIndexes(items);
-
-    animals.value = items;
+    animals.value = await prev(params.value);
   } catch ({ message }) {
-    show("error", message);
+    console.log("error", message);
   } finally {
     isLoading.value = false;
   }
-};
-
-const setIndexes = (items) => {
-  const firstItem = 0;
-  const lastItem = items.length - 1;
-  params.value.firstItem = items[firstItem][params.value.columnName];
-  params.value.lastItem = items[lastItem][params.value.columnName];
 };
 </script>

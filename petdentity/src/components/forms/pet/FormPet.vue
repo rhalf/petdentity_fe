@@ -12,7 +12,7 @@
       </v-col>
     </v-row>
 
-    <v-row dense>
+    <v-row dense v-if="!disabled">
       <v-col cols="12" class="text-right">
         <ButtonIcon
           icon="mdi-pencil"
@@ -28,28 +28,17 @@
   </div>
 
   <div class="mt-2">
-    <TextField v-model="pet.name" placeholder="Name" />
+    <TextField v-model="pet.name" placeholder="Name" :disabled="disabled" />
   </div>
 
   <v-row dense class="mt-2">
     <v-col md="6">
-      <Label class="text-primary"> Animal </Label>
-      <Animal class="mt-2" v-model="pet.animal" />
-    </v-col>
-    <v-col cols="12" md="6">
-      <Label class="text-primary"> Breed </Label>
-      <Breed class="mt-2" v-model="pet.breed" :animal="pet.animal" />
-    </v-col>
-  </v-row>
-
-  <v-row dense class="mt-2">
-    <v-col md="6">
       <Label class="text-primary"> Gender </Label>
-      <Gender class="mt-2" v-model="pet.gender" />
+      <Gender class="mt-2" v-model="pet.gender" :disabled="disabled" />
     </v-col>
     <v-col cols="12" md="6">
       <Label class="text-primary"> BirthDate </Label>
-      <Date class="mt-2" v-model="pet.birthDate" />
+      <Date class="mt-2" v-model="pet.birthDate" :disabled="disabled" />
     </v-col>
   </v-row>
 
@@ -62,6 +51,7 @@
         v-model="pet.weight"
         suffix="kg(s)"
         withDecimal
+        :disabled="disabled"
       />
       <!-- prepend-inner-icon="mdi-weight-kilogram" -->
     </v-col>
@@ -73,36 +63,48 @@
         v-model="pet.height"
         suffix="cm(s)"
         withDecimal
+        :disabled="disabled"
       />
       <!-- prepend-inner-icon="mdi-human-male-height" -->
     </v-col>
   </v-row>
 
   <v-row dense class="mt-2">
-    <v-col cols="12" md="6">
-      <Label class="text-primary"> Color1 </Label>
-      <Sheet
-        class="mt-2 py-6"
-        :color="pet.color1 || '#FFFFFF'"
-        @click="dialogColor1 = true"
-      />
+    <v-col md="6">
+      <Label class="text-primary"> Animal </Label>
+      <Animal class="mt-2" v-model="pet.animal" :disabled="disabled" />
     </v-col>
     <v-col cols="12" md="6">
-      <Label class="text-primary"> Color2 </Label>
-      <Sheet
-        class="mt-2 py-6"
-        :color="pet.color2 || '#FFFFFF'"
-        @click="dialogColor2 = true"
+      <Label class="text-primary"> Breed </Label>
+      <Breed
+        class="mt-2"
+        v-model="pet.breed"
+        :animal="pet.animal"
+        :disabled="disabled"
       />
     </v-col>
   </v-row>
 
-  <DialogColor v-model="dialogColor1" v-model:color="pet.color1" />
-  <DialogColor v-model="dialogColor2" v-model:color="pet.color2" />
+  <v-row dense class="mt-2">
+    <v-col cols="12" md="6">
+      <Label class="text-primary"> Coat </Label>
+      <Coat class="mt-2" v-model="pet.coat" :disabled="disabled" />
+    </v-col>
+  </v-row>
+
+  <v-row dense class="mt-2">
+    <v-col cols="12" md="6">
+      <Label class="text-primary"> Privacy </Label>
+      <Privacy class="mt-2" v-model="pet.privacy" :disabled="disabled" />
+    </v-col>
+    <v-col cols="12" md="6">
+      <Label class="text-primary"> Condition </Label>
+      <Condition class="mt-2" v-model="pet.condition" :disabled="disabled" />
+    </v-col>
+  </v-row>
 </template>
 
 <script setup>
-import Sheet from "@/components/common/Sheet.vue";
 import Label from "@/components/common/Label.vue";
 import TextField from "@/components/common/TextField.vue";
 
@@ -114,8 +116,9 @@ import Gender from "@/components/pickers/Gender.vue";
 import Date from "@/components/pickers/Date.vue";
 import Animal from "@/components/pickers/Animal.vue";
 import Breed from "@/components/pickers/Breed.vue";
-
-import DialogColor from "@/components/dialogs/color/DialogColor.vue";
+import Coat from "@/components/pickers/Coat.vue";
+import Privacy from "@/components/pickers/Privacy.vue";
+import Condition from "@/components/pickers/Condition.vue";
 
 import { uploadPetProfile } from "@/api/photo";
 
@@ -126,15 +129,13 @@ const emit = defineEmits(["update:modelValue", "upload"]);
 const props = defineProps({
   modelValue: Object,
   withPhoto: Boolean,
+  disabled: Boolean,
 });
 
 const isLoading = ref(false);
 const propsRef = toRefs(props);
 const { withPhoto } = propsRef;
 const pet = computed(useModel(propsRef, emit, "modelValue"));
-
-const dialogColor1 = ref(false);
-const dialogColor2 = ref(false);
 
 const clickHandler = async () => {
   let fileUpload = document.getElementById("fileUpload");

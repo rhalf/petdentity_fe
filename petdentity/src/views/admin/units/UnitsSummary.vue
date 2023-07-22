@@ -37,16 +37,16 @@
         </v-col>
       </v-row>
     </Sheet>
-    <DialogUnitAdd v-model="dialogUnitAdd" @add="loadItems" />
+    <DialogUnitAdd v-model="dialogUnitAdd" @done="loadItems" />
     <DialogUnitUpdate
       v-model="dialogUnitUpdate"
       v-model:unit="unit"
-      @update="loadItems"
+      @done="loadItems"
     />
     <DialogUnitRemove
       v-model="dialogUnitRemove"
       v-model:unit="unit"
-      @remove="loadItems"
+      @done="loadItems"
     />
   </v-container>
 </template>
@@ -63,8 +63,8 @@ import DialogUnitAdd from "@/components/dialogs/unit/DialogUnitAdd.vue";
 import DialogUnitUpdate from "@/components/dialogs/unit/DialogUnitUpdate.vue";
 import DialogUnitRemove from "@/components/dialogs/unit/DialogUnitRemove.vue";
 
-import { useSnackbarStore } from "@/store/snackbar";
-const { show } = useSnackbarStore();
+// import { useSnackbarStore } from "@/store/snackbar";
+// const { show } = useSnackbarStore();
 
 import { search, next, prev } from "@/api/unit";
 
@@ -82,8 +82,6 @@ const params = ref({
   columnName: "uid",
   orderDirection: "asc",
   limitNumber: 5,
-  firstItem: "",
-  lastItem: "",
 });
 
 onMounted(async () => {
@@ -103,13 +101,7 @@ const removeHandler = async (item) => {
 const loadItems = async () => {
   try {
     isLoading.value = true;
-    const items = await search(params.value);
-
-    if (!items.length) return;
-
-    setIndexes(items);
-
-    units.value = items;
+    units.value = await search(params.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {
@@ -120,15 +112,9 @@ const loadItems = async () => {
 const nextHandler = async () => {
   try {
     isLoading.value = true;
-    const items = await next(params.value);
-
-    if (!items.length) throw new Error("Last page!");
-
-    setIndexes(items);
-
-    units.value = items;
+    units.value = await next(params.value);
   } catch ({ message }) {
-    show("error", message);
+    console.log("error", message);
   } finally {
     isLoading.value = false;
   }
@@ -137,24 +123,11 @@ const nextHandler = async () => {
 const prevHandler = async () => {
   try {
     isLoading.value = true;
-    const items = await prev(params.value);
-
-    if (!items.length) throw new Error("First page!");
-
-    setIndexes(items);
-
-    units.value = items;
+    units.value = await prev(params.value);
   } catch ({ message }) {
-    show("error", message);
+    console.log("error", message);
   } finally {
     isLoading.value = false;
   }
-};
-
-const setIndexes = (items) => {
-  const firstItem = 0;
-  const lastItem = items.length - 1;
-  params.value.firstItem = items[firstItem][params.value.columnName];
-  params.value.lastItem = items[lastItem][params.value.columnName];
 };
 </script>

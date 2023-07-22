@@ -1,5 +1,5 @@
 <template>
-  <Dialog :width="640">
+  <Dialog v-model="dialog" :width="640">
     <Card>
       <v-card-title class="bg-primary pa-4">
         <Label header class="text-black">Gender</Label>
@@ -28,16 +28,17 @@ import Card from "@/components/common/Card.vue";
 import Gender from "@/components/pickers/Gender.vue";
 
 import { computed, toRefs } from "vue";
-import { syncProp } from "@/utils/vue";
+import { useModel } from "@/utils/vue";
 
-const props = defineProps({ gender: Boolean });
+const props = defineProps({ gender: String });
 const emit = defineEmits(["update:modelValue", "update:gender"]);
 const propsRef = toRefs(props);
 
-const gender = computed(syncProp(propsRef, emit, "gender"));
+const dialog = computed(useModel(propsRef, emit, "modelValue"));
+const gender = computed(useModel(propsRef, emit, "gender"));
 
 const closeHandler = () => {
-  emit("update:modelValue", false);
+  dialog.value = false;
 };
 </script>
 

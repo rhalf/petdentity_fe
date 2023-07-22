@@ -4,9 +4,9 @@
     mode="hexa"
     :modes="['hexa']"
     show-swatches
-    :width="300"
+    :width="370"
     dot-size="20"
-    :swatches-max-height="240"
+    :swatches-max-height="400"
   />
 </template>
 

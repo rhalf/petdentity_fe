@@ -35,6 +35,7 @@ import Sheet from "@/components/common/Sheet.vue";
 
 import { count as countUnits } from "@/api/unit-owner";
 import { count as countPets } from "@/api/pet";
+import { count as countContacts } from "@/api/contact";
 
 import { ref, onMounted } from "vue";
 
@@ -42,6 +43,11 @@ const counters = ref([]);
 
 onMounted(async () => {
   const array = [
+    {
+      title: "Contacts",
+      count: await countContacts(),
+      // count: _.padStart(await countUnits(), 7, "0"),
+    },
     {
       title: "Pets",
       count: await countPets(),

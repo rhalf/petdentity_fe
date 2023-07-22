@@ -1,5 +1,5 @@
 <template>
-  <v-text-field v-bind="properties" :rules="[rules.counter]" />
+  <v-text-field v-bind="properties" />
 </template>
 
 <script setup>
@@ -10,11 +10,16 @@ const properties = {
   persistentPlaceholder: true,
   hideDetails: "auto",
   prependInnerIcon: "mdi-phone",
+  type: "number",
+  counter: true,
 };
 
 const rules = ref({
-  counter: (value) =>
-    value?.length === 11 || "Mobile number should be 11 digits",
+  counter: (value) => {
+    if (!value) return true;
+
+    return value.length <= 11 || "Mobile number should be 11 digits";
+  },
 });
 </script>
 

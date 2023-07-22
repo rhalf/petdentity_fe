@@ -11,7 +11,12 @@
         <v-row dense class="py-4 px-4">
           <v-spacer />
           <v-col cols="auto">
-            <Button @click="submitHandler" :loading="isLoading">Submit</Button>
+            <Button
+              @click="submitHandler"
+              :disabled="!pet.name"
+              :loading="isLoading"
+              >Submit</Button
+            >
           </v-col>
           <v-col cols="auto">
             <Button @click="closeHandler" variant="outlined">Close</Button>
@@ -43,7 +48,10 @@ const emit = defineEmits(["update:modelValue", "done"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propsRef, emit, "modelValue"));
-const pet = ref({});
+const pet = ref({
+  color1: "#FFFFFF01",
+  color2: "#FFFFFF01",
+});
 
 const submitHandler = async () => {
   try {

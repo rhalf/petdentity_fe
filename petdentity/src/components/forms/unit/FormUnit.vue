@@ -32,12 +32,12 @@
 
   <v-row dense class="mt-3">
     <v-col cols="12" md="6">
-      <Label class="text-primary"> AttachedTo </Label>
+      <Label class="text-primary"> Pet </Label>
       <TextField
         class="mt-3"
-        v-model="unit.AttachedTo"
-        placeholder="AttachedTo"
-        :disabled="disabled || isDisabled('attachedTo')"
+        v-model="unit.pet"
+        placeholder="Pet"
+        :disabled="disabled || isDisabled('pet')"
       />
     </v-col>
     <v-col cols="12" md="6">

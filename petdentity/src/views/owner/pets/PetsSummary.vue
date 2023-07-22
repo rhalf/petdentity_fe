@@ -28,8 +28,10 @@
             withRemove
             withUpdate
             withAdd
+            withView
             @remove="removeHandler"
             @update="updateHandler"
+            @view="viewHandler"
             @add="addHandler"
             @next="nextHandler"
             @prev="prevHandler"
@@ -38,8 +40,8 @@
       </v-row>
     </Sheet>
     <DialogPetAdd v-model="dialogPetAdd" @done="loadItems" />
-    <DialogPetUpdate
-      v-model="dialogPetUpdate"
+    <DialogPetView
+      v-model="dialogPetView"
       v-model:pet="pet"
       @done="loadItems"
     />
@@ -60,18 +62,20 @@ import DataTable from "@/components/tables/DataTable.vue";
 import { headers } from "./data";
 
 import DialogPetAdd from "@/components/dialogs/pet/DialogPetAdd.vue";
-import DialogPetUpdate from "@/components/dialogs/pet/DialogPetUpdate.vue";
+import DialogPetView from "@/components/dialogs/pet/DialogPetView.vue";
 import DialogPetRemove from "@/components/dialogs/pet/DialogPetRemove.vue";
 
-import { useSnackbarStore } from "@/store/snackbar";
-const { show } = useSnackbarStore();
+// import { useSnackbarStore } from "@/store/snackbar";
+// const { show } = useSnackbarStore();
+import { useRouter, useRoute } from "vue-router";
+const router = useRouter();
 
 import { search, next, prev } from "@/api/pet";
 
 import { ref, onMounted } from "vue";
 
 const dialogPetAdd = ref(false);
-const dialogPetUpdate = ref(false);
+const dialogPetView = ref(false);
 const dialogPetRemove = ref(false);
 
 const isLoading = ref(false);
@@ -82,8 +86,6 @@ const params = ref({
   columnName: "name",
   orderDirection: "asc",
   limitNumber: 5,
-  firstItem: null,
-  lastItem: null,
 });
 
 const addHandler = () => {
@@ -92,12 +94,21 @@ const addHandler = () => {
 
 const updateHandler = (item) => {
   pet.value = item;
-  dialogPetUpdate.value = true;
+  dialogPetView.value = true;
 };
 
 const removeHandler = async (item) => {
   pet.value = item;
   dialogPetRemove.value = true;
+};
+
+const viewHandler = async (item) => {
+  router.push({
+    name: "OwnerPetView",
+    params: {
+      id: item.id,
+    },
+  });
 };
 
 onMounted(async () => {
@@ -107,15 +118,9 @@ onMounted(async () => {
 const loadItems = async () => {
   try {
     isLoading.value = true;
-    const items = await search(params.value);
-
-    if (!items.length) return;
-
-    setIndexes(items);
-
-    pets.value = items;
+    pets.value = await search(params.value);
   } catch ({ message }) {
-    show("error", message);
+    console.log("error", message);
   } finally {
     isLoading.value = false;
   }
@@ -124,15 +129,9 @@ const loadItems = async () => {
 const nextHandler = async () => {
   try {
     isLoading.value = true;
-    const items = await next(params.value);
-
-    if (!items.length) throw new Error("Last page!");
-
-    setIndexes(items);
-
-    pets.value = items;
+    pets.value = await next(params.value);
   } catch ({ message }) {
-    show("error", message);
+    console.log("error", message);
   } finally {
     isLoading.value = false;
   }
@@ -141,24 +140,11 @@ const nextHandler = async () => {
 const prevHandler = async () => {
   try {
     isLoading.value = true;
-    const items = await prev(params.value);
-
-    if (!items.length) throw new Error("First page!");
-
-    setIndexes(items);
-
-    pets.value = items;
+    pets.value = await prev(params.value);
   } catch ({ message }) {
-    show("error", message);
+    console.log("error", message);
   } finally {
     isLoading.value = false;
   }
-};
-
-const setIndexes = (items) => {
-  const firstItem = 0;
-  const lastItem = items.length - 1;
-  params.value.firstItem = items[firstItem][params.value.columnName];
-  params.value.lastItem = items[lastItem][params.value.columnName];
 };
 </script>

@@ -1,25 +1,20 @@
 <template>
-  <TextField v-bind="properties" />
+  <TextField v-model="time" v-bind="properties" />
 </template>
 
 <script setup>
-import TextField from '@/components/common/TextField.vue'
-import { computed } from 'vue'
-
-// const props = defineProps({ modelValue: String })
+import TextField from "@/components/common/TextField.vue";
+import { useModel } from "@/utils/vue";
+import { toRefs } from "vue";
+import { computed } from "vue";
 
 const properties = {
-  type: 'date'
-}
+  type: "date",
+};
 
-// const model = computed({
-//   get() {
-//     return props.modelValue
-//   },
-//   set(value) {
-//     emit('update:modelValue', value)
-//   }
-// })
+const emit = defineEmits(["update:modelValue"]);
+const props = defineProps({ modelValue: String });
+
+const propsRef = toRefs(props);
+const time = computed(useModel(propsRef, emit, "modelValue"));
 </script>
-
-<style scoped></style>

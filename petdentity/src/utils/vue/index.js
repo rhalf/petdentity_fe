@@ -28,13 +28,18 @@ export const getAge = (date) => {
   return { years: years, months: months % 12, days: days % 30 };
 };
 
-export const toUtc = (date) => {
-  return dayjs(date, { utc: true });
+export const toStringAge = (age) => {
+  const { years, months, days } = age;
+  return `${years}y, ${months}m, ${days}d`;
 };
 
-export const toUtcTimestamp = (date) => {
-  return toUtc(date).unix();
-};
+// export const toUtc = (date) => {
+//   return dayjs(date, { utc: true });
+// };
+
+// export const toUtcTimestamp = (date) => {
+//   return toUtc(date).unix();
+// };
 
 // import { readFile } from "fs/promises";
 // export const readJsonFile = async (path) => {

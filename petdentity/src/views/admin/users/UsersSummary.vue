@@ -75,8 +75,6 @@ const params = ref({
   columnName: "id",
   orderDirection: "asc",
   limitNumber: 5,
-  firstItem: "",
-  lastItem: "",
 });
 
 const viewHandler = ({ id }) => {
@@ -99,13 +97,7 @@ onMounted(async () => {
 const loadItems = async () => {
   try {
     isLoading.value = true;
-    const items = await search(params.value);
-
-    if (!items.length) return;
-
-    setIndexes(items);
-
-    users.value = items;
+    users.value = await search(params.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {
@@ -116,15 +108,9 @@ const loadItems = async () => {
 const nextHandler = async () => {
   try {
     isLoading.value = true;
-    const items = await next(params.value);
-
-    if (!items.length) throw new Error("Last page!");
-
-    setIndexes(items);
-
-    users.value = items;
+    users.value = await next(params.value);
   } catch ({ message }) {
-    show("error", message);
+    console.log("error", message);
   } finally {
     isLoading.value = false;
   }
@@ -133,24 +119,11 @@ const nextHandler = async () => {
 const prevHandler = async () => {
   try {
     isLoading.value = true;
-    const items = await prev(params.value);
-
-    if (!items.length) throw new Error("First page!");
-
-    setIndexes(items);
-
-    users.value = items;
+    users.value = await prev(params.value);
   } catch ({ message }) {
-    show("error", message);
+    console.log("error", message);
   } finally {
     isLoading.value = false;
   }
-};
-
-const setIndexes = (items) => {
-  const firstItem = 0;
-  const lastItem = items.length - 1;
-  params.value.firstItem = items[firstItem][params.value.columnName];
-  params.value.lastItem = items[lastItem][params.value.columnName];
 };
 </script>

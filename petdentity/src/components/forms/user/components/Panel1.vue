@@ -17,7 +17,7 @@
     <div class="mt-4">
       <Label text class="text-primary"> Gender </Label>
       <Label text class="mt-2">
-        {{ profile.gender ? "Male" : "Female" }}
+        {{ profile.gender }}
       </Label>
     </div>
 

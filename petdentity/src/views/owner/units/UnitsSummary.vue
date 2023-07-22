@@ -26,27 +26,28 @@
             :items-per-page="params.limitNumber"
             hide-default-footer
             withRemove
-            withUpdate
+            withView
             withAdd
             @remove="removeHandler"
-            @update="updateHandler"
-            @add="dialogUnitOwnerAdd = true"
+            @view="viewHandler"
+            @add="addHandler"
             @next="nextHandler"
             @prev="prevHandler"
           />
         </v-col>
       </v-row>
     </Sheet>
-    <DialogUnitOwnerAdd v-model="dialogUnitOwnerAdd" @add="loadItems" />
-    <DialogUnitOwnerUpdate
-      v-model="dialogUnitOwnerUpdate"
+    <DialogUnitOwnerAdd v-model="dialogUnitOwnerAdd" @done="loadItems" />
+    <DialogUnitViewFromOwner
+      v-model="dialogUnitViewFromOwner"
       v-model:unit="unit"
-      @update="loadItems"
+      read-only
+      @done="loadItems"
     />
     <DialogUnitOwnerRemove
       v-model="dialogUnitOwnerRemove"
       v-model:unit="unit"
-      @remove="loadItems"
+      @done="loadItems"
     />
   </v-container>
 </template>
@@ -60,18 +61,15 @@ import DataTable from "@/components/tables/DataTable.vue";
 import { headers } from "./data";
 
 import DialogUnitOwnerAdd from "@/components/dialogs/unit/DialogUnitOwnerAdd.vue";
-import DialogUnitOwnerUpdate from "@/components/dialogs/unit/DialogUnitOwnerUpdate.vue";
+import DialogUnitViewFromOwner from "@/components/dialogs/unit/DialogUnitViewFromOwner.vue";
 import DialogUnitOwnerRemove from "@/components/dialogs/unit/DialogUnitOwnerRemove.vue";
-
-import { useSnackbarStore } from "@/store/snackbar";
-const { show } = useSnackbarStore();
 
 import { search, next, prev } from "@/api/unit-owner";
 
 import { ref, onMounted } from "vue";
 
 const dialogUnitOwnerAdd = ref(false);
-const dialogUnitOwnerUpdate = ref(false);
+const dialogUnitViewFromOwner = ref(false);
 const dialogUnitOwnerRemove = ref(false);
 
 const isLoading = ref(false);
@@ -82,21 +80,31 @@ const params = ref({
   columnName: "uid",
   orderDirection: "asc",
   limitNumber: 5,
-  firstItem: "",
-  lastItem: "",
+});
+
+const addHandler = () => {
+  dialogUnitOwnerAdd.value = true;
+};
+
+const removeHandler = async (item) => {
+  unit.value = item;
+  dialogUnitOwnerRemove.value = true;
+};
+
+const viewHandler = (item) => {
+  unit.value = item;
+  dialogUnitViewFromOwner.value = true;
+};
+
+onMounted(async () => {
+  await loadItems();
 });
 
 const loadItems = async () => {
   try {
     isLoading.value = true;
 
-    const items = await search(params.value);
-
-    if (!items.length) return;
-
-    setIndexes(items);
-
-    units.value = items;
+    units.value = await search(params.value);
   } catch ({ message }) {
     units.value = [];
     console.log("error", message);
@@ -105,32 +113,13 @@ const loadItems = async () => {
   }
 };
 
-onMounted(async () => {
-  await loadItems();
-});
-
-const removeHandler = async (item) => {
-  unit.value = item;
-  dialogUnitOwnerRemove.value = true;
-};
-
-const updateHandler = (item) => {
-  unit.value = item;
-  dialogUnitOwnerUpdate.value = true;
-};
-
 const nextHandler = async () => {
   try {
     isLoading.value = true;
-    const items = await next(params.value);
 
-    if (!items.length) throw new Error("Last page!");
-
-    setIndexes(items);
-
-    units.value = items;
+    units.value = await next(params.value);
   } catch ({ message }) {
-    show("error", message);
+    console.log("error", message);
   } finally {
     isLoading.value = false;
   }
@@ -139,24 +128,12 @@ const nextHandler = async () => {
 const prevHandler = async () => {
   try {
     isLoading.value = true;
-    const items = await prev(params.value);
 
-    if (!items.length) throw new Error("First page!");
-
-    setIndexes(items);
-
-    units.value = items;
+    units.value = await prev(params.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {
     isLoading.value = false;
   }
-};
-
-const setIndexes = (items) => {
-  const firstItem = 0;
-  const lastItem = items.length - 1;
-  params.value.firstItem = items[firstItem][params.value.columnName];
-  params.value.lastItem = items[lastItem][params.value.columnName];
 };
 </script>

@@ -1,38 +1,45 @@
 export const headers = [
+  // {
+  //   title: "ID",
+  //   align: "start",
+  //   sortable: false,
+  //   key: "id",
+  //   width: "30%",
+  // },
   {
     title: "Name",
     align: "start",
     sortable: false,
     key: "name",
-    width: "30%",
+    width: "60%",
   },
   {
     title: "Age",
     align: "start",
     sortable: false,
     key: "age",
-    width: "30%",
+    width: "40%",
   },
   {
     title: "Animal",
     align: "start",
     sortable: false,
     key: "animal.name",
-    width: "15%",
+    width: "200",
   },
   {
     title: "Breed",
     align: "start",
     sortable: false,
     key: "breed",
-    width: "25%",
+    width: "250",
   },
 
   {
     title: "Actions",
     align: "start",
     sortable: false,
-    width: 150,
+    width: 160,
     key: "actions",
   },
 ];

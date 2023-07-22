@@ -4,28 +4,20 @@ export const headers = [
     align: "start",
     sortable: false,
     key: "name",
-    width: "30%",
+    width: "80%",
   },
   {
     title: "Type",
     align: "start",
     sortable: false,
     key: "type",
-    width: "30%",
+    width: "20%",
   },
-  {
-    title: "Breeds",
-    align: "start",
-    sortable: false,
-    key: "breeds.length",
-    width: "30%",
-  },
-
   {
     title: "Actions",
     align: "start",
     sortable: false,
-    width: 200,
+    width: 160,
     key: "actions",
   },
 ];

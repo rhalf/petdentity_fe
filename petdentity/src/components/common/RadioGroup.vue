@@ -1,15 +1,10 @@
 <template>
-  <v-radio-group @click="emit('click')" v-bind="properties" v-model="model">
+  <v-radio-group v-bind="properties" v-model="model">
     <slot></slot>
   </v-radio-group>
 </template>
 
 <script setup>
-import { computed } from "vue";
-
-const emit = defineEmits(["click", "update:modelValue"]);
-const props = defineProps({ modelValue: Boolean });
-
 const properties = {
   //default
   variant: "elevated",
@@ -19,12 +14,11 @@ const properties = {
   hideDetails: "auto",
 };
 
-const model = computed({
-  get() {
-    return props.modelValue;
-  },
-  set(value) {
-    emit("update:modelValue", value);
-  },
-});
+import { toRefs, computed } from "vue";
+import { useModel } from "@/utils/vue";
+
+const emit = defineEmits(["update:modelValue"]);
+const props = defineProps({ modelValue: String });
+const propsRef = toRefs(props);
+const model = computed(useModel(propsRef, emit, "modelValue"));
 </script>

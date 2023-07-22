@@ -11,7 +11,12 @@
         <v-row dense class="py-4 px-4">
           <v-spacer />
           <v-col cols="auto">
-            <Button @click="submitHandler" :loading="isLoading">Submit</Button>
+            <Button
+              @click="submitHandler"
+              :disabled="!animal.name"
+              :loading="isLoading"
+              >Submit</Button
+            >
           </v-col>
           <v-col cols="auto">
             <Button @click="closeHandler" variant="outlined">Close</Button>
@@ -29,6 +34,8 @@ import Dialog from "@/components/common/Dialog.vue";
 import FormAnimal from "@/components/forms/animal/FormAnimal.vue";
 import Card from "@/components/common/Card.vue";
 
+import _ from "lodash";
+
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
@@ -37,9 +44,10 @@ import { update } from "@/api/animal";
 import { useModel, syncProp } from "@/utils/vue";
 
 import { ref, computed, toRefs } from "vue";
+import { onMounted } from "vue";
 const props = defineProps({ modelValue: Boolean, animal: Object });
 const propRef = toRefs(props);
-const emit = defineEmits(["update:modelValue", "update:animal", "update"]);
+const emit = defineEmits(["update:modelValue", "update:animal", "done"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propRef, emit, "modelValue"));
@@ -49,7 +57,7 @@ const submitHandler = async () => {
   try {
     isLoading.value = true;
     const docRef = await update(animal.value);
-    emit("update");
+    emit("done");
     show("success", "Updated an animal!");
     dialog.value = false;
   } catch ({ message }) {

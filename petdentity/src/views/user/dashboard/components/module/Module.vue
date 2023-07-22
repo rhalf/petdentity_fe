@@ -1,5 +1,6 @@
 <template>
   <Card
+    class="rounded-0"
     :color="color"
     :height="item.height"
     :disabled="disabled"

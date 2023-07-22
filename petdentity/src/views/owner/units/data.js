@@ -21,10 +21,10 @@ export const headers = [
     width: "25%",
   },
   {
-    title: "AttachedTo",
+    title: "Pet",
     align: "start",
     sortable: false,
-    key: "attachedTo",
+    key: "pet",
     width: "25%",
   },
 
@@ -32,12 +32,7 @@ export const headers = [
     title: "Actions",
     align: "start",
     sortable: false,
-    width: 150,
+    width: 120,
     key: "actions",
   },
-];
-
-export const items = [
-  { name: "Dog", type: "Mammal", breedCount: 100 },
-  { name: "Snake", type: "Reptile", breedCount: 100 },
 ];

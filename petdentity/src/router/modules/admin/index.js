@@ -10,7 +10,6 @@ export const admin = {
       component: () => import("@/views/admin/dashboard/DashboardView.vue"),
       meta: { authenticated: true, authorization: "ADMIN" },
     },
-
     {
       path: "animals",
       children: [
@@ -18,6 +17,17 @@ export const admin = {
           path: "summary",
           name: "AdminAnimalsSummary",
           component: () => import("@/views/admin/animals/AnimalsSummary.vue"),
+          meta: { authenticated: true, authorization: "ADMIN" },
+        },
+      ],
+    },
+    {
+      path: "coats",
+      children: [
+        {
+          path: "summary",
+          name: "AdminCoatsSummary",
+          component: () => import("@/views/admin/coats/CoatsSummary.vue"),
           meta: { authenticated: true, authorization: "ADMIN" },
         },
       ],

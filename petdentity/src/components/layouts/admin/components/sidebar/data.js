@@ -12,7 +12,13 @@ export const items = [
     to: { name: "AdminAnimalsSummary" },
   },
   {
-    icon: "mdi-nfc",
+    icon: "mdi-sheep",
+    title: "Coats",
+    subtitle: "Manage coats",
+    to: { name: "AdminCoatsSummary" },
+  },
+  {
+    icon: "mdi-access-point",
     title: "Units",
     subtitle: "Manage Units",
     to: { name: "AdminUnitsSummary" },

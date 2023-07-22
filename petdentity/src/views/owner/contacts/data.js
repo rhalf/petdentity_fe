@@ -1,0 +1,31 @@
+export const headers = [
+  {
+    title: "Name",
+    align: "start",
+    sortable: false,
+    key: "name",
+    width: "60%",
+  },
+  {
+    title: "Country",
+    align: "start",
+    sortable: false,
+    key: "address.country",
+    width: "20%",
+  },
+  {
+    title: "Mobile",
+    align: "start",
+    sortable: false,
+    key: "mobileNumber",
+    width: "20%",
+  },
+
+  {
+    title: "Actions",
+    align: "start",
+    sortable: false,
+    width: 160,
+    key: "actions",
+  },
+];

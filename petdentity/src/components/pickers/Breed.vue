@@ -37,7 +37,8 @@ const loadItems = async () => {
 
     const items = await getAll(animal.value.id);
 
-    if (!items.length) return;
+    if (items.length) breeds.value = items;
+    else breeds.value = [];
 
     breeds.value = items;
   } catch ({ message }) {

@@ -13,6 +13,17 @@ export const Statuses = {
   SUSPENDED: "SUSPENDED",
 };
 
+export const Privacies = {
+  PUBLIC: "PUBLIC",
+  PRIVATE: "PRIVATE",
+};
+
+export const Conditions = {
+  NORMAL: "NORMAL",
+  MISSING: "MISSING",
+  FOUND: "FOUND",
+};
+
 // export const LEVEL = {
 //   SUPER: "SUPER",
 //   ADMIN: "ADMIN",

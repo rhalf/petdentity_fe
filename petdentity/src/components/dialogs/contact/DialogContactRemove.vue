@@ -1,29 +1,22 @@
 <template>
-  <Dialog v-model="dialog" :width="1024" expand>
+  <Dialog v-model="dialog" :width="640">
     <Card>
       <v-card-title class="bg-primary pa-4">
-        <Label header class="text-black"> Update Unit </Label>
+        <Label header class="text-black"> Remove Contact</Label>
       </v-card-title>
       <v-card-text>
-        <FormUnit
-          v-model="unit"
-          :disabled-option="[
-            'uid',
-            'unitType',
-            'formType',
-            'status',
-            'government',
-          ]"
-        />
+        <Label text> Are you sure you want to remove this item?</Label>
+        <br />
+        <Label header>Name : "{{ contact.name }}"" </Label>
       </v-card-text>
       <v-card-actions>
         <v-row dense class="py-4 px-4">
           <v-spacer />
           <v-col cols="auto">
-            <Button @click="submitHandler" :loading="isLoading">Submit</Button>
+            <Button @click="submitHandler" :loading="isLoading">Yes</Button>
           </v-col>
           <v-col cols="auto">
-            <Button @click="closeHandler" variant="outlined">Close</Button>
+            <Button @click="closeHandler" variant="outlined">No</Button>
           </v-col>
         </v-row>
       </v-card-actions>
@@ -35,31 +28,30 @@
 import Button from "@/components/common/Button.vue";
 import Label from "@/components/common/Label.vue";
 import Dialog from "@/components/common/Dialog.vue";
-import FormUnit from "@/components/forms/unit/FormUnit.vue";
 import Card from "@/components/common/Card.vue";
 
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
-import { update } from "@/api/unit";
+import { remove } from "@/api/contact";
 
 import { useModel, syncProp } from "@/utils/vue";
 
 import { ref, computed, toRefs } from "vue";
-const props = defineProps({ modelValue: Boolean, unit: Object });
+const props = defineProps({ modelValue: Boolean, contact: Object });
 const propRef = toRefs(props);
-const emit = defineEmits(["update:modelValue", "update:unit", "update"]);
+const emit = defineEmits(["update:modelValue", "update:contact", "done"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propRef, emit, "modelValue"));
-const unit = computed(syncProp(propRef, emit, "unit"));
+const contact = computed(syncProp(propRef, emit, "contact"));
 
 const submitHandler = async () => {
   try {
     isLoading.value = true;
-    const docRef = await update(unit.value);
-    emit("update");
-    show("success", "Updated an unit!");
+    const result = await remove(contact.value);
+    show("success", "Removed an item!");
+    emit("done");
     dialog.value = false;
   } catch ({ message }) {
     show("error", message);

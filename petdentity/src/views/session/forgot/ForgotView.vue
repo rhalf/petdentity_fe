@@ -81,7 +81,8 @@ const signupHandler = () => {
   router.push({ name: "SessionSignup" });
 };
 
-const forgotHandler = () => {};
+import { useSnackbarStore } from "@/store/snackbar";
+const { show } = useSnackbarStore();
 
 import { useProgressLineStore } from "@/store/progress-line";
 const { start, stop } = useProgressLineStore();

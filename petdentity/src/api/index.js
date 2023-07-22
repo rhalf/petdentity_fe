@@ -14,3 +14,13 @@ export const toArray = (snapshots) => {
     };
   });
 };
+
+export const getIndexes = (snapshots) => {
+  const firstIndex = 0;
+  const lastIndex = snapshots.docs.length - 1;
+
+  const firstItem = snapshots.docs[firstIndex];
+  const lastItem = snapshots.docs[lastIndex];
+
+  return { firstItem, lastItem };
+};

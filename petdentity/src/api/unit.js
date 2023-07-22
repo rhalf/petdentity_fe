@@ -1,4 +1,5 @@
 import { firestore } from "@/plugins/firebase";
+import { Timestamp } from "firebase/firestore";
 import {
   collection,
   getDocs,
@@ -19,12 +20,14 @@ import {
   getCountFromServer,
 } from "firebase/firestore";
 
-import { toUtcTimestamp } from "@/utils/vue";
-import { toObject, toArray } from "./index";
+import { toObject, toArray, getIndexes } from "./index";
 
+import { getCurrentUser } from "@/utils/firebase";
 
 const collectionName = "units";
 const collectionRef = collection(firestore, collectionName);
+
+let indexes;
 
 export const search = async ({
   searchText,
@@ -40,38 +43,37 @@ export const search = async ({
     limit(limitNumber)
   );
   const snapshots = await getDocs(q);
+  if (snapshots.empty) throw new Error("Emtpy page!");
+
+  indexes = getIndexes(snapshots);
   return toArray(snapshots);
 };
 
-export const next = async ({
-  lastItem,
-  columnName,
-  orderDirection,
-  limitNumber,
-}) => {
+export const next = async ({ columnName, orderDirection, limitNumber }) => {
   const q = await query(
     collectionRef,
     orderBy(columnName, orderDirection),
-    startAfter(lastItem),
+    startAfter(indexes.lastItem),
     limit(limitNumber)
   );
   const snapshots = await getDocs(q);
+  if (snapshots.empty) throw new Error("Last page!");
+
+  indexes = getIndexes(snapshots);
   return toArray(snapshots);
 };
 
-export const prev = async ({
-  firstItem,
-  columnName,
-  orderDirection,
-  limitNumber,
-}) => {
+export const prev = async ({ columnName, orderDirection, limitNumber }) => {
   const q = await query(
     collectionRef,
     orderBy(columnName, orderDirection),
-    endBefore(firstItem),
+    endBefore(indexes.firstItem),
     limitToLast(limitNumber)
   );
   const snapshots = await getDocs(q);
+  if (snapshots.empty) throw new Error("First page!");
+
+  indexes = getIndexes(snapshots);
   return toArray(snapshots);
 };
 
@@ -88,13 +90,13 @@ export const getByUid = async (uid) => {
 };
 
 export const create = async (item) => {
-  item.createdAt = toUtcTimestamp(new Date());
+  item.createdAt = Timestamp.fromDate(new Date());
 
   return await addDoc(collectionRef, item);
 };
 
 export const update = async (item) => {
-  item.updatedAt = toUtcTimestamp(new Date());
+  document.updatedAt = Timestamp.fromDate(new Date());
   const documentRef = doc(firestore, collectionName, item.id);
   return await setDoc(documentRef, item);
 };
@@ -107,4 +109,78 @@ export const remove = async (item) => {
 export const count = async () => {
   const snapshot = await getCountFromServer(collectionRef);
   return snapshot.data().count;
+};
+
+//Owner
+export const getByOwnerAndId = async (id) => {
+  const { uid } = await getCurrentUser();
+
+  const q = await query(
+    collectionRef,
+    where("owner", "==", uid),
+    where("uid", "==", id),
+    limit(1)
+  );
+  const snapshots = await getDocs(q);
+  return toArray(snapshots);
+};
+
+//Pet
+export const getAllByPet = async (pet, param) => {
+  const q = await query(
+    collectionRef,
+    where("pet", "==", pet.id),
+    orderBy(param.columnName, param.orderDirection),
+    startAt(param.searchText),
+    endAt(param.searchText + "\uf8ff"),
+    limit(param.limitNumber)
+  );
+  const snapshots = await getDocs(q);
+
+  indexes = getIndexes(snapshots);
+  return toArray(snapshots);
+};
+
+export const getAllByPetNext = async ({ id }, param) => {
+  const q = await query(
+    collectionRef,
+    where("pet", "==", id),
+    orderBy(param.columnName, param.orderDirection),
+    startAfter(indexes.lastItem),
+    limit(param.limitNumber)
+  );
+  const snapshots = await getDocs(q);
+  if (snapshots.empty) throw new Error("Last page!");
+
+  indexes = getIndexes(snapshots);
+  return toArray(snapshots);
+};
+
+export const getAllByPetPrev = async ({ id }, param) => {
+  const q = await query(
+    collectionRef,
+    where("pet", "==", id),
+    orderBy(param.columnName, param.orderDirection),
+    endBefore(indexes.firstItem),
+    limitToLast(param.limitNumber)
+  );
+  const snapshots = await getDocs(q);
+  if (snapshots.empty) throw new Error("First page!");
+
+  indexes = getIndexes(snapshots);
+  return toArray(snapshots);
+};
+
+export const addUnitToPet = async (pet, item) => {
+  item.pet = pet.id;
+  item.updatedAt = Timestamp.fromDate(new Date());
+  const documentRef = doc(firestore, collectionName, item.id);
+  return await setDoc(documentRef, item);
+};
+
+export const removeUnitFromPet = async (item) => {
+  item.pet = null;
+  item.updatedAt = Timestamp.fromDate(new Date());
+  const documentRef = doc(firestore, collectionName, item.id);
+  return await setDoc(documentRef, item);
 };

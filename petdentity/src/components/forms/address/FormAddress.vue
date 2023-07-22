@@ -181,10 +181,14 @@ import { computed, reactive, watch, toRefs } from "vue";
 const emit = defineEmits(["update:modelValue"]);
 
 const props = defineProps({
-  modelValue: Object,
+  modelValue: {
+    type: Object,
+    default: Address,
+  },
   disabled: Boolean,
 });
 const propsRef = toRefs(props);
+
 const address = computed(useModel(propsRef, emit, "modelValue"));
 
 const datas = reactive({
@@ -196,22 +200,23 @@ const datas = reactive({
 });
 
 const isPhilippines = computed(() => {
-  return address.value.country === "Philippines";
+  return address.value?.country === "Philippines";
 });
 
 const selectedCountry = computed(() => {
-  return props.modelValue.country;
+  return address.value?.country;
 });
 const selectedRegion = computed(() => {
-  return props.modelValue.region;
+  return address.value?.region;
 });
 
 const selectedProvince = computed(() => {
-  return props.modelValue.province;
+  return address.value?.province;
 });
 
 const selectedCity = computed(() => {
-  return props.modelValue.city;
+  if (!address.value) null;
+  return address.value?.city;
 });
 
 const onCountry = () => {

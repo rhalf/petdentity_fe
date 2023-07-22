@@ -78,25 +78,13 @@ const params = ref({
   columnName: "name",
   orderDirection: "asc",
   limitNumber: 300,
-  firstItem: "",
-  lastItem: "",
 });
 
 const loadItems = async () => {
   try {
     isLoading.value = true;
 
-    const items = await search(animal.value.id, params.value);
-    if (items.length === 0) {
-      return [];
-    }
-
-    const firstItemIndex = 0;
-    const lastItemIndex = items.length - 1;
-    params.value.firstItem = items[firstItemIndex][params.value.columnName];
-    params.value.lastItem = items[lastItemIndex][params.value.columnName];
-
-    breeds.value = items;
+    breeds.value = await search(animal.value.id, params.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {

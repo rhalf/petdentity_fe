@@ -39,7 +39,7 @@ import { useModel } from "@/utils/vue";
 import { ref, toRefs, computed } from "vue";
 const props = defineProps({ modelValue: Boolean });
 const propsRef = toRefs(props);
-const emit = defineEmits(["update:modelValue", "add"]);
+const emit = defineEmits(["update:modelValue", "done"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propsRef, emit, "modelValue"));
@@ -60,7 +60,7 @@ const submitHandler = async () => {
   try {
     isLoading.value = true;
     const docRef = await create(unit.value);
-    emit("add");
+    emit("done");
     show("success", "Added an unit!");
     unit.value = {};
     dialog.value = false;

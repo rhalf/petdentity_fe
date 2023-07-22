@@ -1,5 +1,5 @@
 <template>
-  <v-data-table>
+  <v-data-table height="320">
     <template v-slot:item.actions="{ item, index }">
       <ButtonIcon
         v-if="withView"
@@ -18,7 +18,7 @@
       />
 
       <ButtonIcon
-        v-if="withRemove"
+        v-if="withRemove && !disabled"
         @click="emit('remove', item.selectable)"
         icon="mdi-trash-can"
         variant="flat"
@@ -35,7 +35,12 @@
           <Button @click="emit('next')" block>{{ "Next >" }}</Button>
         </v-col>
         <v-col cols="12" md=""></v-col>
-        <v-col cols="12" md="auto" class="d-flex justify-end" v-if="withAdd">
+        <v-col
+          cols="12"
+          md="auto"
+          class="d-flex justify-end"
+          v-if="withAdd && !disabled"
+        >
           <Button @click="emit('add')" block>+ ADD</Button>
         </v-col>
       </v-row>
@@ -55,22 +60,28 @@
       <v-row class="pa-1">
         <v-col>
           <Label text class="mt-2">
-            {{ item.selectable.exact }}
-            {{ item.selectable.division }}
+            {{ item.selectable.address.exact }}
+            {{ item.selectable.address.division }}
           </Label>
           <Label caption class="text-grey">
-            {{ item.selectable.barangay }}, {{ item.selectable.city }},
-            {{ item.selectable.province }}, {{ item.selectable.region }},
-            {{ item.selectable.country }},
-            {{ item.selectable.zipcode }}
+            {{ item.selectable.address.barangay }},
+            {{ item.selectable.address.city }},
+            {{ item.selectable.address.province }},
+            {{ item.selectable.address.region }},
+            {{ item.selectable.address.country }},
+            {{ item.selectable.address.zipcode }}
           </Label>
         </v-col>
       </v-row>
     </template>
 
+    <!-- <template v-slot:item.colors="{ item, index }">
+      <Colors :colors="item.selectable.colors" />
+    </template> -->
+
     <template v-slot:item.age="{ item, index }">
       <Label text class="mt-2">
-        {{ toAge(item.selectable.birthDate) }}
+        {{ toStringAge(getAge(item.selectable.birthDate)) }}
       </Label>
     </template>
   </v-data-table>
@@ -84,7 +95,7 @@ import Label from "@/components/common/Label";
 import ButtonIcon from "@/components/common/ButtonIcon";
 import Button from "@/components/common/Button";
 
-import { getAge } from "@/utils/vue";
+import { getAge, toStringAge } from "@/utils/vue";
 
 const emit = defineEmits(["view", "update", "remove", "add", "prev", "next"]);
 const props = defineProps({
@@ -92,11 +103,6 @@ const props = defineProps({
   withUpdate: Boolean,
   withRemove: Boolean,
   withAdd: Boolean,
-  customized: Boolean,
+  disabled: Boolean,
 });
-
-const toAge = (age) => {
-  const { years, months, days } = getAge(age);
-  return `${years} years, ${months} months, ${days} days`;
-};
 </script>

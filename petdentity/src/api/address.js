@@ -1,4 +1,5 @@
 import { firestore } from "@/plugins/firebase";
+import { Timestamp } from "firebase/firestore";
 import {
   collection,
   getDocs,
@@ -19,8 +20,8 @@ import {
   getCountFromServer,
 } from "firebase/firestore";
 
-import { toUtcTimestamp } from "@/utils/vue";
-import { toObject, toArray } from "./index";
+import { toObject, toArray, getIndexes } from "./index";
+
 import { getCurrentUser } from "@/utils/firebase";
 
 const collectionName = "addresses";
@@ -85,13 +86,13 @@ export const get = async (id) => {
 };
 
 export const create = async (item) => {
-  item.createdAt = toUtcTimestamp(new Date());
+  item.createdAt = Timestamp.fromDate(new Date());
   item.owner = uid;
   return await addDoc(collectionRef, item);
 };
 
 export const update = async (item) => {
-  item.updatedAt = toUtcTimestamp(new Date());
+  document.updatedAt = Timestamp.fromDate(new Date());
   const documentRef = doc(firestore, collectionName, item.id);
   return await setDoc(documentRef, item);
 };

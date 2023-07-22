@@ -6,15 +6,15 @@
       </v-card-title>
       <v-card-text>
         <FormAnimalView v-model="animal" />
-        <Label class="mt-4 text-primary">Breeds</Label>
-        <FormBreeds v-model="animal" />
+
+        <Card class="mt-4 pa-4" variant="tonal">
+          <SummaryBreeds v-model="animal" />
+        </Card>
       </v-card-text>
       <v-card-actions>
         <v-row dense class="py-4 px-4">
           <v-spacer />
-          <v-col cols="auto">
-            <Button @click="submitHandler" :loading="isLoading">Submit</Button>
-          </v-col>
+
           <v-col cols="auto">
             <Button @click="closeHandler" variant="outlined">Close</Button>
           </v-col>
@@ -28,14 +28,10 @@
 import Button from "@/components/common/Button.vue";
 import Label from "@/components/common/Label.vue";
 import Dialog from "@/components/common/Dialog.vue";
-import FormAnimalView from "@/components/forms/animal/FormAnimalView.vue";
-import FormBreeds from "@/components/forms/breed/FormBreeds.vue";
 import Card from "@/components/common/Card.vue";
 
-import { useSnackbarStore } from "@/store/snackbar";
-const { show } = useSnackbarStore();
-
-import { create } from "@/api/animal";
+import FormAnimalView from "@/components/forms/animal/FormAnimalView.vue";
+import SummaryBreeds from "@/components/forms/breed/SummaryBreeds.vue";
 
 import { useModel, syncProp } from "@/utils/vue";
 
@@ -44,24 +40,8 @@ const props = defineProps({ modelValue: Boolean, animal: Object });
 const propsRef = toRefs(props);
 const emit = defineEmits(["update:modelValue", "update:animal", "view"]);
 
-const isLoading = ref(false);
 const dialog = computed(useModel(propsRef, emit, "modelValue"));
 const animal = computed(syncProp(propsRef, emit, "animal"));
-
-const submitHandler = async () => {
-  try {
-    isLoading.value = true;
-    const docRef = await create(animal.value);
-    emit("view");
-    show("success", "Added an animal!");
-    animal.value = {};
-    dialog.value = false;
-  } catch ({ message }) {
-    show("error", message);
-  } finally {
-    isLoading.value = false;
-  }
-};
 
 const closeHandler = () => {
   dialog.value = false;

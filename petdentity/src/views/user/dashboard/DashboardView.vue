@@ -4,9 +4,9 @@
       <v-col
         cols="12"
         sm="12"
-        md="6"
-        lg="4"
-        xl="3"
+        md="12"
+        lg="6"
+        xl="4"
         v-for="(item, index) in items"
         :key="index"
       >

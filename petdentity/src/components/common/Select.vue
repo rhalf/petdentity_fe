@@ -1,5 +1,7 @@
 <template>
-  <v-select v-bind="properties" />
+  <v-select v-bind="properties">
+    <slot />
+  </v-select>
 </template>
 
 <script setup>

@@ -11,18 +11,16 @@ export const owner = {
       meta: { authenticated: true, authorization: "OWNER" },
     },
     {
-      path: "addresses",
+      path: "contacts",
       children: [
         {
           path: "summary",
-          name: "OwnerAddressesSummary",
-          component: () =>
-            import("@/views/owner/addresses/AddressesSummary.vue"),
-          meta: { authenticated: true, authorization: "ADMIN" },
+          name: "OwnerContactsSummary",
+          component: () => import("@/views/owner/contacts/ContactsSummary.vue"),
+          meta: { authenticated: true, authorization: "OWNER" },
         },
       ],
     },
-
     {
       path: "pets",
       children: [
@@ -30,7 +28,13 @@ export const owner = {
           path: "summary",
           name: "OwnerPetsSummary",
           component: () => import("@/views/owner/pets/PetsSummary.vue"),
-          meta: { authenticated: true, authorization: "ADMIN" },
+          meta: { authenticated: true, authorization: "OWNER" },
+        },
+        {
+          path: ":id",
+          name: "OwnerPetView",
+          component: () => import("@/views/owner/pets/view/PetView.vue"),
+          meta: { authenticated: true, authorization: "OWNER" },
         },
       ],
     },
@@ -41,7 +45,7 @@ export const owner = {
           path: "summary",
           name: "OwnerUnitsSummary",
           component: () => import("@/views/owner/units/UnitsSummary.vue"),
-          meta: { authenticated: true, authorization: "ADMIN" },
+          meta: { authenticated: true, authorization: "OWNER" },
         },
       ],
     },

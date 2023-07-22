@@ -1,5 +1,5 @@
 <template>
-  <v-avatar :size="size">
+  <v-avatar :size="size" class="elevation-5">
     <v-img :src="src" cover :lazy-src="lazy" />
   </v-avatar>
 </template>
