@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <Sheet>
-      <Label>
+      <Label class="text-primary">
         <v-row>
           <v-col align="start"> Unit Unique Identifier (UUID) </v-col>
           <v-col align="end">
@@ -9,16 +9,20 @@
           </v-col>
         </v-row>
       </Label>
+
       <TextField
         v-model="searchText"
-        class="mt-2"
+        class="mt-4"
         append-inner-icon="mdi-magnify"
         @keypress.enter="submitHandler"
       />
-    </Sheet>
 
-    {{ units }}
-    {{ pet }}
+      <v-row v-for="(unit, index) in units" :key="index">
+        <v-col>
+          <PetItem v-model="units[index].pet" />
+        </v-col>
+      </v-row>
+    </Sheet>
   </v-container>
 </template>
 
@@ -27,29 +31,28 @@ import TextField from "@/components/common/TextField.vue";
 import Label from "@/components/common/Label.vue";
 import Sheet from "@/components/common/Sheet.vue";
 
+import PetItem from "./components/PetItem.vue";
+
 import _ from "lodash";
 
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
 import { getByUid } from "@/api/unit";
-import { get } from "@/api/pet";
+
 import { ref } from "vue";
 
 const searchText = ref();
 
 const units = ref();
-const pet = ref();
 
 const submitHandler = async () => {
   try {
+    if (!searchText.value) return;
+
     units.value = await getByUid(searchText.value);
-
-    const unit = units.value[0];
-
-    pet.value = await get(unit.pet);
-  } catch ({ message }) {
-    show("error", message);
+  } catch {
+    show("error", "No found UUID!");
   }
 };
 </script>
