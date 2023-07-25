@@ -18,7 +18,7 @@ export const Privacies = {
   PRIVATE: "PRIVATE",
 };
 
-export const Conditions = {
+export const PetStatuses = {
   NORMAL: "NORMAL",
   MISSING: "MISSING",
   FOUND: "FOUND",

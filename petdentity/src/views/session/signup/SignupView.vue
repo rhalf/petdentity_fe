@@ -130,7 +130,7 @@ const onSubmitHandler = handleSubmit(async (values) => {
     const result = await signUp(values.email, values.password1);
     // Email verification
     await emailVerification();
-    show("success", "Successful! Email verification will has been sent!");
+    show("success", "Successful! Email verification has been sent!");
     const user = result.user;
     console.log(user);
   } catch ({ message }) {

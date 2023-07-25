@@ -8,14 +8,16 @@ import { computed, toRefs, onMounted } from "vue";
 import { useModel } from "@/utils/vue";
 
 const properties = {
-  placeholder: "Unit Form Type",
+  placeholder: "PetStatus",
 };
 
 const emit = defineEmits(["update:modelValue"]);
 const props = defineProps({ modelValue: String });
 const propsRef = toRefs(props);
 
-const items = ["Microchip", "Tag", "Ring", "Card", "Wristband", "Neclace"];
+import { PetStatuses } from "@/constants";
+
+const items = Object.keys(PetStatuses);
 
 const type = computed(useModel(propsRef, emit, "modelValue"));
 

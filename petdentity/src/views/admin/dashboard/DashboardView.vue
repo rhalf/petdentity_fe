@@ -33,16 +33,16 @@ import _ from "lodash";
 import Label from "@/components/common/Label.vue";
 import Sheet from "@/components/common/Sheet.vue";
 
-import { count as countAnimals } from "@/api/animal";
-import { count as countBreeds } from "@/api/breed";
-import { count as countUnits } from "@/api/unit";
-import { count as countUsers } from "@/api/user";
-
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
 import { useProgressLineStore } from "@/store/progress-line";
 const { start, stop } = useProgressLineStore();
+
+import { count as countAnimals } from "@/api/animal";
+import { count as countBreeds } from "@/api/breed";
+import { count as countUnits } from "@/api/unit";
+import { count as countUsers } from "@/api/user";
 
 import { ref, onMounted } from "vue";
 

@@ -2,10 +2,21 @@
   <Dialog v-model="dialog" :width="1024" expand>
     <Card>
       <v-card-title class="bg-primary pa-4">
-        <Label header class="text-black"> View Contact </Label>
+        <Label header class="text-black"> View Unit </Label>
       </v-card-title>
       <v-card-text>
-        <FormContact v-model="contact" :disabled="disabled" />
+        <FormUnit
+          v-model="unit"
+          :disabled-option="[
+            'uid',
+            'unitType',
+            'formType',
+            'status',
+            'government',
+            'pet',
+            'owner',
+          ]"
+        />
       </v-card-text>
       <v-card-actions>
         <v-row dense class="py-4 px-4">
@@ -32,50 +43,41 @@
 import Button from "@/components/common/Button.vue";
 import Label from "@/components/common/Label.vue";
 import Dialog from "@/components/common/Dialog.vue";
-import FormContact from "@/components/forms/contact/FormContact.vue";
+import FormUnit from "@/components/forms/unit/FormUnit.vue";
 import Card from "@/components/common/Card.vue";
 
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
-import { update } from "@/api/contact";
+import { update } from "@/api/unit";
 
 import { useModel, syncProp } from "@/utils/vue";
 
 import { ref, computed, toRefs } from "vue";
 const props = defineProps({
   modelValue: Boolean,
-  contact: Object,
+  unit: Object,
   readOnly: Boolean,
 });
-const emit = defineEmits(["update:modelValue", "update:contact", "done"]);
-
 const propRef = toRefs(props);
-
-const { readOnly } = propRef;
+const emit = defineEmits(["update:modelValue", "update:unit", "done"]);
 
 const isLoading = ref(false);
-const disabled = ref(true);
 const dialog = computed(useModel(propRef, emit, "modelValue"));
-const contact = computed(syncProp(propRef, emit, "contact"));
+const unit = computed(syncProp(propRef, emit, "unit"));
+const disabled = ref(true);
 
 const submitHandler = async () => {
-  if (disabled.value) {
-    disabled.value = false;
-    return;
-  } else {
-    try {
-      isLoading.value = true;
-      const docRef = await update(contact.value);
-      emit("done");
-      show("success", "Updated an contact!");
-      dialog.value = false;
-      disabled.value = true;
-    } catch ({ message }) {
-      show("error", message);
-    } finally {
-      isLoading.value = false;
-    }
+  try {
+    isLoading.value = true;
+    const docRef = await update(unit.value);
+    emit("done");
+    show("success", "Updated an unit!");
+    dialog.value = false;
+  } catch ({ message }) {
+    show("error", message);
+  } finally {
+    isLoading.value = false;
   }
 };
 

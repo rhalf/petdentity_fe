@@ -87,7 +87,7 @@
 
   <v-row dense class="mt-2">
     <v-col cols="12" md="6">
-      <Label class="text-primary"> Coat </Label>
+      <Label class="text-primary"> Coat / Color </Label>
       <Coat class="mt-2" v-model="pet.coat" :disabled="disabled" />
     </v-col>
   </v-row>
@@ -98,8 +98,8 @@
       <Privacy class="mt-2" v-model="pet.privacy" :disabled="disabled" />
     </v-col>
     <v-col cols="12" md="6">
-      <Label class="text-primary"> Condition </Label>
-      <Condition class="mt-2" v-model="pet.condition" :disabled="disabled" />
+      <Label class="text-primary"> Pet Status </Label>
+      <PetStatus class="mt-2" v-model="pet.petStatus" :disabled="disabled" />
     </v-col>
   </v-row>
 </template>
@@ -118,7 +118,7 @@ import Animal from "@/components/pickers/Animal.vue";
 import Breed from "@/components/pickers/Breed.vue";
 import Coat from "@/components/pickers/Coat.vue";
 import Privacy from "@/components/pickers/Privacy.vue";
-import Condition from "@/components/pickers/Condition.vue";
+import PetStatus from "@/components/pickers/PetStatus.vue";
 
 import { uploadPetProfile } from "@/api/photo";
 

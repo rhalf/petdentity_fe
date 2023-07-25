@@ -16,12 +16,12 @@ export const user = {
       component: () => import("@/views/user/profile/ProfileView.vue"),
       meta: { authenticated: true },
     },
-    {
-      path: "profile/update",
-      name: "UserProfileUpdate",
-      component: () => import("@/views/user/profile/ProfileUpdate.vue"),
-      meta: { authenticated: true },
-    },
+    // {
+    //   path: "profile/update",
+    //   name: "UserProfileUpdate",
+    //   component: () => import("@/views/user/profile/ProfileUpdate.vue"),
+    //   meta: { authenticated: true },
+    // },
     {
       path: "password",
       name: "UserPassword",

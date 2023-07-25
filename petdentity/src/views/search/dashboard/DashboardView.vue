@@ -10,15 +10,19 @@
         </v-row>
       </Label>
 
-      <TextField
-        v-model="searchText"
-        class="mt-4"
-        append-inner-icon="mdi-magnify"
-        @keypress.enter="submitHandler"
-      />
+      <v-row class="mt-4">
+        <v-col cols="12" md="" align="start">
+          <TextField
+            v-model="searchText"
+            append-inner-icon="mdi-magnify"
+            @keypress.enter="submitHandler"
+            placeholder="Search"
+          />
+        </v-col>
+      </v-row>
 
-      <v-row v-for="(unit, index) in units" :key="index">
-        <v-col>
+      <v-row class="mt-4" v-for="(unit, index) in units" :key="index">
+        <v-col cols="12" md="" align="start">
           <PetItem v-model="units[index].pet" />
         </v-col>
       </v-row>
@@ -51,8 +55,10 @@ const submitHandler = async () => {
     if (!searchText.value) return;
 
     units.value = await getByUid(searchText.value);
+
+    if (!units.value.length) throw new Error("UUID not found!");
   } catch {
-    show("error", "No found UUID!");
+    show("error", "UUID not found!");
   }
 };
 </script>

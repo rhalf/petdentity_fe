@@ -1,7 +1,11 @@
 <template>
   <v-container>
     <Sheet class="bg-transparent">
-      <v-row>
+      <Label header>Counters</Label>
+
+      <v-skeleton-loader type="card"></v-skeleton-loader>
+
+      <v-row class="mt-2">
         <v-col
           cols="12"
           sm="4"
@@ -24,6 +28,13 @@
           </v-card>
         </v-col>
       </v-row>
+
+      <Label header class="mt-12"> Partners </Label>
+      <v-row class="mt-2">
+        <v-col>
+          <Partners />
+        </v-col>
+      </v-row>
     </Sheet>
   </v-container>
 </template>
@@ -33,37 +44,56 @@ import _ from "lodash";
 import Label from "@/components/common/Label.vue";
 import Sheet from "@/components/common/Sheet.vue";
 
+import Partners from "./components/partners/Partners.vue";
+
+import { useSnackbarStore } from "@/store/snackbar";
+const { show } = useSnackbarStore();
+
+import { useProgressLineStore } from "@/store/progress-line";
+const { start, stop } = useProgressLineStore();
+
 import { count as countUnits } from "@/api/unit-owner";
 import { count as countPets } from "@/api/pet";
 import { count as countContacts } from "@/api/contact";
 
 import { ref, onMounted } from "vue";
 
-const counters = ref([]);
+const counters = ref();
 
 onMounted(async () => {
-  const array = [
-    {
+  try {
+    start();
+
+    const array = [];
+
+    array.push({
       title: "Contacts",
       count: await countContacts(),
-      // count: _.padStart(await countUnits(), 7, "0"),
-    },
-    {
+    });
+
+    array.push({
       title: "Pets",
       count: await countPets(),
-      // count: _.padStart(await countUnits(), 7, "0"),
-    },
-    {
+    });
+
+    array.push({
       title: "Units",
       count: await countUnits(),
-      // count: _.padStart(await countUnits(), 7, "0"),
-    },
-  ];
+    });
 
-  counters.value = array;
+    counters.value = array;
+  } catch ({ message }) {
+    show("error", message);
+  } finally {
+    stop();
+  }
 });
 
 const format = (number) => {
   return number.toLocaleString("en-US");
+};
+
+const pad = (value) => {
+  return _.padStart(value, 7, "0");
 };
 </script>

@@ -1,10 +1,10 @@
 <template>
-  <v-img v-model="text" v-bind="properties" />
+  <v-img v-bind="properties" />
 </template>
 
 <script setup>
 const properties = {
   width: 150,
-  aspectRatio: 1
-}
+  aspectRatio: 1,
+};
 </script>

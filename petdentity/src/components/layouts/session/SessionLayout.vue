@@ -8,7 +8,7 @@
               <Card>
                 <v-row dense>
                   <v-col v-if="!xs">
-                    <Image />
+                    <Image :src="image" cover :aspect-ratio="9 / 8" />
                   </v-col>
                   <v-col :cols="xs ? 12 : 4">
                     <Sheet :min-height="700">
@@ -37,18 +37,17 @@
 </template>
 
 <script setup>
+import Sheet from "@/components/common/Sheet.vue";
+import Card from "@/components/common/Card.vue";
+import Logo from "@/components/common/Logo.vue";
+
+import image from "@/assets/images/pets/01.jpg";
+
 import { useDisplay } from "vuetify";
 const { xs, sm } = useDisplay();
 
-import ProgressLine from "@/components/common/ProgressLine.vue";
-const progressLine = useProgressLineStore();
 import { useProgressLineStore } from "@/store/progress-line";
 const { start, stop } = useProgressLineStore();
-
-import Sheet from "@/components/common/Sheet.vue";
-import Card from "@/components/common/Card.vue";
-import Image from "@/components/images/Image01.vue";
-import Logo from "@/components/common/Logo.vue";
 
 import { onMounted } from "vue";
 
