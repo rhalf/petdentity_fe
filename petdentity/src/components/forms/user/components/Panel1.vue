@@ -1,15 +1,15 @@
 <template>
   <Sheet v-if="profile" min-height="550">
-    <div>
-      <Label text class="text-primary"> Name </Label>
+    <Label text class="text-primary"> Name </Label>
 
+    <div>
       <Label text class="text-grey mt-2">
-        {{ profile.name.prefix }}
+        {{ profile.name.prefix || "-" }}
       </Label>
       <Label header>
-        {{ profile.name.first }}
-        {{ profile.name.middle }}
-        {{ profile.name.last }},
+        {{ profile.name.first || "-" }}
+        {{ profile.name.middle || "-" }}
+        {{ profile.name.last || "-" }},
         {{ profile.name.suffix || "-" }}
       </Label>
     </div>
@@ -17,7 +17,7 @@
     <div class="mt-4">
       <Label text class="text-primary"> Gender </Label>
       <Label text class="mt-2">
-        {{ profile.gender }}
+        {{ profile.gender || "-" }}
       </Label>
     </div>
 
@@ -37,14 +37,16 @@
     <div class="mt-4">
       <Label text class="text-primary"> Address </Label>
       <Label text class="mt-2">
-        {{ profile.address.exact }}
-        {{ profile.address.division }}
+        {{ profile.address.exact || "-" }}
+        {{ profile.address.division || "-" }}
       </Label>
       <Label caption class="text-grey">
-        {{ profile.address.barangay }}, {{ profile.address.city }},
-        {{ profile.address.province }}, {{ profile.address.region }},
-        {{ profile.address.country }},
-        {{ profile.address.zipcode }}
+        {{ profile.address.barangay || "-" }},
+        {{ profile.address.city || "-" }},
+        {{ profile.address.province || "-" }},
+        {{ profile.address.region || "-" }}, {{ profile.address.state || "-" }},
+        {{ profile.address.country || "-" }},
+        {{ profile.address.zipcode || "-" }}
       </Label>
     </div>
 

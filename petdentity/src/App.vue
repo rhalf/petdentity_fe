@@ -13,6 +13,8 @@
 </template>
 
 <script setup>
+import _ from "lodash";
+
 import Snackbar from "@/components/common/Snackbar.vue";
 
 import ProgressLine from "@/components/common/ProgressLine.vue";

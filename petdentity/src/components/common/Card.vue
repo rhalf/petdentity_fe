@@ -5,7 +5,5 @@
 </template>
 
 <script setup>
-const properties = {
-  maxWidth: 1280,
-};
+const properties = {};
 </script>

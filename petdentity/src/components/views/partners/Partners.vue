@@ -31,7 +31,7 @@ import Card from "@/components/common/Card.vue";
 import Image from "@/components/common/Image.vue";
 
 const clickHandler = (url) => {
-  window.location(url);
+  window.open(url);
 };
 </script>
 
