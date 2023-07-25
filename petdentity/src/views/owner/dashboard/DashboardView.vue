@@ -3,8 +3,6 @@
     <Sheet class="bg-transparent">
       <Label header>Counters</Label>
 
-      <v-skeleton-loader type="card"></v-skeleton-loader>
-
       <v-row class="mt-2">
         <v-col
           cols="12"
@@ -44,7 +42,7 @@ import _ from "lodash";
 import Label from "@/components/common/Label.vue";
 import Sheet from "@/components/common/Sheet.vue";
 
-import Partners from "./components/partners/Partners.vue";
+import Partners from "@/components/views/partners/Partners.vue";
 
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();

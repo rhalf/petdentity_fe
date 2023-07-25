@@ -1,30 +1,47 @@
 <template>
   <v-container>
-    <v-row dense class="mt-8">
-      <v-col class="d-flex align-center justify-center">
-        <Card link @click="loginHandler" color="primary">
-          <v-img :src="img01" />
-
-          <div class="pa-2 bg-black">
-            <Logo
-              :width="1024"
-              :aspect-ratio="10 / 2"
-              position="horizontal"
-              class="text-center"
+    <Sheet class="bg-transparent">
+      <v-row>
+        <v-col>
+          <Card link @click="loginHandler" color="primary" :width="undefined">
+            <Image
+              :src="image"
+              :width="undefined"
+              :aspect-ratio="14 / 8"
+              cover
             />
-          </div>
-          <div class="mt-10"></div>
-        </Card>
-      </v-col>
-    </v-row>
+
+            <div class="pa-2 bg-black">
+              <Logo
+                :width="1024"
+                :aspect-ratio="12 / 1"
+                position="horizontal"
+                class="text-center"
+              />
+            </div>
+            <div class="mt-4"></div>
+          </Card>
+        </v-col>
+      </v-row>
+
+      <v-row>
+        <v-col>
+          <Partners />
+        </v-col>
+      </v-row>
+    </Sheet>
   </v-container>
 </template>
 
 <script setup>
+import Sheet from "@/components/common/Sheet.vue";
+import Image from "@/components/common/Image.vue";
 import Card from "@/components/common/Card.vue";
 import Logo from "@/components/common/Logo.vue";
 
-import img01 from "@/assets/images/pets/01.jpg";
+import Partners from "@/components/views/partners/Partners.vue";
+
+import image from "@/assets/images/pets/01.jpg";
 
 import { useRouter } from "vue-router";
 const router = useRouter();

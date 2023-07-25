@@ -56,7 +56,9 @@
 
     <v-row>
       <v-col>
-        <Button block variant="outlined" size="large">Scan Now</Button>
+        <Button block variant="outlined" size="large" @click="searchHandler">
+          Search Pet
+        </Button>
       </v-col>
     </v-row>
   </v-container>
@@ -114,4 +116,8 @@ const onSubmitHandler = handleSubmit(async (values) => {
     stop();
   }
 });
+
+const searchHandler = () => {
+  router.push({ name: "SearchDashboard" });
+};
 </script>

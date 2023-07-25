@@ -1,6 +1,6 @@
 export const headers = [
   {
-    title: "Id",
+    title: "UID",
     align: "start",
     sortable: false,
     key: "id",

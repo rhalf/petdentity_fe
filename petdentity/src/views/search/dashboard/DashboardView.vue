@@ -3,7 +3,7 @@
     <Sheet>
       <Label class="text-primary">
         <v-row>
-          <v-col align="start"> Unit Unique Identifier (UUID) </v-col>
+          <v-col align="start"> Unit UID </v-col>
           <v-col align="end">
             <span v-if="units"> Unit Found: {{ units.length }}</span>
           </v-col>
@@ -56,9 +56,9 @@ const submitHandler = async () => {
 
     units.value = await getByUid(searchText.value);
 
-    if (!units.value.length) throw new Error("UUID not found!");
+    if (!units.value.length) throw new Error("Unit not found!");
   } catch {
-    show("error", "UUID not found!");
+    show("error", "Unit not found!");
   }
 };
 </script>

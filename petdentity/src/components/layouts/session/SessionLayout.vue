@@ -8,7 +8,12 @@
               <Card>
                 <v-row dense>
                   <v-col v-if="!xs">
-                    <Image :src="image" cover :aspect-ratio="9 / 8" />
+                    <Image
+                      :src="image"
+                      :width="undefined"
+                      cover
+                      :aspect-ratio="9 / 8"
+                    />
                   </v-col>
                   <v-col :cols="xs ? 12 : 4">
                     <Sheet :min-height="700">
@@ -40,6 +45,7 @@
 import Sheet from "@/components/common/Sheet.vue";
 import Card from "@/components/common/Card.vue";
 import Logo from "@/components/common/Logo.vue";
+import Image from "@/components/common/Image.vue";
 
 import image from "@/assets/images/pets/01.jpg";
 
