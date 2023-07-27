@@ -184,3 +184,87 @@ export const removeUnitFromPet = async (item) => {
   const documentRef = doc(firestore, collectionName, item.id);
   return await setDoc(documentRef, item);
 };
+//owner
+export const searchByOwner = async ({
+  searchText,
+  columnName,
+  orderDirection,
+  limitNumber,
+}) => {
+  const { uid } = await getCurrentUser();
+  const q = await query(
+    collectionRef,
+    where("owner", "==", uid),
+    orderBy(columnName, orderDirection),
+    startAt(searchText),
+    endAt(searchText + "\uf8ff"),
+    limit(limitNumber)
+  );
+
+  const snapshots = await getDocs(q);
+  if (snapshots.empty) throw new Error("Emtpy page!");
+
+  indexes = getIndexes(snapshots);
+  return toArray(snapshots);
+};
+
+export const nextByOwner = async ({
+  columnName,
+  orderDirection,
+  limitNumber,
+}) => {
+  const { uid } = await getCurrentUser();
+  const q = await query(
+    collectionRef,
+    where("owner", "==", uid),
+    orderBy(columnName, orderDirection),
+    startAfter(indexes.lastItem),
+    limit(limitNumber)
+  );
+  const snapshots = await getDocs(q);
+  if (snapshots.empty) throw new Error("Last page!");
+
+  indexes = getIndexes(snapshots);
+  return toArray(snapshots);
+};
+
+export const prevByOwner = async ({
+  columnName,
+  orderDirection,
+  limitNumber,
+}) => {
+  const { uid } = await getCurrentUser();
+  const q = await query(
+    collectionRef,
+    where("owner", "==", uid),
+    orderBy(columnName, orderDirection),
+    endBefore(indexes.firstItem),
+    limitToLast(limitNumber)
+  );
+  const snapshots = await getDocs(q);
+  if (snapshots.empty) throw new Error("First page!");
+
+  indexes = getIndexes(snapshots);
+  return toArray(snapshots);
+};
+
+export const getAllByOwner = async () => {
+  const { uid } = await getCurrentUser();
+  const q = await query(collectionRef, where("owner", "==", uid));
+  const snapshots = await getDocs(q);
+  return toArray(snapshots);
+};
+
+export const removeOwner = async (item) => {
+  item.updatedAt = Timestamp.fromDate(new Date());
+  item.owner = null;
+  const documentRef = doc(firestore, collectionName, item.id);
+  return await setDoc(documentRef, item);
+};
+
+export const countByOwner = async () => {
+  const { uid } = await getCurrentUser();
+  const q = query(collectionRef, where("owner", "==", uid));
+  const snapshot = await getCountFromServer(q);
+  return snapshot.data().count;
+};

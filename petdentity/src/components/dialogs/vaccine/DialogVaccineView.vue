@@ -60,19 +60,19 @@ const submitHandler = async () => {
   if (disabled.value) {
     disabled.value = false;
     return;
-  } else {
-    try {
-      isLoading.value = true;
-      const docRef = await update(vaccine.value);
-      show("success", "Updated a vaccine!");
-      dialog.value = false;
-      emit("done");
-      disabled.value = true;
-    } catch ({ message }) {
-      show("error", message);
-    } finally {
-      isLoading.value = false;
-    }
+  }
+
+  try {
+    isLoading.value = true;
+    const docRef = await update(vaccine.value);
+    show("success", "Updated a vaccine!");
+    dialog.value = false;
+    emit("done");
+    disabled.value = true;
+  } catch ({ message }) {
+    show("error", message);
+  } finally {
+    isLoading.value = false;
   }
 };
 

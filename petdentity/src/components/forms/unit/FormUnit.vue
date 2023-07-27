@@ -6,7 +6,7 @@
         class="mt-3"
         v-model="unit.uid"
         placeholder="Uid"
-        :disabled="disabled || isDisabled('uid')"
+        :disabled="disabled && isDisabled('uid')"
       />
     </v-col>
   </v-row>
@@ -17,7 +17,7 @@
       <UnitType
         class="mt-3"
         v-model="unit.unitType"
-        :disabled="disabled || isDisabled('unitType')"
+        :disabled="disabled && isDisabled('unitType')"
       />
     </v-col>
     <v-col cols="12" md="">
@@ -25,7 +25,7 @@
       <UnitFormType
         class="mt-3"
         v-model="unit.formType"
-        :disabled="disabled || isDisabled('formType')"
+        :disabled="disabled && isDisabled('formType')"
       />
     </v-col>
   </v-row>
@@ -37,7 +37,7 @@
         class="mt-3"
         v-model="unit.pet"
         placeholder="Pet"
-        :disabled="disabled || isDisabled('pet')"
+        :disabled="disabled && isDisabled('pet')"
       />
     </v-col>
     <v-col cols="12" md="6">
@@ -46,7 +46,7 @@
         class="mt-3"
         v-model="unit.status"
         placeholder="Status"
-        :disabled="disabled || isDisabled('status')"
+        :disabled="disabled && isDisabled('status')"
       />
     </v-col>
   </v-row>
@@ -58,7 +58,7 @@
         class="mt-3"
         v-model="unit.owner"
         placeholder="Owner"
-        :disabled="disabled || isDisabled('owner')"
+        :disabled="disabled && isDisabled('owner')"
       />
     </v-col>
     <v-col cols="12" md="6">
@@ -67,7 +67,7 @@
         class="mt-3"
         v-model="unit.government"
         placeholder="Government"
-        :disabled="disabled || isDisabled('government')"
+        :disabled="disabled && isDisabled('government')"
       />
     </v-col>
   </v-row>
@@ -96,6 +96,7 @@ const props = defineProps({
 });
 
 const propsRef = toRefs(props);
+const { disabled } = propsRef;
 
 const unit = computed(useModel(propsRef, emit, "modelValue"));
 

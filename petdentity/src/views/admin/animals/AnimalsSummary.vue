@@ -26,11 +26,9 @@
             :items-per-pageNumber="params.limitNumber"
             hide-default-footer
             withRemove
-            withUpdate
             withAdd
             withView
             @remove="removeHandler"
-            @update="updateHandler"
             @view="viewHandler"
             @add="addHandler"
             @next="nextHandler"
@@ -42,11 +40,6 @@
     <DialogAnimalAdd v-model="dialogAnimalAdd" @done="loadItems" />
     <DialogAnimalView
       v-model="dialogAnimalView"
-      v-model:animal="animal"
-      @done="loadItems"
-    />
-    <DialogAnimalUpdate
-      v-model="dialogAnimalUpdate"
       v-model:animal="animal"
       @done="loadItems"
     />
@@ -67,7 +60,6 @@ import DataTable from "@/components/tables/DataTable.vue";
 import { headers } from "./data";
 
 import DialogAnimalAdd from "@/components/dialogs/animal/DialogAnimalAdd.vue";
-import DialogAnimalUpdate from "@/components/dialogs/animal/DialogAnimalUpdate.vue";
 import DialogAnimalRemove from "@/components/dialogs/animal/DialogAnimalRemove.vue";
 import DialogAnimalView from "@/components/dialogs/animal/DialogAnimalView.vue";
 
@@ -101,11 +93,6 @@ const addHandler = async () => {
 const removeHandler = async (item) => {
   animal.value = item;
   dialogAnimalRemove.value = true;
-};
-
-const updateHandler = (item) => {
-  animal.value = item;
-  dialogAnimalUpdate.value = true;
 };
 
 const viewHandler = (item) => {

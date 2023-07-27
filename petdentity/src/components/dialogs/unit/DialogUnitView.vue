@@ -16,17 +16,14 @@
             'pet',
             'owner',
           ]"
+          :disabled="disabled"
         />
       </v-card-text>
       <v-card-actions>
         <v-row dense class="py-4 px-4">
           <v-spacer />
           <v-col cols="auto">
-            <Button
-              @click="submitHandler"
-              :loading="isLoading"
-              v-if="!readOnly"
-            >
+            <Button @click="submitHandler" :loading="isLoading">
               {{ buttonLabel }}
             </Button>
           </v-col>
@@ -57,7 +54,6 @@ import { ref, computed, toRefs } from "vue";
 const props = defineProps({
   modelValue: Boolean,
   unit: Object,
-  readOnly: Boolean,
 });
 const propRef = toRefs(props);
 const emit = defineEmits(["update:modelValue", "update:unit", "done"]);
@@ -69,6 +65,11 @@ const disabled = ref(true);
 
 const submitHandler = async () => {
   try {
+    if (disabled.value) {
+      disabled.value = false;
+      return;
+    }
+
     isLoading.value = true;
     const docRef = await update(unit.value);
     emit("done");

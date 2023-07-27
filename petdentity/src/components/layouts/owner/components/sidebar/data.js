@@ -12,15 +12,15 @@ export const items = [
     to: { name: "OwnerContactsSummary" },
   },
   {
-    icon: "mdi-paw",
-    title: "Pets",
-    subtitle: "Manage pets",
-    to: { name: "OwnerPetsSummary" },
-  },
-  {
     icon: "mdi-access-point",
     title: "Units",
     subtitle: "Manage Units",
     to: { name: "OwnerUnitsSummary" },
+  },
+  {
+    icon: "mdi-paw",
+    title: "Pets",
+    subtitle: "Manage pets",
+    to: { name: "OwnerPetsSummary" },
   },
 ];

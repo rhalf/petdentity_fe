@@ -16,6 +16,7 @@
             'pet',
             'owner',
           ]"
+          disabled
         />
       </v-card-text>
       <v-card-actions>

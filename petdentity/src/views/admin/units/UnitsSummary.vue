@@ -26,10 +26,10 @@
             :items-per-page="params.limitNumber"
             hide-default-footer
             withRemove
-            withUpdate
+            withView
             withAdd
+            @view="viewHandler"
             @remove="removeHandler"
-            @update="updateHandler"
             @add="dialogUnitAdd = true"
             @next="nextHandler"
             @prev="prevHandler"
@@ -38,8 +38,8 @@
       </v-row>
     </Sheet>
     <DialogUnitAdd v-model="dialogUnitAdd" @done="loadItems" />
-    <DialogUnitUpdate
-      v-model="dialogUnitUpdate"
+    <DialogUnitView
+      v-model="dialogUnitView"
       v-model:unit="unit"
       @done="loadItems"
     />
@@ -60,7 +60,7 @@ import DataTable from "@/components/tables/DataTable.vue";
 import { headers } from "./data";
 
 import DialogUnitAdd from "@/components/dialogs/unit/DialogUnitAdd.vue";
-import DialogUnitUpdate from "@/components/dialogs/unit/DialogUnitUpdate.vue";
+import DialogUnitView from "@/components/dialogs/unit/DialogUnitView.vue";
 import DialogUnitRemove from "@/components/dialogs/unit/DialogUnitRemove.vue";
 
 // import { useSnackbarStore } from "@/store/snackbar";
@@ -71,7 +71,7 @@ import { search, next, prev } from "@/api/unit";
 import { ref, onMounted } from "vue";
 
 const dialogUnitAdd = ref(false);
-const dialogUnitUpdate = ref(false);
+const dialogUnitView = ref(false);
 const dialogUnitRemove = ref(false);
 
 const isLoading = ref(false);
@@ -88,9 +88,9 @@ onMounted(async () => {
   loadItems();
 });
 
-const updateHandler = (item) => {
+const viewHandler = (item) => {
   unit.value = item;
-  dialogUnitUpdate.value = true;
+  dialogUnitView.value = true;
 };
 
 const removeHandler = async (item) => {

@@ -26,6 +26,7 @@
 
       <v-row>
         <v-col>
+          <Label header> Partners </Label>
           <Partners />
         </v-col>
       </v-row>
@@ -35,8 +36,9 @@
 
 <script setup>
 import Sheet from "@/components/common/Sheet.vue";
-import Image from "@/components/common/Image.vue";
 import Card from "@/components/common/Card.vue";
+import Image from "@/components/common/Image.vue";
+import Label from "@/components/common/Label.vue";
 import Logo from "@/components/common/Logo.vue";
 
 import Partners from "@/components/views/partners/Partners.vue";

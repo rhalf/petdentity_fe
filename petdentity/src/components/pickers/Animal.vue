@@ -1,22 +1,24 @@
 <template>
-  <Select
+  <Autocomplete
     v-model="item"
     :items="items"
+    v-model:search="params.searchText"
     placeholder="Animal"
     :loading="isLoading"
     item-title="name"
     item-value="name"
     return-object
-    customized
   />
 </template>
 
 <script setup>
-import Select from "@/components/common/Select.vue";
+import Autocomplete from "@/components/common/Autocomplete.vue";
 
-import { getAll } from "@/api/animal";
+import { debounce } from "lodash";
 
-import { computed, toRefs, ref } from "vue";
+import { getAll, search } from "@/api/animal";
+
+import { computed, toRefs, ref, watch } from "vue";
 import { useModel } from "@/utils/vue";
 import { onMounted } from "vue";
 
@@ -32,15 +34,13 @@ const params = ref({
   searchText: null,
   columnName: "name",
   orderDirection: "asc",
-  limitNumber: null,
-  firstItem: null,
-  lastItem: null,
+  limitNumber: 5,
 });
 
 const loadItems = async () => {
   try {
     isLoading.value = true;
-    items.value = await getAll(params.value);
+    items.value = await search(params.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {
@@ -51,6 +51,19 @@ const loadItems = async () => {
 onMounted(async () => {
   await loadItems();
 });
+
+const load = debounce(() => {
+  if (!params.value.searchText) return;
+  loadItems();
+}, 1000);
+
+watch(
+  params,
+  () => {
+    load();
+  },
+  { immediate: true, deep: true }
+);
 </script>
 
 <style></style>

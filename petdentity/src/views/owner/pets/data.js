@@ -11,14 +11,14 @@ export const headers = [
     align: "start",
     sortable: false,
     key: "name",
-    width: "60%",
+    width: "10%",
   },
   {
     title: "Age",
     align: "start",
     sortable: false,
     key: "age",
-    width: "40%",
+    width: "150",
   },
   {
     title: "Animal",
@@ -39,7 +39,7 @@ export const headers = [
     title: "Actions",
     align: "start",
     sortable: false,
-    width: 160,
+    width: 120,
     key: "actions",
   },
 ];

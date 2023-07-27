@@ -41,6 +41,7 @@ const { start, stop } = useProgressLineStore();
 
 import { count as countAnimals } from "@/api/animal";
 import { count as countBreeds } from "@/api/breed";
+import { count as countCoats } from "@/api/coat";
 import { count as countUnits } from "@/api/unit";
 import { count as countUsers } from "@/api/user";
 
@@ -62,6 +63,11 @@ onMounted(async () => {
     array.push({
       title: "Breeds",
       count: await countBreeds(),
+    });
+
+    array.push({
+      title: "Coats",
+      count: await countCoats(),
     });
 
     array.push({

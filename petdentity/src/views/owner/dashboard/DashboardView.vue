@@ -50,8 +50,8 @@ const { show } = useSnackbarStore();
 import { useProgressLineStore } from "@/store/progress-line";
 const { start, stop } = useProgressLineStore();
 
-import { count as countUnits } from "@/api/unit-owner";
-import { count as countPets } from "@/api/pet";
+import { countByOwner as countUnits } from "@/api/unit";
+import { countByOwner as countPets } from "@/api/pet";
 import { count as countContacts } from "@/api/contact";
 
 import { ref, onMounted } from "vue";

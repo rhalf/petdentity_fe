@@ -64,7 +64,7 @@ import DialogUnitOwnerAdd from "@/components/dialogs/unit/DialogUnitOwnerAdd.vue
 import DialogUnitViewFromOwner from "@/components/dialogs/unit/DialogUnitViewFromOwner.vue";
 import DialogUnitOwnerRemove from "@/components/dialogs/unit/DialogUnitOwnerRemove.vue";
 
-import { search, next, prev } from "@/api/unit-owner";
+import { search, next, prev } from "@/api/unit";
 
 import { ref, onMounted } from "vue";
 

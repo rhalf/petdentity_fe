@@ -36,8 +36,7 @@ import Card from "@/components/common/Card.vue";
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
-import { getByUid } from "@/api/unit";
-import { update } from "@/api/unit-owner";
+import { getByUid, update } from "@/api/unit";
 
 import { useModel } from "@/utils/vue";
 

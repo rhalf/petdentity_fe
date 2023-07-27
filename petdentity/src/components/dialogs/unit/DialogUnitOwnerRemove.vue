@@ -33,7 +33,7 @@ import Card from "@/components/common/Card.vue";
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
-import { remove } from "@/api/unit-owner";
+import { removeOwner } from "@/api/unit";
 
 import { useModel, syncProp } from "@/utils/vue";
 
@@ -49,7 +49,7 @@ const unit = computed(syncProp(propRef, emit, "unit"));
 const submitHandler = async () => {
   try {
     isLoading.value = true;
-    const result = await remove(unit.value);
+    const result = await removeOwner(unit.value);
     show("success", "Removed an item!");
     emit("done");
     dialog.value = false;

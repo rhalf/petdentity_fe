@@ -9,13 +9,6 @@
     <Sheet>
       <v-row class="mt-2">
         <v-col align="start">
-          <Label text class="text-primary"> Gender </Label>
-          <Label text> {{ pet.gender || "-" }}</Label>
-        </v-col>
-      </v-row>
-
-      <v-row class="mt-2">
-        <v-col align="start">
           <Label text class="text-primary"> BirthDate </Label>
           <Label text> {{ pet.birthDate || "-" }}</Label>
         </v-col>
@@ -55,8 +48,19 @@
           <Label text> {{ pet.breed || "-" }}</Label>
         </v-col>
         <v-col align="start">
-          <Label text class="text-primary"> Coat / Color </Label>
+          <Label text class="text-primary"> Gender </Label>
+          <Label text> {{ pet.gender || "-" }}</Label>
+        </v-col>
+      </v-row>
+
+      <v-row class="mt-2">
+        <v-col align="start" cols="12" md="6">
+          <Label text class="text-primary"> Coat(Color) </Label>
           <Label text> {{ pet.coat || "-" }} </Label>
+        </v-col>
+        <v-col align="start" cols="12" md="6">
+          <Label text class="text-primary"> Coat Remarks </Label>
+          <Label text> {{ pet.coatRemarks || "-" }} </Label>
         </v-col>
       </v-row>
 
@@ -68,7 +72,7 @@
 
         <v-col align="start">
           <Label text class="text-primary"> Pet Status </Label>
-          <Label text> {{ pet.status || "-" }}</Label>
+          <Label text> {{ pet.petStatus || "-" }}</Label>
         </v-col>
       </v-row>
 
@@ -91,6 +95,8 @@ import Button from "@/components/common/Button.vue";
 import Sheet from "@/components/common/Sheet.vue";
 
 import DialogPetView from "@/components/dialogs/pet/DialogPetView.vue";
+
+import { update } from "@/api/pet";
 
 const dialogPetView = ref(false);
 

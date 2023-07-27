@@ -71,6 +71,7 @@ import TextField from "@/components/common/TextField.vue";
 import Anchor from "@/components/common/Anchor.vue";
 
 import { signIn, signOut } from "@/api/session";
+import { getDescription } from "@/plugins/firebase/error-codes";
 
 import { useField, useForm } from "vee-validate";
 import { schema } from "./validationSchema";
@@ -110,8 +111,9 @@ const onSubmitHandler = handleSubmit(async (values) => {
     } else {
       await router.push({ name: "UserDashboard" });
     }
-  } catch ({ message }) {
-    show("error", message);
+  } catch (error) {
+    const description = await getDescription(error.code);
+    show("error", description);
   } finally {
     stop();
   }

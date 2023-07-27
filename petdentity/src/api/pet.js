@@ -112,3 +112,10 @@ export const count = async () => {
   const snapshot = await getCountFromServer(collectionRef);
   return snapshot.data().count;
 };
+
+export const countByOwner = async () => {
+  const { uid } = await getCurrentUser();
+  const q = query(collectionRef, where("owner", "==", uid));
+  const snapshot = await getCountFromServer(q);
+  return snapshot.data().count;
+};

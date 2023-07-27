@@ -1,16 +1,18 @@
 <template>
-  <v-slide-group v-model="model" selected-class="bg-success">
-    <v-slide-group-item
+  <v-row>
+    <v-col
+      cols="12"
+      sm="6"
+      md="4"
+      lg="3"
       v-for="(partner, index) in partners"
       :key="index"
-      v-slot="{ isSelected, toggle, selectedClass }"
     >
       <Card
-        color="grey-lighten-1"
-        :class="['ma-2', selectedClass]"
-        height="120"
-        width="200"
-        @click="toggle"
+        color="transparent"
+        class="mx-2"
+        height="200"
+        @click="clickHandler(partner.url)"
       >
         <div class="d-flex fill-height align-center justify-center">
           <v-scale-transition>
@@ -18,18 +20,19 @@
           </v-scale-transition>
         </div>
       </Card>
-    </v-slide-group-item>
-  </v-slide-group>
+    </v-col>
+  </v-row>
 </template>
 
 <script setup>
-import { ref } from "vue";
 import { partners } from "./data";
 
 import Card from "@/components/common/Card.vue";
 import Image from "@/components/common/Image.vue";
 
-const model = ref();
+const clickHandler = (url) => {
+  window.open(url);
+};
 </script>
 
 <style scoped></style>

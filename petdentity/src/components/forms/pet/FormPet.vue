@@ -1,5 +1,5 @@
 <template>
-  <div v-if="withPhoto">
+  <!-- <div v-if="withPhoto">
     <FileInput
       id="fileUpload"
       v-show="false"
@@ -22,7 +22,8 @@
         />
       </v-col>
     </v-row>
-  </div>
+  </div> -->
+
   <div>
     <Label class="text-primary"> Name </Label>
   </div>
@@ -49,6 +50,7 @@
         class="mt-2 text-end"
         type="number"
         v-model="pet.weight"
+        placeholder="Weight"
         suffix="kg(s)"
         withDecimal
         :disabled="disabled"
@@ -61,6 +63,7 @@
         class="mt-2"
         type="number"
         v-model="pet.height"
+        placeholder="Height"
         suffix="cm(s)"
         withDecimal
         :disabled="disabled"
@@ -90,6 +93,15 @@
       <Label class="text-primary"> Coat / Color </Label>
       <Coat class="mt-2" v-model="pet.coat" :disabled="disabled" />
     </v-col>
+    <v-col cols="12" md="6">
+      <Label class="text-primary"> Coat Remarks </Label>
+      <TextField
+        class="mt-2"
+        v-model="pet.coatRemarks"
+        placeholder="Coat Remarks"
+        :disabled="disabled"
+      />
+    </v-col>
   </v-row>
 
   <v-row dense class="mt-2">
@@ -108,10 +120,6 @@
 import Label from "@/components/common/Label.vue";
 import TextField from "@/components/common/TextField.vue";
 
-import Avatar from "@/components/common/Avatar.vue";
-import FileInput from "@/components/common/FileInput.vue";
-import ButtonIcon from "@/components/common/ButtonIcon.vue";
-
 import Gender from "@/components/pickers/Gender.vue";
 import Date from "@/components/pickers/Date.vue";
 import Animal from "@/components/pickers/Animal.vue";
@@ -120,38 +128,27 @@ import Coat from "@/components/pickers/Coat.vue";
 import Privacy from "@/components/pickers/Privacy.vue";
 import PetStatus from "@/components/pickers/PetStatus.vue";
 
-import { uploadPetProfile } from "@/api/photo";
-
 import { useModel } from "@/utils/vue";
-import { ref, toRefs, computed } from "vue";
+import { toRefs, computed } from "vue";
 
-const emit = defineEmits(["update:modelValue", "upload"]);
+const emit = defineEmits(["update:modelValue"]);
 const props = defineProps({
   modelValue: Object,
-  withPhoto: Boolean,
   disabled: Boolean,
 });
 
-const isLoading = ref(false);
 const propsRef = toRefs(props);
-const { withPhoto } = propsRef;
 const pet = computed(useModel(propsRef, emit, "modelValue"));
 
-const clickHandler = async () => {
-  let fileUpload = document.getElementById("fileUpload");
-  if (fileUpload != null) await fileUpload.click();
-};
+// const clickHandler = async () => {
+//   let fileUpload = document.getElementById("fileUpload");
+//   if (fileUpload != null) await fileUpload.click();
+// };
 
-const updateHandler = async (file) => {
-  try {
-    isLoading.value = true;
-    pet.value.photoUrl = await uploadPetProfile(pet.value.id, file);
-  } catch ({ message }) {
-    show("error", message);
-  } finally {
-    isLoading.value = false;
-  }
-};
+// const updateHandler = async (file) => {
+//   console.log(file);
+//   emit("uploadPhoto", file);
+// };
 </script>
 
 <style></style>

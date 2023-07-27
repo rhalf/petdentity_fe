@@ -26,11 +26,9 @@
             :items-per-pageNumber="params.limitNumber"
             hide-default-footer
             withRemove
-            withUpdate
             withAdd
             withView
             @remove="removeHandler"
-            @update="updateHandler"
             @view="viewHandler"
             @add="addHandler"
             @next="nextHandler"
@@ -65,12 +63,14 @@ import DialogPetAdd from "@/components/dialogs/pet/DialogPetAdd.vue";
 import DialogPetView from "@/components/dialogs/pet/DialogPetView.vue";
 import DialogPetRemove from "@/components/dialogs/pet/DialogPetRemove.vue";
 
-// import { useSnackbarStore } from "@/store/snackbar";
-// const { show } = useSnackbarStore();
+import { useSnackbarStore } from "@/store/snackbar";
+const { show } = useSnackbarStore();
+
 import { useRouter, useRoute } from "vue-router";
 const router = useRouter();
 
-import { search, next, prev } from "@/api/pet";
+import { search, next, prev, countByOwner as countPet } from "@/api/pet";
+import { countByOwner as countUnit } from "@/api/unit";
 
 import { ref, onMounted } from "vue";
 
@@ -88,8 +88,22 @@ const params = ref({
   limitNumber: 5,
 });
 
-const addHandler = () => {
-  dialogPetAdd.value = true;
+const addHandler = async () => {
+  try {
+    isLoading.value = true;
+
+    const unitCount = await countUnit();
+    const petCount = await countPet();
+
+    if (unitCount <= petCount)
+      throw new Error("Please add more units to continue!");
+
+    dialogPetAdd.value = true;
+  } catch ({ message }) {
+    show("error", message);
+  } finally {
+    isLoading.value = false;
+  }
 };
 
 const updateHandler = (item) => {

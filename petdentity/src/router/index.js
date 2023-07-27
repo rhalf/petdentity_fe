@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import HomeLayout from "@/components/layouts/home/HomeLayout.vue";
+// import HomeLayout from "@/components/layouts/home/HomeLayout.vue";
 
 import { user } from "./modules/user";
 import { admin } from "./modules/admin";
@@ -13,15 +13,16 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      component: HomeLayout,
-      children: [
-        {
-          path: "/",
-          name: "Home",
-          component: () => import("@/views/home/HomeView.vue"),
-          meta: { authenticated: false },
-        },
-      ],
+      redirect: "/session/login",
+      //component: HomeLayout,
+      // children: [
+      //   {
+      //     path: "/",
+      //     name: "Home",
+      //     component: () => import("@/views/home/HomeView.vue"),
+      //     meta: { authenticated: false },
+      //   },
+      // ],
     },
 
     {

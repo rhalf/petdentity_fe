@@ -10,7 +10,7 @@ export const headers = [
     title: "Actions",
     align: "start",
     sortable: false,
-    width: 160,
+    width: 120,
     key: "actions",
   },
 ];

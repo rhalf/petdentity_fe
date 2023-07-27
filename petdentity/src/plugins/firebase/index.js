@@ -22,13 +22,13 @@ import { getMessaging } from "firebase/messaging";
 // };
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCTyY-7kjjK4uHk_OviKyLpe4FqWZwmzsY",
-  authDomain: "petdentity-ccf29.firebaseapp.com",
-  projectId: "petdentity-ccf29",
-  storageBucket: "petdentity-ccf29.appspot.com",
-  messagingSenderId: "399809619668",
-  appId: "1:399809619668:web:3b032da450952ed6ef3d41",
-  measurementId: "G-TN15S0EPS6",
+  apiKey: "AIzaSyCfGAPrWi8ZsqmMUZnr5jwVd_6p4u4Sy68",
+  authDomain: "petdentity-c98e6.firebaseapp.com",
+  projectId: "petdentity-c98e6",
+  storageBucket: "petdentity-c98e6.appspot.com",
+  messagingSenderId: "997443954488",
+  appId: "1:997443954488:web:8be71a30e45aff417f43cd",
+  measurementId: "G-8PHXZLXM8Z",
 };
 
 // Initialize Firebase
