@@ -64,7 +64,7 @@ import DialogUnitOwnerAdd from "@/components/dialogs/unit/DialogUnitOwnerAdd.vue
 import DialogUnitViewFromOwner from "@/components/dialogs/unit/DialogUnitViewFromOwner.vue";
 import DialogUnitOwnerRemove from "@/components/dialogs/unit/DialogUnitOwnerRemove.vue";
 
-import { search, next, prev } from "@/api/unit";
+import { searchByOwner, nextByOwner, prevByOwner } from "@/api/unit";
 
 import { ref, onMounted } from "vue";
 
@@ -104,7 +104,7 @@ const loadItems = async () => {
   try {
     isLoading.value = true;
 
-    units.value = await search(params.value);
+    units.value = await searchByOwner(params.value);
   } catch ({ message }) {
     units.value = [];
     console.log("error", message);
@@ -117,7 +117,7 @@ const nextHandler = async () => {
   try {
     isLoading.value = true;
 
-    units.value = await next(params.value);
+    units.value = await nextByOwner(params.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {
@@ -129,7 +129,7 @@ const prevHandler = async () => {
   try {
     isLoading.value = true;
 
-    units.value = await prev(params.value);
+    units.value = await prevByOwner(params.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {

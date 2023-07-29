@@ -1,8 +1,8 @@
 <template>
   <teleport to="#progress-line">
     <v-progress-linear
-      :indeterminate="status"
       :visible="status"
+      :indeterminate="status"
       color="primary"
       height="3"
     />

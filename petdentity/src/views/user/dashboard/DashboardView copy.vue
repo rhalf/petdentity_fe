@@ -23,40 +23,19 @@ import { UserGroups } from "@/constants";
 const { OWNER, VETERINARIAN, ADMIN, GOVERNMENT } = UserGroups;
 
 import { useUserStore } from "@/store/user";
-const userStore = useUserStore();
-
-const { user } = storeToRefs(userStore);
+const user = useUserStore();
 
 import { dashboardItems } from "./data";
 
 import { computed, ref } from "vue";
-import { storeToRefs } from "pinia";
-import { watch } from "vue";
 
 const dashboardItemsRef = ref(dashboardItems);
 
-const items = ref();
-
-computed(() => {
+const items = computed(() => {
   return dashboardItemsRef.value.map((item) => {
     item.unauthorized = true;
 
-    user.value?.getRoles?.forEach((role) => {
-      const state = item.roles.includes(role);
-      if (state) item.unauthorized = false;
-    });
-
-    return item;
-  });
-});
-
-watch(user, (current) => {
-  if (!current) return;
-
-  items.value = dashboardItemsRef.value.map((item) => {
-    item.unauthorized = true;
-
-    current.roles.forEach((role) => {
+    user.getRoles?.forEach((role) => {
       const state = item.roles.includes(role);
       if (state) item.unauthorized = false;
     });

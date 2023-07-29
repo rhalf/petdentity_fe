@@ -96,8 +96,6 @@ import Sheet from "@/components/common/Sheet.vue";
 
 import DialogPetView from "@/components/dialogs/pet/DialogPetView.vue";
 
-import { update } from "@/api/pet";
-
 const dialogPetView = ref(false);
 
 import { getAge, toStringAge } from "@/utils/vue";
@@ -118,9 +116,4 @@ const updateHandler = () => {
 };
 </script>
 
-<style scoped>
-.overlapPhoto {
-  position: relative;
-  top: -100px;
-}
-</style>
+<style scoped></style>

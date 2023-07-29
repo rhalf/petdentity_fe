@@ -7,8 +7,8 @@
       <!-- </v-fade-transition> -->
     </router-view>
 
-    <ProgressLine />
     <Snackbar />
+    <ProgressLine />
   </v-app>
 </template>
 
@@ -21,13 +21,12 @@ import ProgressLine from "@/components/common/ProgressLine.vue";
 
 import { useProgressLineStore } from "@/store/progress-line";
 const { start, stop } = useProgressLineStore();
+const progressLine = useProgressLineStore();
 
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
 import { User } from "@/constants";
-
-import { getCurrentUser } from "@/utils/firebase";
 
 import { get, create } from "@/api/user";
 
@@ -37,10 +36,9 @@ const router = useRouter();
 import { useUserStore } from "@/store/user";
 const user = useUserStore();
 
-const loadUser = async () => {
+const loadUser = async (authUser) => {
   try {
     start();
-    const authUser = await getCurrentUser();
 
     if (!authUser) return;
 
@@ -73,10 +71,12 @@ import { onAuthStateChanged } from "firebase/auth";
 
 onAuthStateChanged(auth, async (user) => {
   if (user) {
-    await loadUser();
+    await loadUser(user);
     console.log("signedIn");
   } else {
     console.log("signedOut");
   }
 });
 </script>
+
+<style scoped></style>

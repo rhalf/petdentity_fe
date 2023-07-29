@@ -111,20 +111,6 @@ export const count = async () => {
   return snapshot.data().count;
 };
 
-//Owner
-export const getByOwnerAndId = async (id) => {
-  const { uid } = await getCurrentUser();
-
-  const q = await query(
-    collectionRef,
-    where("owner", "==", uid),
-    where("uid", "==", id),
-    limit(1)
-  );
-  const snapshots = await getDocs(q);
-  return toArray(snapshots);
-};
-
 //Pet
 export const getAllByPet = async (pet, param) => {
   const q = await query(
@@ -267,4 +253,18 @@ export const countByOwner = async () => {
   const q = query(collectionRef, where("owner", "==", uid));
   const snapshot = await getCountFromServer(q);
   return snapshot.data().count;
+};
+
+//Owner
+export const getByOwnerAndId = async (id) => {
+  const { uid } = await getCurrentUser();
+
+  const q = await query(
+    collectionRef,
+    where("owner", "==", uid),
+    where("uid", "==", id),
+    limit(1)
+  );
+  const snapshots = await getDocs(q);
+  return toArray(snapshots);
 };
