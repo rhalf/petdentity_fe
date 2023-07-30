@@ -48,8 +48,11 @@
       </v-row>
 
       <v-row>
-        <v-col class="text-right">
-          <Button @click="uploadHandler" :loading="isLoading"> Upload </Button>
+        <v-spacer />
+        <v-col cols="12" md="auto">
+          <Button @click="uploadHandler" :loading="isLoading" block>
+            Upload
+          </Button>
         </v-col>
       </v-row>
     </Sheet>
