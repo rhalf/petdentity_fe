@@ -41,6 +41,12 @@ export const admin = {
           component: () => import("@/views/admin/units/UnitsSummary.vue"),
           meta: { authenticated: true, authorization: "ADMIN" },
         },
+        {
+          path: "bulk-upload",
+          name: "AdminUnitsBulkUpload",
+          component: () => import("@/views/admin/units/UnitsBulkUpload.vue"),
+          meta: { authenticated: true, authorization: "ADMIN" },
+        },
       ],
     },
     {

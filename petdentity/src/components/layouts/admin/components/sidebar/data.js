@@ -21,7 +21,20 @@ export const items = [
     icon: "mdi-access-point",
     title: "Units",
     subtitle: "Manage Units",
-    to: { name: "AdminUnitsSummary" },
+    children: [
+      {
+        icon: "mdi-format-list-bulleted",
+        title: "Summary",
+        subtitle: "Manage Units",
+        to: { name: "AdminUnitsSummary" },
+      },
+      {
+        icon: "mdi-package-up",
+        title: "Bulk Upload",
+        subtitle: "Multiple Registration",
+        to: { name: "AdminUnitsBulkUpload" },
+      },
+    ],
   },
   {
     icon: "mdi-account-multiple",

@@ -72,7 +72,7 @@ const users = ref();
 const user = ref();
 const params = ref({
   searchText: "",
-  columnName: "id",
+  columnName: "email",
   orderDirection: "asc",
   limitNumber: 5,
 });

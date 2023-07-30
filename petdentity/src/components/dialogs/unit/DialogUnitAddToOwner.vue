@@ -1,5 +1,5 @@
 <template>
-  <Dialog v-model="dialog" :width="480" expand>
+  <Dialog v-model="dialog" :width="480">
     <Card>
       <v-card-title class="bg-primary pa-4">
         <Label header class="text-black"> Add Unit </Label>

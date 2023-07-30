@@ -1,5 +1,5 @@
 <template>
-  <v-data-table height="330">
+  <v-data-table-virtual height="320">
     <template v-slot:item.actions="{ item, index }">
       <ButtonIcon
         v-if="withView"
@@ -35,7 +35,12 @@
           <Button @click="emit('next')" block>{{ "Next >" }}</Button>
         </v-col>
         <v-col cols="12" md=""></v-col>
-        <v-col md="auto" class="d-flex justify-end" v-if="withAdd && !disabled">
+        <v-col
+          cols="12"
+          md="auto"
+          class="d-flex justify-end"
+          v-if="withAdd && !disabled"
+        >
           <Button @click="emit('add')" block>+ ADD</Button>
         </v-col>
       </v-row>
@@ -79,11 +84,11 @@
         {{ toStringAge(getAge(item.selectable.birthDate)) }}
       </Label>
     </template>
-  </v-data-table>
+  </v-data-table-virtual>
 </template>
 
 <script setup>
-import { VDataTable } from "vuetify/labs/VDataTable";
+import { VDataTableVirtual } from "vuetify/labs/VDataTableVirtual";
 
 import Chip from "@/components/common/Chip";
 import Label from "@/components/common/Label";
@@ -97,7 +102,7 @@ const props = defineProps({
   withView: Boolean,
   withUpdate: Boolean,
   withRemove: Boolean,
-  disabled: Boolean,
   withAdd: Boolean,
+  disabled: Boolean,
 });
 </script>

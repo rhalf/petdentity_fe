@@ -1,24 +1,26 @@
 <template>
   <v-container>
     <Sheet class="bg-transparent">
-      <v-row>
+      <Label header>Counters</Label>
+
+      <v-row class="mt-2">
         <v-col
           cols="12"
           sm="4"
           md="3"
-          lg="2"
+          lg="3"
+          xl="2"
           v-for="(counter, index) in counters"
           :key="index"
         >
           <v-card>
-            <v-row dense class="bg-primary">
-              <v-col class="ma-2" align="center" justify="center">
-                <Label header>{{ counter.title }}</Label>
+            <v-row dense class="pa-4 bg-primary">
+              <v-col cols="auto" align="left" justify="center">
+                <v-icon class="text-h2">{{ counter.icon }}</v-icon>
               </v-col>
-            </v-row>
-            <v-row dense>
-              <v-col class="ma-1" align="center" justify="center">
-                <Label title>{{ format(counter.count) }}</Label>
+              <v-col cols="" align="right" justify="center">
+                <Label title medium>{{ format(counter.count) }}</Label>
+                <Label text medium>{{ counter.title }}</Label>
               </v-col>
             </v-row>
           </v-card>
@@ -57,26 +59,31 @@ onMounted(async () => {
 
     array.push({
       title: "Animals",
+      icon: "mdi-paw",
       count: await countAnimals(),
     });
 
     array.push({
       title: "Breeds",
+      icon: "mdi-dna",
       count: await countBreeds(),
     });
 
     array.push({
       title: "Coats",
+      icon: "mdi-sheep",
       count: await countCoats(),
     });
 
     array.push({
       title: "Units",
+      icon: "mdi-access-point",
       count: await countUnits(),
     });
 
     array.push({
       title: "Users",
+      icon: "mdi-account-multiple",
       count: await countUsers(),
     });
 

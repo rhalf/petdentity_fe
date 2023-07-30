@@ -37,15 +37,15 @@
         </v-col>
       </v-row>
     </Sheet>
-    <DialogUnitOwnerAdd v-model="dialogUnitOwnerAdd" @done="loadItems" />
+    <DialogUnitAddToOwner v-model="dialogUnitAddToOwner" @done="loadItems" />
     <DialogUnitViewFromOwner
       v-model="dialogUnitViewFromOwner"
       v-model:unit="unit"
       read-only
       @done="loadItems"
     />
-    <DialogUnitOwnerRemove
-      v-model="dialogUnitOwnerRemove"
+    <DialogUnitRemoveFromOwner
+      v-model="dialogUnitRemoveFromOwner"
       v-model:unit="unit"
       @done="loadItems"
     />
@@ -60,17 +60,17 @@ import TextField from "@/components/common/TextField.vue";
 import DataTable from "@/components/tables/DataTable.vue";
 import { headers } from "./data";
 
-import DialogUnitOwnerAdd from "@/components/dialogs/unit/DialogUnitOwnerAdd.vue";
+import DialogUnitAddToOwner from "@/components/dialogs/unit/DialogUnitAddToOwner.vue";
 import DialogUnitViewFromOwner from "@/components/dialogs/unit/DialogUnitViewFromOwner.vue";
-import DialogUnitOwnerRemove from "@/components/dialogs/unit/DialogUnitOwnerRemove.vue";
+import DialogUnitRemoveFromOwner from "@/components/dialogs/unit/DialogUnitRemoveFromOwner.vue";
 
 import { searchByOwner, nextByOwner, prevByOwner } from "@/api/unit";
 
 import { ref, onMounted } from "vue";
 
-const dialogUnitOwnerAdd = ref(false);
+const dialogUnitAddToOwner = ref(false);
 const dialogUnitViewFromOwner = ref(false);
-const dialogUnitOwnerRemove = ref(false);
+const dialogUnitRemoveFromOwner = ref(false);
 
 const isLoading = ref(false);
 const units = ref();
@@ -83,12 +83,12 @@ const params = ref({
 });
 
 const addHandler = () => {
-  dialogUnitOwnerAdd.value = true;
+  dialogUnitAddToOwner.value = true;
 };
 
 const removeHandler = async (item) => {
   unit.value = item;
-  dialogUnitOwnerRemove.value = true;
+  dialogUnitRemoveFromOwner.value = true;
 };
 
 const viewHandler = (item) => {

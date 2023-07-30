@@ -18,6 +18,7 @@ import {
   endBefore,
   limitToLast,
   getCountFromServer,
+  writeBatch,
 } from "firebase/firestore";
 
 import { toObject, toArray, getIndexes } from "./index";
@@ -267,4 +268,16 @@ export const getByOwnerAndId = async (id) => {
   );
   const snapshots = await getDocs(q);
   return toArray(snapshots);
+};
+
+//BatchAdd
+export const batchAdd = async (items) => {
+  var batch = writeBatch(firestore);
+
+  items.forEach((item) => {
+    const documentRef = doc(collectionRef);
+    batch.set(documentRef, item);
+  });
+
+  return await batch.commit();
 };

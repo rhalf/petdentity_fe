@@ -1,67 +1,65 @@
 <template>
-  <v-container class="mt-5">
-    <v-row>
-      <v-col
-        cols="12"
-        sm="12"
-        md="12"
-        lg="6"
-        xl="4"
-        v-for="(item, index) in items"
-        :key="index"
-      >
-        <Module v-model="items[index]" />
-      </v-col>
-    </v-row>
+  <v-container>
+    <Sheet class="bg-transparent">
+      <v-row>
+        <v-col
+          cols="12"
+          sm="12"
+          md="12"
+          lg="6"
+          xl="4"
+          v-for="(item, index) in items"
+          :key="index"
+        >
+          <Module v-model="items[index]" />
+        </v-col>
+      </v-row>
+    </Sheet>
   </v-container>
 </template>
 
 <script setup>
+import Sheet from "@/components/common/Sheet.vue";
 import Module from "./components/module/Module.vue";
 
 import { UserGroups } from "@/constants";
 const { OWNER, VETERINARIAN, ADMIN, GOVERNMENT } = UserGroups;
 
+import { storeToRefs } from "pinia";
+import { computed, watch, ref } from "vue";
+
 import { useUserStore } from "@/store/user";
 const userStore = useUserStore();
-
 const { user } = storeToRefs(userStore);
 
 import { dashboardItems } from "./data";
 
-import { computed, ref } from "vue";
-import { storeToRefs } from "pinia";
-import { watch } from "vue";
-
-const dashboardItemsRef = ref(dashboardItems);
-
 const items = ref();
 
-computed(() => {
-  return dashboardItemsRef.value.map((item) => {
-    item.unauthorized = true;
-
-    user.value?.getRoles?.forEach((role) => {
-      const state = item.roles.includes(role);
-      if (state) item.unauthorized = false;
-    });
-
-    return item;
+const load = ({ roles }) => {
+  return dashboardItems.map((item) => {
+    return {
+      ...item,
+      authorized: isAuthorized(roles, item.roles),
+    };
   });
-});
+};
 
-watch(user, (current) => {
-  if (!current) return;
-
-  items.value = dashboardItemsRef.value.map((item) => {
-    item.unauthorized = true;
-
-    current.roles.forEach((role) => {
-      const state = item.roles.includes(role);
-      if (state) item.unauthorized = false;
-    });
-
-    return item;
+const isAuthorized = (userRoles, roles) => {
+  let result = false;
+  userRoles.forEach((role) => {
+    if (roles.includes(role)) result = true;
   });
-});
+  return result;
+};
+
+watch(
+  user,
+  async (current) => {
+    if (!current) return;
+
+    items.value = await load(current);
+  },
+  { immediate: true, deep: true }
+);
 </script>
