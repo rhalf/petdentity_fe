@@ -5,7 +5,20 @@
         <Label header class="text-black"> Add Unit </Label>
       </v-card-title>
       <v-card-text>
-        <FormUnit v-model="unit" />
+        <FormUnit
+          v-model="unit"
+          :option="[
+            'uid',
+            'unitType',
+            'formType',
+            'status',
+            'applicationDate',
+            'pet',
+            'owner',
+            'veterinarian',
+            'government',
+          ]"
+        />
       </v-card-text>
       <v-card-actions>
         <v-row dense class="py-4 px-4">

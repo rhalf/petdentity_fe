@@ -50,7 +50,12 @@
       <v-row>
         <v-spacer />
         <v-col cols="12" md="auto">
-          <Button @click="uploadHandler" :loading="isLoading" block>
+          <Button
+            @click="uploadHandler"
+            :loading="isLoading"
+            :disabled="!units || !units.length"
+            block
+          >
             Upload
           </Button>
         </v-col>

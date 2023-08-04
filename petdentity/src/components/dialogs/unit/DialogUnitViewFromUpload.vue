@@ -7,14 +7,16 @@
       <v-card-text>
         <FormUnit
           v-model="unit"
-          :disabled-option="[
+          :option="[
             'uid',
             'unitType',
             'formType',
             'status',
-            'government',
+            'applicationDate',
             'pet',
             'owner',
+            'veterinarian',
+            'government',
           ]"
           :disabled="disabled"
         />

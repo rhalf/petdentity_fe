@@ -1,7 +1,6 @@
 <template>
   <Panel label="Contacts" icon="mdi-needle" min-height="320">
     <DataTable
-      class="pa-4"
       hover
       :loading="isLoading"
       :headers="headers"
@@ -51,13 +50,13 @@ import { headers } from "./data";
 import { getAllByPet, getAllByPetNext, getAllByPetPrev } from "@/api/contact";
 
 import { toRefs, ref, computed, onMounted, watch } from "vue";
-import { useModel } from "@/utils/vue";
+// import { useModel } from "@/utils/vue";
 
-const emit = defineEmits(["update:modelValue"]);
-const props = defineProps({ modelValue: Object, readOnly: Boolean });
+// const emit = defineEmits(["update:modelValue"]);
+const props = defineProps({ pet: Object, readOnly: Boolean });
 
 const propsRef = toRefs(props);
-const { readOnly } = propsRef;
+const { readOnly, pet } = propsRef;
 
 const dialogContactView = ref(false);
 const dialogContactAddToPet = ref(false);
@@ -67,8 +66,6 @@ const isLoading = ref(false);
 
 const contacts = ref();
 const contact = ref();
-
-const pet = computed(useModel(propsRef, emit, "modelValue"));
 
 const params = ref({
   searchText: "",

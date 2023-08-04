@@ -1,5 +1,8 @@
 <template>
-  <v-row dense>
+  <v-sheet height="200" class="bg-amber-lighten-3">
+    <v-img :src="Wave" cover :aspectRatio="14 / 9"></v-img>
+  </v-sheet>
+  <v-row dense v-if="pet">
     <v-col class="text-center">
       <div class="overlapPhoto">
         <Avatar v-model="pet.photoUrl" :size="200" type="PET" />
@@ -33,6 +36,8 @@ import Avatar from "@/components/common/Avatar.vue";
 import FileInput from "@/components/common/FileInput.vue";
 import ButtonIcon from "@/components/common/ButtonIcon.vue";
 
+import Wave from "./wave.svg";
+
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
@@ -42,13 +47,10 @@ import { update } from "@/api/pet";
 import { toRefs, ref } from "vue";
 
 const emit = defineEmits(["done"]);
-const props = defineProps({ modelValue: Object, readOnly: Boolean });
+const props = defineProps({ readOnly: Boolean, pet: Object });
 
 const propsRef = toRefs(props);
-
-const { readOnly } = propsRef;
-
-const pet = propsRef.modelValue;
+const { readOnly, pet } = propsRef;
 
 const isLoading = ref(false);
 

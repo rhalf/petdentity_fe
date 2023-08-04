@@ -9,6 +9,7 @@ import { toRefs } from "vue";
 import { computed } from "vue";
 
 const properties = {
+  density: "comfortable",
   type: "date",
 };
 

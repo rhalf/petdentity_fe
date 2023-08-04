@@ -6,7 +6,7 @@
           v-if="label || icon"
           variant="flat"
           class="rounded-0 rounded-t-lg"
-          width="150"
+          width="200"
           @click="emit('click')"
         >
           <v-icon v-if="icon">{{ icon }}</v-icon>
@@ -14,8 +14,8 @@
         </Button>
       </v-col>
     </v-row>
-    <div class="bg-primary pt-1" />
-    <Sheet class="rounded-0 bg-grey-darken-4 text-left" :min-height="minHeight">
+    <!-- <div class="bg-primary pt-1" /> -->
+    <Sheet class="rounded-0 text-left outlined" :min-height="minHeight">
       <slot />
     </Sheet>
   </div>
@@ -37,4 +37,8 @@ const props = defineProps({
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.outlined {
+  outline: 1px solid #ffc107;
+}
+</style>

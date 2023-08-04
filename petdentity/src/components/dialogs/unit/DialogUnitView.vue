@@ -7,23 +7,29 @@
       <v-card-text>
         <FormUnit
           v-model="unit"
-          :disabled-option="[
+          :disabled="disabled"
+          :option="[
             'uid',
             'unitType',
             'formType',
             'status',
-            'government',
+            'applicationDate',
             'pet',
             'owner',
+            'veterinarian',
+            'government',
           ]"
-          :disabled="disabled"
         />
       </v-card-text>
       <v-card-actions>
         <v-row dense class="py-4 px-4">
           <v-spacer />
           <v-col cols="auto">
-            <Button @click="submitHandler" :loading="isLoading">
+            <Button
+              @click="submitHandler"
+              :loading="isLoading"
+              v-if="!readOnly"
+            >
               {{ buttonLabel }}
             </Button>
           </v-col>
@@ -48,19 +54,20 @@ const { show } = useSnackbarStore();
 
 import { update } from "@/api/unit";
 
-import { useModel, syncProp } from "@/utils/vue";
+import { useModel } from "@/utils/vue";
 
 import { ref, computed, toRefs } from "vue";
 const props = defineProps({
   modelValue: Boolean,
   unit: Object,
+  readOnly: Boolean,
 });
 const propRef = toRefs(props);
 const emit = defineEmits(["update:modelValue", "update:unit", "done"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propRef, emit, "modelValue"));
-const unit = computed(syncProp(propRef, emit, "unit"));
+const unit = computed(useModel(propRef, emit, "unit"));
 const disabled = ref(true);
 
 const submitHandler = async () => {

@@ -1,5 +1,12 @@
 export const headers = [
   {
+    title: "Actions",
+    align: "start",
+    sortable: false,
+    key: "actions",
+    width: 120,
+  },
+  {
     title: "Name",
     align: "start",
     sortable: false,
@@ -19,12 +26,5 @@ export const headers = [
     sortable: false,
     key: "address",
     width: "400",
-  },
-  {
-    title: "Actions",
-    align: "start",
-    sortable: false,
-    key: "actions",
-    width: 120,
   },
 ];

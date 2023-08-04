@@ -12,6 +12,7 @@
             append-inner-icon="mdi-magnify"
             variant="outlined"
             @keypress.enter="loadItems"
+            @update:modelValue="updateModelHandler"
           />
         </v-col>
       </v-row>
@@ -129,5 +130,10 @@ const prevHandler = async () => {
   } finally {
     isLoading.value = false;
   }
+};
+
+const updateModelHandler = () => {
+  if (typeof params.value.searchText != "string") return;
+  params.value.searchText = params.value.searchText.toUpperCase();
 };
 </script>

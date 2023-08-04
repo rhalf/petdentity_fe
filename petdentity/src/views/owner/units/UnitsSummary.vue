@@ -37,11 +37,27 @@
         </v-col>
       </v-row>
     </Sheet>
+
+    <v-alert type="info" class="mt-5">
+      <Label text medium> Cant add unit? </Label>
+      <Label caption> REASONS </Label>
+      <Label caption> • Unit(Microchip/Tag) is not from PETDENTITY </Label>
+      <Label caption> • Unit needs to be registered </Label>
+      <Label caption>
+        • Please contact us on Facebook Page
+        <Anchor @click="clickHandler"> Petdentity </Anchor> if u dont have unit
+        yet!
+      </Label>
+      <Label caption>
+        • For more details you may call us on PLDT(8711-4975),
+        Globe(0945-455-2018), Smart( 0939-649-3217).
+      </Label>
+    </v-alert>
+
     <DialogUnitAddToOwner v-model="dialogUnitAddToOwner" @done="loadItems" />
     <DialogUnitViewFromOwner
       v-model="dialogUnitViewFromOwner"
       v-model:unit="unit"
-      read-only
       @done="loadItems"
     />
     <DialogUnitRemoveFromOwner
@@ -54,6 +70,7 @@
 
 <script setup>
 import Sheet from "@/components/common/Sheet.vue";
+import Anchor from "@/components/common/Anchor.vue";
 import Label from "@/components/common/Label.vue";
 import TextField from "@/components/common/TextField.vue";
 
@@ -94,6 +111,10 @@ const removeHandler = async (item) => {
 const viewHandler = (item) => {
   unit.value = item;
   dialogUnitViewFromOwner.value = true;
+};
+
+const clickHandler = () => {
+  window.open("https://www.facebook.com/Petdentity");
 };
 
 onMounted(async () => {

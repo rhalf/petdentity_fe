@@ -56,57 +56,18 @@ import { count as countContacts } from "@/api/contact";
 
 import { ref, onMounted } from "vue";
 
-const counters = ref();
+const counters = ref([
+  { title: "Contacts", icon: "mdi-account-group", count: 0 },
+  { title: "Units", icon: "mdi-access-point", count: 0 },
+  { title: "Pets", icon: "mdi-paw", count: 0 },
+]);
 
 onMounted(async () => {
   try {
     start();
-
-    const array = [];
-
-    array.push({
-      title: "Contacts",
-      icon: "mdi-account-group",
-      count: await countContacts(),
-    });
-
-    // array.push({
-    //   title: "Animals",
-    //   icon: "mdi-paw",
-    //   count: await countAnimals(),
-    // });
-
-    // array.push({
-    //   title: "Breeds",
-    //   icon: "mdi-dna",
-    //   count: await countBreeds(),
-    // });
-
-    // array.push({
-    //   title: "Coats",
-    //   icon: "mdi-sheep",
-    //   count: await countCoats(),
-    // });
-
-    array.push({
-      title: "Units",
-      icon: "mdi-access-point",
-      count: await countUnits(),
-    });
-
-    // array.push({
-    //   title: "Users",
-    //   icon: "mdi-account-multiple",
-    //   count: await countUsers(),
-    // });
-
-    array.push({
-      title: "Pets",
-      icon: "mdi-paw",
-      count: await countPets(),
-    });
-
-    counters.value = array;
+    counters.value[0].count = await countContacts();
+    counters.value[1].count = await countUnits();
+    counters.value[2].count = await countPets();
   } catch ({ message }) {
     show("error", message);
   } finally {

@@ -10,6 +10,7 @@
         append-inner-icon="mdi-magnify"
         variant="outlined"
         @keypress.enter="loadItems"
+        @update:modelValue="updateModelHandler"
       />
     </v-col>
   </v-row>
@@ -143,6 +144,11 @@ const updateHandler = async (item) => {
 const removeHandler = async (item) => {
   breed.value = item;
   dialogBreedRemove.value = true;
+};
+
+const updateModelHandler = () => {
+  if (typeof params.value.searchText != "string") return;
+  params.value.searchText = params.value.searchText.toUpperCase();
 };
 </script>
 

@@ -7,6 +7,7 @@
     :loading="isLoading"
     item-title="name"
     item-value="name"
+    @update:search="updateSearchHandler"
   >
   </Autocomplete>
 </template>
@@ -63,7 +64,7 @@ watch(
 
 const load = debounce(() => {
   loadItems();
-}, 1000);
+}, 500);
 
 watch(
   params,
@@ -72,6 +73,11 @@ watch(
   },
   { immediate: true, deep: true }
 );
+
+const updateSearchHandler = () => {
+  if (typeof params.value.searchText != "string") return;
+  params.value.searchText = params.value.searchText.toUpperCase();
+};
 </script>
 
 <style></style>

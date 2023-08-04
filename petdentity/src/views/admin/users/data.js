@@ -1,11 +1,11 @@
 export const headers = [
-  // {
-  //   title: "UID",
-  //   align: "start",
-  //   sortable: false,
-  //   key: "id",
-  //   width: "25%",
-  // },
+  {
+    title: "Actions",
+    align: "start",
+    sortable: false,
+    width: 120,
+    key: "actions",
+  },
   {
     title: "Email",
     align: "start",
@@ -26,13 +26,5 @@ export const headers = [
     sortable: false,
     key: "roles",
     width: "40%",
-  },
-
-  {
-    title: "Actions",
-    align: "start",
-    sortable: false,
-    width: 120,
-    key: "actions",
   },
 ];

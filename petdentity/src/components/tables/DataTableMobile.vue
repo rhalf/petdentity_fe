@@ -26,22 +26,21 @@
       />
     </template>
 
-    <template v-slot:bottom="{ item, index }">
+    <!-- <template v-slot:item.name="{ item, index }">
+      <Label text> {{ item.name }}</Label>
+    </template> -->
+
+    <!-- <template v-slot:bottom="{ item, index }">
       <v-row dense class="mt-2">
-        <v-col cols="4" md="auto">
+        <v-col cols="6" md="auto">
           <Button @click="emit('prev')" block>{{ "< PREV " }} </Button>
         </v-col>
-        <v-col cols="4" md="auto">
+        <v-col cols="6" md="auto">
           <Button @click="emit('next')" block>{{ "Next >" }}</Button>
         </v-col>
-        <v-spacer v-if="md || lg || xl" />
-        <v-col
-          cols="4"
-          md="auto"
-          class="d-flex justify-end"
-          v-if="withAdd && !disabled"
-        >
-          <Button @click="emit('add')">+ ADD</Button>
+        <v-col cols="12" md=""></v-col>
+        <v-col md="auto" class="d-flex justify-end" v-if="withAdd && !disabled">
+          <Button @click="emit('add')" block>+ ADD</Button>
         </v-col>
       </v-row>
     </template>
@@ -100,7 +99,7 @@
           </Label>
         </v-col>
       </v-row>
-    </template>
+    </template> -->
 
     <!-- <template v-slot:item.colors="{ item, index }">
       <Colors :colors="item.selectable.colors" />
@@ -116,9 +115,6 @@
 
 <script setup>
 import { VDataTable } from "vuetify/labs/VDataTable";
-
-import { useDisplay } from "vuetify";
-const { xs, sm, md, lg, xl } = useDisplay();
 
 import Chip from "@/components/common/Chip";
 import Label from "@/components/common/Label";
@@ -136,9 +132,3 @@ const props = defineProps({
   withAdd: Boolean,
 });
 </script>
-
-<style scoped>
-/* table > thead > tr > th {
-  color: #ffc107 !important;
-} */
-</style>

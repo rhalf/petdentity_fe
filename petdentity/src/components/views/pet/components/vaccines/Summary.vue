@@ -48,21 +48,20 @@ import DialogVaccineAdd from "@/components/dialogs/vaccine/DialogVaccineAdd.vue"
 import DialogVaccineView from "@/components/dialogs/vaccine/DialogVaccineView.vue";
 import DialogVaccineRemove from "@/components/dialogs/vaccine/DialogVaccineRemove.vue";
 
-import { toRefs, ref, computed, watch } from "vue";
-import { useModel } from "@/utils/vue";
-
 import { headers } from "./data";
 import { getAllByPet, getAllByPetNext, getAllByPetPrev } from "@/api/vaccine";
 
-const emit = defineEmits(["update:modelValue"]);
+import { toRefs, ref, computed, watch } from "vue";
+// import { useModel } from "@/utils/vue";
+// const emit = defineEmits(["update:modelValue"]);
+
 const props = defineProps({
-  modelValue: Object,
   pet: Object,
   readOnly: Boolean,
 });
 
 const propsRef = toRefs(props);
-const { readOnly } = propsRef;
+const { readOnly, pet } = propsRef;
 
 const dialogVaccineAdd = ref(false);
 const dialogVaccineRemove = ref(false);
@@ -79,8 +78,6 @@ const params = ref({
 
 const vaccines = ref();
 const vaccine = ref({});
-
-const pet = computed(useModel(propsRef, emit, "modelValue"));
 
 watch(
   pet,
@@ -104,7 +101,7 @@ const loadItems = async () => {
 const next = async () => {
   try {
     isLoading.value = true;
-    contacts.value = await getAllByPetNext(pet.value.id, params.value);
+    vaccines.value = await getAllByPetNext(pet.value.id, params.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {
@@ -115,7 +112,7 @@ const next = async () => {
 const prev = async () => {
   try {
     isLoading.value = true;
-    contacts.value = await getAllByPetPrev(pet.value.id, params.value);
+    vaccines.value = await getAllByPetPrev(pet.value.id, params.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {

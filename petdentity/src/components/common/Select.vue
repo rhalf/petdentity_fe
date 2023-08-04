@@ -11,10 +11,6 @@ const properties = {
   hideDetails: "auto",
   clearable: true,
 };
-
-const props = defineProps({
-  customized: Boolean,
-});
 </script>
 
 <style scoped></style>

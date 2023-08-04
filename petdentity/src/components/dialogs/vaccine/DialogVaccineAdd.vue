@@ -54,7 +54,6 @@ const vaccine = ref({});
 const submitHandler = async () => {
   try {
     isLoading.value = true;
-    console.log(pet.value);
     vaccine.value.pet = pet.value.id;
     await create(vaccine.value);
     emit("done");

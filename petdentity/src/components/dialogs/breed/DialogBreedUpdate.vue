@@ -11,6 +11,7 @@
           v-model="breed.name"
           class="mt-3"
           placeholder="Enter breed here!"
+          @update:modelValue="updateModelHandler"
         />
       </v-card-text>
       <v-card-actions>
@@ -64,7 +65,7 @@ const submitHandler = async () => {
   try {
     isLoading.value = true;
     await update(breed.value);
-    emit("done");
+    // emit("done");
     show("success", "Added an breed!");
     breed.value = {};
     dialog.value = false;
@@ -77,6 +78,10 @@ const submitHandler = async () => {
 
 const closeHandler = () => {
   dialog.value = false;
+};
+
+const updateModelHandler = () => {
+  breed.value.name = breed.value.name.toUpperCase();
 };
 </script>
 

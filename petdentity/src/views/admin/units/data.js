@@ -1,5 +1,12 @@
 export const headers = [
   {
+    title: "Actions",
+    align: "start",
+    sortable: false,
+    width: "120",
+    key: "actions",
+  },
+  {
     title: "UID",
     align: "start",
     sortable: false,
@@ -18,42 +25,14 @@ export const headers = [
     align: "start",
     sortable: false,
     key: "formType",
-    width: "100",
+    width: "160",
   },
 
   {
-    title: "Pet",
+    title: "POVG",
     align: "start",
     sortable: false,
-    key: "pet",
-    width: "200",
-  },
-  {
-    title: "Owner",
-    align: "start",
-    sortable: false,
-    key: "owner",
-    width: "200",
-  },
-  // {
-  //   title: "Veterinarian",
-  //   align: "start",
-  //   sortable: false,
-  //   key: "veterinarian",
-  //   width: "200",
-  // },
-  // {
-  //   title: "Government",
-  //   align: "start",
-  //   sortable: false,
-  //   key: "government",
-  //   width: "200",
-  // },
-  {
-    title: "Actions",
-    align: "start",
-    sortable: false,
-    width: 120,
-    key: "actions",
+    key: "povg",
+    width: "160",
   },
 ];

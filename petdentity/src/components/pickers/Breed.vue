@@ -7,6 +7,7 @@
     :loading="isLoading"
     item-title="name"
     item-value="name"
+    @update:search="updateSearchHandler"
   />
 </template>
 
@@ -68,7 +69,7 @@ watch(
 const load = debounce(() => {
   if (!params.value.searchText) return;
   loadItems();
-}, 1000);
+}, 500);
 
 watch(
   params,
@@ -77,6 +78,11 @@ watch(
   },
   { immediate: true, deep: true }
 );
+
+const updateSearchHandler = () => {
+  if (typeof params.value.searchText != "string") return;
+  params.value.searchText = params.value.searchText.toUpperCase();
+};
 </script>
 
 <style></style>

@@ -1,35 +1,31 @@
 <template>
-  <v-sheet height="200">
-    <v-img :src="Wave" cover></v-img>
-  </v-sheet>
-
   <v-row dense class="mt-2">
     <v-col cols="12" class="text-center">
-      <Header v-model="pet" :readOnly="readOnly" />
+      <Header v-model:pet="pet" :readOnly="readOnly" />
     </v-col>
   </v-row>
 
   <v-row dense class="mt-2">
     <v-col cols="12" class="text-center">
-      <Profile v-model="pet" :readOnly="readOnly" />
+      <Profile v-model:pet="pet" :readOnly="readOnly" />
     </v-col>
   </v-row>
 
   <v-row dense class="mt-2">
     <v-col cols="12" class="text-center">
-      <Contacts v-model="pet" :readOnly="readOnly" />
+      <Contacts v-model:pet="pet" :readOnly="readOnly" />
     </v-col>
   </v-row>
 
   <v-row dense class="mt-2">
     <v-col cols="12" class="text-center">
-      <Vaccines v-model="pet" :readOnly="readOnly" />
+      <Vaccines v-model:pet="pet" :readOnly="readOnly" />
     </v-col>
   </v-row>
 
   <v-row dense class="mt-2">
     <v-col cols="12" class="text-center">
-      <Units v-model="pet" :readOnly="readOnly" />
+      <Units v-model:pet="pet" :readOnly="readOnly" />
     </v-col>
   </v-row>
 </template>
@@ -41,24 +37,25 @@ import Contacts from "./components/contacts/Summary.vue";
 import Vaccines from "./components/vaccines/Summary.vue";
 import Units from "./components/units/Summary.vue";
 
-import Wave from "./components/wave.svg";
+import { useSnackbarStore } from "@/store/snackbar";
+const { show } = useSnackbarStore();
 
 import { useRoute } from "vue-router";
 const route = useRoute();
 
 import { get } from "@/api/pet";
 
-import { ref, onMounted, computed } from "vue";
+import { computed, onMounted, ref } from "vue";
 
 const isLoading = ref(false);
-const pet = ref({});
+const pet = ref();
 
 const readOnly = computed(() => {
   return route.meta.mode === "VIEW" || false;
 });
 
-onMounted(async () => {
-  await loadItem();
+onMounted(() => {
+  loadItem();
 });
 
 const loadItem = async () => {
@@ -66,7 +63,7 @@ const loadItem = async () => {
     isLoading.value = true;
     pet.value = await get(route.params.id);
   } catch ({ message }) {
-    console.log("error", message);
+    show("error", message);
   } finally {
     isLoading.value = false;
   }

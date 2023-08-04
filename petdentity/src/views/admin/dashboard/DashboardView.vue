@@ -49,45 +49,22 @@ import { count as countUsers } from "@/api/user";
 
 import { ref, onMounted } from "vue";
 
-const counters = ref();
+const counters = ref([
+  { title: "Animals", icon: "mdi-paw", count: 0 },
+  { title: "Breeds", icon: "mdi-dna", count: 0 },
+  { title: "Coats", icon: "mdi-sheep", count: 0 },
+  { title: "Units", icon: "mdi-access-point", count: 0 },
+  { title: "Users", icon: "mdi-account-multiple", count: 0 },
+]);
 
 onMounted(async () => {
   try {
     start();
-
-    const array = [];
-
-    array.push({
-      title: "Animals",
-      icon: "mdi-paw",
-      count: await countAnimals(),
-    });
-
-    array.push({
-      title: "Breeds",
-      icon: "mdi-dna",
-      count: await countBreeds(),
-    });
-
-    array.push({
-      title: "Coats",
-      icon: "mdi-sheep",
-      count: await countCoats(),
-    });
-
-    array.push({
-      title: "Units",
-      icon: "mdi-access-point",
-      count: await countUnits(),
-    });
-
-    array.push({
-      title: "Users",
-      icon: "mdi-account-multiple",
-      count: await countUsers(),
-    });
-
-    counters.value = array;
+    counters.value[0].count = await countAnimals();
+    counters.value[1].count = await countBreeds();
+    counters.value[2].count = await countCoats();
+    counters.value[3].count = await countUnits();
+    counters.value[4].count = await countUsers();
   } catch ({ message }) {
     show("error", message);
   } finally {

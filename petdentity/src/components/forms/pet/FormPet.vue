@@ -1,29 +1,4 @@
 <template>
-  <!-- <div v-if="withPhoto">
-    <FileInput
-      id="fileUpload"
-      v-show="false"
-      @update:modelValue="updateHandler"
-    />
-
-    <v-row dense class="mt-4">
-      <v-col cols="12" class="text-center">
-        <Avatar v-model="pet.photoUrl" :size="200" type="PET" />
-      </v-col>
-    </v-row>
-
-    <v-row dense v-if="!disabled">
-      <v-col cols="12" class="text-right">
-        <ButtonIcon
-          icon="mdi-pencil"
-          variant="flat"
-          color="primary"
-          @click="clickHandler"
-        />
-      </v-col>
-    </v-row>
-  </div> -->
-
   <div>
     <Label class="text-primary"> Name </Label>
   </div>
