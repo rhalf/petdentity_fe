@@ -44,7 +44,9 @@
 
     <v-row>
       <v-col>
-        <Button block variant="outlined" size="large">Scan Now</Button>
+        <Button block variant="outlined" size="large" @click="searchHandler">
+          Search Pet
+        </Button>
       </v-col>
     </v-row>
   </v-container>
@@ -81,7 +83,8 @@ const signupHandler = () => {
   router.push({ name: "SessionSignup" });
 };
 
-const forgotHandler = () => {};
+import { useSnackbarStore } from "@/store/snackbar";
+const { show } = useSnackbarStore();
 
 import { useProgressLineStore } from "@/store/progress-line";
 const { start, stop } = useProgressLineStore();
@@ -98,4 +101,8 @@ const onSubmitHandler = handleSubmit(async (values) => {
     stop();
   }
 });
+
+const searchHandler = () => {
+  router.push({ name: "SearchDashboard" });
+};
 </script>

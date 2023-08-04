@@ -1,29 +1,31 @@
 <template>
-  <v-avatar v-bind="properties" @click="emit('click')">
-    <v-img :src="image" cover :lazy-src="AccountEmpty" />
+  <v-avatar :size="size" class="elevation-5">
+    <v-img :src="src" cover :lazy-src="lazy" />
   </v-avatar>
 </template>
 
 <script setup>
-import { computed } from "vue";
+import AccountEmptyOwner from "@/assets/images/accounts/account-empty.png";
+import AccountEmptyPet from "@/assets/images/pets/account-empty.png";
 
-import AccountEmpty from "@/assets/images/accounts/account-empty.png";
+import { toRefs, computed } from "vue";
+import { useModel } from "@/utils/vue";
 
-const properties = {
-  class: "text-body-1 text-primary pointer",
-};
+const emit = defineEmits(["update:modelValue"]);
+const props = defineProps({
+  modelValue: String,
+  size: { type: [String, Number], default: 50 },
+  type: { type: String, default: "OWNER" },
+});
 
-const emit = defineEmits(["click"]);
-const props = defineProps({ src: String, alt: String, textClass: String });
+const propsRef = toRefs(props);
 
-const image = computed(() => {
-  if (props.src === null) return AccountEmpty;
-  else return props.src;
+const { type, size } = propsRef;
+
+const src = computed(useModel(propsRef, emit, "modelValue"));
+
+const lazy = computed(() => {
+  if (type.value === "OWNER") return AccountEmptyOwner;
+  if (type.value === "PET") return AccountEmptyPet;
 });
 </script>
-
-<style scoped>
-.pointer {
-  cursor: pointer;
-}
-</style>

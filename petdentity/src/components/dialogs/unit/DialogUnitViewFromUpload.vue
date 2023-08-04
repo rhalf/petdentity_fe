@@ -1,0 +1,90 @@
+<template>
+  <Dialog v-model="dialog" :width="1024" expand>
+    <Card>
+      <v-card-title class="bg-primary pa-4">
+        <Label header class="text-black"> View Unit </Label>
+      </v-card-title>
+      <v-card-text>
+        <FormUnit
+          v-model="unit"
+          :option="[
+            'uid',
+            'unitType',
+            'formType',
+            'status',
+            'applicationDate',
+            'pet',
+            'owner',
+            'veterinarian',
+            'government',
+          ]"
+          :disabled="disabled"
+        />
+      </v-card-text>
+      <v-card-actions>
+        <v-row dense class="py-4 px-4">
+          <v-spacer />
+          <v-col cols="auto">
+            <Button @click="submitHandler" :loading="isLoading">
+              {{ buttonLabel }}
+            </Button>
+          </v-col>
+          <v-col cols="auto">
+            <Button @click="closeHandler" variant="outlined">Close</Button>
+          </v-col>
+        </v-row>
+      </v-card-actions>
+    </Card>
+  </Dialog>
+</template>
+
+<script setup>
+import Button from "@/components/common/Button.vue";
+import Label from "@/components/common/Label.vue";
+import Dialog from "@/components/common/Dialog.vue";
+import FormUnit from "@/components/forms/unit/FormUnit.vue";
+import Card from "@/components/common/Card.vue";
+
+import { useSnackbarStore } from "@/store/snackbar";
+const { show } = useSnackbarStore();
+
+import { useModel, syncProp } from "@/utils/vue";
+
+import { ref, computed, toRefs } from "vue";
+const props = defineProps({
+  modelValue: Boolean,
+  unit: Object,
+});
+const propRef = toRefs(props);
+const emit = defineEmits(["update:modelValue", "update:unit", "done"]);
+
+const isLoading = ref(false);
+const dialog = computed(useModel(propRef, emit, "modelValue"));
+const unit = computed(syncProp(propRef, emit, "unit"));
+const disabled = ref(true);
+
+const submitHandler = async () => {
+  try {
+    if (disabled.value) {
+      disabled.value = false;
+      return;
+    }
+    disabled.value = true;
+    dialog.value = false;
+  } catch ({ message }) {
+    show("error", message);
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+const buttonLabel = computed(() => {
+  return disabled.value ? "Update" : "Save";
+});
+
+const closeHandler = () => {
+  dialog.value = false;
+};
+</script>
+
+<style></style>

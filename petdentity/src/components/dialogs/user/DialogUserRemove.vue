@@ -2,7 +2,7 @@
   <Dialog v-model="dialog" :width="640">
     <Card>
       <v-card-title class="bg-primary pa-4">
-        <Label header class="text-black"> Remove </Label>
+        <Label header class="text-black"> Remove User </Label>
       </v-card-title>
       <v-card-text>
         <Label text> Are you sure you want to remove this item?</Label>
@@ -40,7 +40,7 @@ import { useModel, syncProp } from "@/utils/vue";
 import { ref, computed, toRefs } from "vue";
 const props = defineProps({ modelValue: Boolean, user: Object });
 const propRef = toRefs(props);
-const emit = defineEmits(["update:modelValue", "update:user", "remove"]);
+const emit = defineEmits(["update:modelValue", "update:user", "done"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propRef, emit, "modelValue"));
@@ -51,7 +51,7 @@ const submitHandler = async () => {
     isLoading.value = true;
     const result = await remove(user.value);
     show("success", "Removed an item!");
-    emit("remove");
+    emit("done");
     dialog.value = false;
   } catch ({ message }) {
     show("error", message);

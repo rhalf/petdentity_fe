@@ -6,6 +6,6 @@
 
 <script setup>
 const properties = {
-  class: 'pa-5 rounded'
-}
+  class: "pa-4 rounded",
+};
 </script>

@@ -1,36 +1,44 @@
 export const headers = [
+  // {
+  //   title: "ID",
+  //   align: "start",
+  //   sortable: false,
+  //   key: "id",
+  //   width: "30%",
+  // },
+  {
+    title: "Actions",
+    align: "start",
+    sortable: false,
+    width: 120,
+    key: "actions",
+  },
   {
     title: "Name",
     align: "start",
     sortable: false,
     key: "name",
-    width: "30%",
+    width: "10%",
   },
   {
-    title: "Type",
+    title: "Age",
     align: "start",
     sortable: false,
-    key: "type",
-    width: "30%",
+    key: "age",
+    width: "150",
   },
   {
-    title: "Breeds",
+    title: "Animal",
     align: "start",
     sortable: false,
-    key: "breeds.length",
-    width: "30%",
+    key: "animal.name",
+    width: "200",
   },
-
   {
-    title: "Actions",
+    title: "Breed",
     align: "start",
     sortable: false,
-    width: 150,
-    key: "actions",
+    key: "breed",
+    width: "250",
   },
-];
-
-export const items = [
-  { name: "Dog", type: "Mammal", breedCount: 100 },
-  { name: "Snake", type: "Reptile", breedCount: 100 },
 ];

@@ -8,19 +8,38 @@ export const items = [
   {
     icon: "mdi-paw",
     title: "Animals",
-    subtitle: "Managing animals",
+    subtitle: "Manage animals",
     to: { name: "AdminAnimalsSummary" },
   },
   {
-    icon: "mdi-nfc",
+    icon: "mdi-sheep",
+    title: "Coats",
+    subtitle: "Manage coats",
+    to: { name: "AdminCoatsSummary" },
+  },
+  {
+    icon: "mdi-access-point",
     title: "Units",
-    subtitle: "Managing Units",
-    to: { name: "AdminUnitsSummary" },
+    subtitle: "Manage Units",
+    children: [
+      {
+        icon: "mdi-format-list-bulleted",
+        title: "Summary",
+        subtitle: "Manage Units",
+        to: { name: "AdminUnitsSummary" },
+      },
+      {
+        icon: "mdi-package-up",
+        title: "Bulk Upload",
+        subtitle: "Multiple Registration",
+        to: { name: "AdminUnitsBulkUpload" },
+      },
+    ],
   },
   {
     icon: "mdi-account-multiple",
     title: "Users",
-    subtitle: "Managing Users",
+    subtitle: "Manage Users",
     to: { name: "AdminUsersSummary" },
   },
 ];

@@ -1,18 +1,24 @@
 <template>
   <div v-if="user">
+    <FileInput
+      id="fileUpload"
+      v-show="false"
+      @update:modelValue="updateHandler"
+    />
+
     <v-row dense class="mt-4">
       <v-col cols="12" class="text-center">
-        <FileInput
-          id="fileUpload"
-          ref="file"
-          v-show="false"
-          v-model="imagePath"
-        />
-        <Avatar
-          :src="user.profile.photoUrl"
-          @click="photoHandler"
-          size="200"
-          :loading="isLoading"
+        <Avatar v-model="user.profile.photoUrl" :size="200" />
+      </v-col>
+    </v-row>
+
+    <v-row dense>
+      <v-col cols="12" class="text-right">
+        <ButtonIcon
+          icon="mdi-pencil"
+          variant="flat"
+          color="primary"
+          @click="clickHandler"
         />
       </v-col>
     </v-row>
@@ -24,6 +30,7 @@
         </div>
       </v-col>
     </v-row>
+
     <v-row dense>
       <v-col cols="12">
         <FormName v-model="user.profile.name" />
@@ -108,54 +115,51 @@
 <script setup>
 import Label from "@/components/common/Label.vue";
 import FormHeadline from "@/components/forms/headline/FormHeadline.vue";
+
 import Avatar from "@/components/common/Avatar.vue";
 import FileInput from "@/components/common/FileInput.vue";
+import ButtonIcon from "@/components/common/ButtonIcon.vue";
+
 import FormName from "@/components/forms/name/FormName.vue";
 import FormGender from "@/components/forms/gender/FormGender.vue";
 import FormDate from "@/components/forms/date/FormDate.vue";
 import FormMobile from "@/components/forms/mobile/FormMobile.vue";
 import FormAddress from "@/components/forms/address/FormAddress.vue";
 
-import { computed, ref, toRefs, watch } from "vue";
-
-import { uploadProfilePhoto } from "@/api/photo";
-
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
+import { uploadOwnerProfile } from "@/api/photo";
+
 import { useModel } from "@/utils/vue";
+import { computed, toRefs, ref } from "vue";
 
 const emit = defineEmits(["update:modelValue"]);
 const props = defineProps({
   modelValue: Object,
 });
 
+const isLoading = ref(false);
 const propsRef = toRefs(props);
 const user = computed(useModel(propsRef, emit, "modelValue"));
 
-const isLoading = ref(false);
-const file = ref();
-const imagePath = ref();
-
-const photoHandler = async () => {
+const clickHandler = async () => {
   let fileUpload = document.getElementById("fileUpload");
-  if (fileUpload != null) {
-    await fileUpload.click();
-  }
+  if (fileUpload != null) await fileUpload.click();
 };
 
-watch(imagePath, async (current) => {
-  if (!current) return;
+const updateHandler = async (files) => {
   try {
     isLoading.value = true;
-    const photoUrl = await uploadProfilePhoto(user.value.id, current);
+
+    const photoUrl = await uploadOwnerProfile(user.value.id, files);
     user.value.profile.photoUrl = photoUrl;
-  } catch (error) {
-    show("error", error);
+  } catch ({ message }) {
+    show("error", message);
   } finally {
     isLoading.value = false;
   }
-});
+};
 </script>
 
 <style></style>

@@ -10,7 +10,6 @@ export const admin = {
       component: () => import("@/views/admin/dashboard/DashboardView.vue"),
       meta: { authenticated: true, authorization: "ADMIN" },
     },
-
     {
       path: "animals",
       children: [
@@ -23,12 +22,29 @@ export const admin = {
       ],
     },
     {
+      path: "coats",
+      children: [
+        {
+          path: "summary",
+          name: "AdminCoatsSummary",
+          component: () => import("@/views/admin/coats/CoatsSummary.vue"),
+          meta: { authenticated: true, authorization: "ADMIN" },
+        },
+      ],
+    },
+    {
       path: "units",
       children: [
         {
           path: "summary",
           name: "AdminUnitsSummary",
           component: () => import("@/views/admin/units/UnitsSummary.vue"),
+          meta: { authenticated: true, authorization: "ADMIN" },
+        },
+        {
+          path: "bulk-upload",
+          name: "AdminUnitsBulkUpload",
+          component: () => import("@/views/admin/units/UnitsBulkUpload.vue"),
           meta: { authenticated: true, authorization: "ADMIN" },
         },
       ],

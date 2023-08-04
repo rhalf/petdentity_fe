@@ -12,6 +12,7 @@
             append-inner-icon="mdi-magnify"
             variant="outlined"
             @keypress.enter="loadItems"
+            @update:modelValue="updateModelHandler"
           />
         </v-col>
       </v-row>
@@ -26,27 +27,27 @@
             :items-per-pageNumber="params.limitNumber"
             hide-default-footer
             withRemove
-            withUpdate
             withAdd
+            withView
             @remove="removeHandler"
-            @update="updateHandler"
-            @add="dialogAnimalAdd = true"
+            @view="viewHandler"
+            @add="addHandler"
             @next="nextHandler"
             @prev="prevHandler"
           />
         </v-col>
       </v-row>
     </Sheet>
-    <DialogAnimalAdd v-model="dialogAnimalAdd" @add="loadItems" />
-    <DialogAnimalUpdate
-      v-model="dialogAnimalUpdate"
+    <DialogAnimalAdd v-model="dialogAnimalAdd" @done="loadItems" />
+    <DialogAnimalView
+      v-model="dialogAnimalView"
       v-model:animal="animal"
-      @update="loadItems"
+      @done="loadItems"
     />
     <DialogAnimalRemove
       v-model="dialogAnimalRemove"
       v-model:animal="animal"
-      @remove="loadItems"
+      @done="loadItems"
     />
   </v-container>
 </template>
@@ -60,43 +61,54 @@ import DataTable from "@/components/tables/DataTable.vue";
 import { headers } from "./data";
 
 import DialogAnimalAdd from "@/components/dialogs/animal/DialogAnimalAdd.vue";
-import DialogAnimalUpdate from "@/components/dialogs/animal/DialogAnimalUpdate.vue";
 import DialogAnimalRemove from "@/components/dialogs/animal/DialogAnimalRemove.vue";
+import DialogAnimalView from "@/components/dialogs/animal/DialogAnimalView.vue";
 
-import { useSnackbarStore } from "@/store/snackbar";
-const { show } = useSnackbarStore();
+// import { useSnackbarStore } from "@/store/snackbar";
+// const { show } = useSnackbarStore();
 
-import { search, next, prev, remove } from "@/api/animal";
+import { search, next, prev } from "@/api/animal";
 
 import { ref, onMounted } from "vue";
 
 const dialogAnimalAdd = ref(false);
 const dialogAnimalUpdate = ref(false);
 const dialogAnimalRemove = ref(false);
+const dialogAnimalView = ref(false);
 
 const isLoading = ref(false);
 const animals = ref();
 const animal = ref();
+
 const params = ref({
   searchText: "",
   columnName: "name",
   orderDirection: "asc",
   limitNumber: 5,
-  firstItem: "",
-  lastItem: "",
+});
+
+const addHandler = async () => {
+  dialogAnimalAdd.value = true;
+};
+
+const removeHandler = async (item) => {
+  animal.value = item;
+  dialogAnimalRemove.value = true;
+};
+
+const viewHandler = (item) => {
+  animal.value = item;
+  dialogAnimalView.value = true;
+};
+
+onMounted(async () => {
+  loadItems();
 });
 
 const loadItems = async () => {
   try {
     isLoading.value = true;
-    const items = await search(params.value);
-
-    const firstItemIndex = 0;
-    const lastItemIndex = items.length - 1;
-    params.value.firstItem = items[firstItemIndex][params.value.columnName];
-    params.value.lastItem = items[lastItemIndex][params.value.columnName];
-
-    animals.value = items;
+    animals.value = await search(params.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {
@@ -104,35 +116,12 @@ const loadItems = async () => {
   }
 };
 
-onMounted(async () => {
-  loadItems();
-});
-
-const removeHandler = async (item) => {
-  animal.value = item;
-  dialogAnimalRemove.value = true;
-};
-
-const updateHandler = (item) => {
-  animal.value = item;
-  dialogAnimalUpdate.value = true;
-};
-
 const nextHandler = async () => {
   try {
     isLoading.value = true;
-    const result = await next(params.value);
-
-    if (result.length === 0) throw new Error("Last page!");
-
-    const firstItemIndex = 0;
-    const lastItemIndex = result.length - 1;
-    params.value.firstItem = result[firstItemIndex][params.value.columnName];
-    params.value.lastItem = result[lastItemIndex][params.value.columnName];
-
-    animals.value = result;
+    animals.value = await next(params.value);
   } catch ({ message }) {
-    show("error", message);
+    console.log("error", message);
   } finally {
     isLoading.value = false;
   }
@@ -141,20 +130,16 @@ const nextHandler = async () => {
 const prevHandler = async () => {
   try {
     isLoading.value = true;
-    const result = await prev(params.value);
-
-    if (result.length === 0) throw new Error("First page!");
-
-    const firstItemIndex = 0;
-    const lastItemIndex = result.length - 1;
-    params.value.firstItem = result[firstItemIndex][params.value.columnName];
-    params.value.lastItem = result[lastItemIndex][params.value.columnName];
-
-    animals.value = result;
+    animals.value = await prev(params.value);
   } catch ({ message }) {
-    show("error", message);
+    console.log("error", message);
   } finally {
     isLoading.value = false;
   }
+};
+
+const updateModelHandler = () => {
+  if (typeof params.value.searchText != "string") return;
+  params.value.searchText = params.value.searchText.toUpperCase();
 };
 </script>

@@ -70,7 +70,9 @@
 
     <v-row>
       <v-col>
-        <Button block variant="outlined" size="large">Scan Now</Button>
+        <Button block variant="outlined" size="large" @click="searchHandler">
+          Search Pet
+        </Button>
       </v-col>
     </v-row>
   </v-container>
@@ -130,7 +132,7 @@ const onSubmitHandler = handleSubmit(async (values) => {
     const result = await signUp(values.email, values.password1);
     // Email verification
     await emailVerification();
-    show("success", "Successful! Email verification will has been sent!");
+    show("success", "Successful! Email verification has been sent!");
     const user = result.user;
     console.log(user);
   } catch ({ message }) {
@@ -139,4 +141,8 @@ const onSubmitHandler = handleSubmit(async (values) => {
     stop();
   }
 });
+
+const searchHandler = () => {
+  router.push({ name: "SearchDashboard" });
+};
 </script>

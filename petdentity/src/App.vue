@@ -1,29 +1,32 @@
 <template>
+  <div id="progress-line" />
   <v-app>
-    <ProgressLine
-      :indeterminate="progressLine.status"
-      :visible="progressLine.status"
-    />
-    <router-view />
+    <router-view v-slot="{ Component }">
+      <!-- <v-fade-transition> -->
+      <component :is="Component" />
+      <!-- </v-fade-transition> -->
+    </router-view>
+
     <Snackbar />
+    <ProgressLine />
   </v-app>
 </template>
 
 <script setup>
+import _ from "lodash";
+
 import Snackbar from "@/components/common/Snackbar.vue";
 
 import ProgressLine from "@/components/common/ProgressLine.vue";
 
 import { useProgressLineStore } from "@/store/progress-line";
-const progressLine = useProgressLineStore();
 const { start, stop } = useProgressLineStore();
+const progressLine = useProgressLineStore();
 
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
 import { User } from "@/constants";
-
-import { getCurrentUser } from "@/utils/firebase";
 
 import { get, create } from "@/api/user";
 
@@ -33,10 +36,9 @@ const router = useRouter();
 import { useUserStore } from "@/store/user";
 const user = useUserStore();
 
-const loadUser = async () => {
+const loadUser = async (authUser) => {
   try {
     start();
-    const authUser = await getCurrentUser();
 
     if (!authUser) return;
 
@@ -67,12 +69,14 @@ const loadUser = async () => {
 import { auth } from "@/plugins/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
   if (user) {
-    loadUser();
+    await loadUser(user);
     console.log("signedIn");
   } else {
     console.log("signedOut");
   }
 });
 </script>
+
+<style scoped></style>

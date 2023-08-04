@@ -1,4 +1,5 @@
 import { firestore } from "@/plugins/firebase";
+import { Timestamp } from "firebase/firestore";
 import {
   collection,
   getDocs,
@@ -19,10 +20,12 @@ import {
   getCountFromServer,
 } from "firebase/firestore";
 
-import { toUtcTimestamp } from "@/utils/vue";
-import { toObject, toArray } from "./index";
+import { toObject, toArray, getIndexes } from "./index";
 
 const collectionName = "animals";
+const collectionRef = collection(firestore, collectionName);
+
+let indexes;
 
 export const search = async ({
   searchText,
@@ -30,7 +33,6 @@ export const search = async ({
   orderDirection,
   limitNumber,
 }) => {
-  const collectionRef = collection(firestore, collectionName);
   const q = await query(
     collectionRef,
     orderBy(columnName, orderDirection),
@@ -39,41 +41,43 @@ export const search = async ({
     limit(limitNumber)
   );
   const snapshots = await getDocs(q);
+  if (snapshots.empty) throw new Error("Emtpy page!");
+
+  indexes = getIndexes(snapshots);
   return toArray(snapshots);
 };
 
-export const next = async ({
-  lastItem,
-  columnName,
-  orderDirection,
-  limitNumber,
-}) => {
-  const collectionRef = collection(firestore, collectionName);
-
+export const next = async ({ columnName, orderDirection, limitNumber }) => {
   const q = await query(
     collectionRef,
     orderBy(columnName, orderDirection),
-    startAfter(lastItem),
+    startAfter(indexes.lastItem),
     limit(limitNumber)
   );
 
   const snapshots = await getDocs(q);
+  if (snapshots.empty) throw new Error("Last page!");
+
+  indexes = getIndexes(snapshots);
   return toArray(snapshots);
 };
 
-export const prev = async ({
-  firstItem,
-  columnName,
-  orderDirection,
-  limitNumber,
-}) => {
-  const collectionRef = collection(firestore, collectionName);
+export const prev = async ({ columnName, orderDirection, limitNumber }) => {
   const q = await query(
     collectionRef,
     orderBy(columnName, orderDirection),
-    endBefore(firstItem),
+    endBefore(indexes.firstItem),
     limitToLast(limitNumber)
   );
+  const snapshots = await getDocs(q);
+  if (snapshots.empty) throw new Error("First page!");
+
+  indexes = getIndexes(snapshots);
+  return toArray(snapshots);
+};
+
+export const getAll = async ({ columnName, orderDirection }) => {
+  const q = await query(collectionRef, orderBy(columnName, orderDirection));
   const snapshots = await getDocs(q);
   return toArray(snapshots);
 };
@@ -84,24 +88,23 @@ export const get = async (id) => {
   return toObject(snapshot);
 };
 
-export const create = async (document) => {
-  document.createdAt = toUtcTimestamp(new Date());
-  const collectionRef = collection(firestore, collectionName);
-  return await addDoc(collectionRef, document);
+export const create = async (item) => {
+  item.createdAt = Timestamp.fromDate(new Date());
+  return await addDoc(collectionRef, item);
 };
 
-export const update = async (document) => {
-  const documentRef = doc(firestore, collectionName, document.id);
-  return await setDoc(documentRef, document);
+export const update = async (item) => {
+  document.updatedAt = Timestamp.fromDate(new Date());
+  const documentRef = doc(firestore, collectionName, item.id);
+  return await setDoc(documentRef, item);
 };
 
-export const remove = async (document) => {
-  const documentRef = doc(firestore, collectionName, document.id);
+export const remove = async (item) => {
+  const documentRef = doc(firestore, collectionName, item.id);
   return await deleteDoc(documentRef);
 };
 
 export const count = async () => {
-  const collectionRef = collection(firestore, collectionName);
   const snapshot = await getCountFromServer(collectionRef);
   return snapshot.data().count;
 };

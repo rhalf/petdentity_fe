@@ -2,7 +2,7 @@
   <Dialog v-model="dialog" :width="1024" expand>
     <Card>
       <v-card-title class="bg-primary pa-4">
-        <Label header class="text-black"> Update </Label>
+        <Label header class="text-black"> Update User </Label>
       </v-card-title>
       <v-card-text>
         <FormUser v-model="user" />
@@ -11,7 +11,12 @@
         <v-row dense class="py-4 px-4">
           <v-spacer />
           <v-col cols="auto">
-            <Button @click="submitHandler" :loading="isLoading">Submit</Button>
+            <Button
+              @click="submitHandler"
+              :loading="isLoading"
+              :disabled="!user.profile.name.first"
+              >Submit</Button
+            >
           </v-col>
           <v-col cols="auto">
             <Button @click="closeHandler" variant="outlined">Close</Button>
@@ -39,7 +44,7 @@ import { useModel, syncProp } from "@/utils/vue";
 import { ref, computed, toRefs } from "vue";
 const props = defineProps({ modelValue: Boolean, user: Object });
 const propRef = toRefs(props);
-const emit = defineEmits(["update:modelValue", "update:user", "update"]);
+const emit = defineEmits(["update:modelValue", "update:user", "done"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propRef, emit, "modelValue"));
@@ -49,8 +54,8 @@ const submitHandler = async () => {
   try {
     isLoading.value = true;
     const docRef = await update(user.value);
-    emit("update");
-    show("success", "Updated an user!");
+    emit("done");
+    show("success", "Updated a user!");
     dialog.value = false;
   } catch ({ message }) {
     show("error", message);

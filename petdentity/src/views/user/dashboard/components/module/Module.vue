@@ -1,5 +1,6 @@
 <template>
   <Card
+    class="rounded-0"
     :color="color"
     :height="item.height"
     :disabled="disabled"
@@ -25,8 +26,8 @@
       <v-col class="text-center">
         <Chip class="white" v-if="item.soon"> Coming Soon! </Chip>
         <div class="white" v-else>
-          <Label v-if="item.unauthorized" text> Unathorized </Label>
-          <Label v-if="!item.unauthorized" text> Click to proceed! </Label>
+          <Label v-if="!item.authorized" text> Unathorized </Label>
+          <Label v-if="item.authorized" text> Click to proceed! </Label>
         </div>
       </v-col>
     </v-row>
@@ -47,15 +48,15 @@ const propsRef = toRefs(props);
 const item = propsRef.modelValue;
 
 const color = computed(() => {
-  const { disabled, soon, unauthorized } = item.value;
+  const { disabled, soon, authorized } = item.value;
   if (disabled) return "disabled";
-  if (unauthorized) return "secondary";
+  if (!authorized) return "secondary";
   return "primary";
 });
 
 const disabled = computed(() => {
-  const { disabled, unauthorized } = item.value;
-  const result = disabled || unauthorized;
+  const { disabled, authorized } = item.value;
+  const result = disabled || !authorized;
   return result;
 });
 </script>

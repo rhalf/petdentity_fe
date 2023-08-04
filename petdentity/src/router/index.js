@@ -1,26 +1,28 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import HomeLayout from "@/components/layouts/home/HomeLayout.vue";
+// import HomeLayout from "@/components/layouts/home/HomeLayout.vue";
 
 import { user } from "./modules/user";
 import { admin } from "./modules/admin";
 import { session } from "./modules/session";
 import { owner } from "./modules/owner";
+import { search } from "./modules/search";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: "/",
-      component: HomeLayout,
-      children: [
-        {
-          path: "/",
-          name: "Home",
-          component: () => import("@/views/home/HomeView.vue"),
-          meta: { authenticated: false },
-        },
-      ],
+      redirect: "/session/login",
+      //component: HomeLayout,
+      // children: [
+      //   {
+      //     path: "/",
+      //     name: "Home",
+      //     component: () => import("@/views/home/HomeView.vue"),
+      //     meta: { authenticated: false },
+      //   },
+      // ],
     },
 
     {
@@ -34,6 +36,7 @@ const router = createRouter({
     { ...user },
     { ...admin },
     { ...owner },
+    { ...search },
   ],
 });
 

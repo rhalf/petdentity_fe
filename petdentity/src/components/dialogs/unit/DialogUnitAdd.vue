@@ -2,10 +2,23 @@
   <Dialog v-model="dialog" :width="1024" expand>
     <Card>
       <v-card-title class="bg-primary pa-4">
-        <Label header class="text-black"> Add </Label>
+        <Label header class="text-black"> Add Unit </Label>
       </v-card-title>
       <v-card-text>
-        <FormUnit v-model="unit" />
+        <FormUnit
+          v-model="unit"
+          :option="[
+            'uid',
+            'unitType',
+            'formType',
+            'status',
+            'applicationDate',
+            'pet',
+            'owner',
+            'veterinarian',
+            'government',
+          ]"
+        />
       </v-card-text>
       <v-card-actions>
         <v-row dense class="py-4 px-4">
@@ -39,7 +52,7 @@ import { useModel } from "@/utils/vue";
 import { ref, toRefs, computed } from "vue";
 const props = defineProps({ modelValue: Boolean });
 const propsRef = toRefs(props);
-const emit = defineEmits(["update:modelValue", "add"]);
+const emit = defineEmits(["update:modelValue", "done"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propsRef, emit, "modelValue"));
@@ -60,7 +73,7 @@ const submitHandler = async () => {
   try {
     isLoading.value = true;
     const docRef = await create(unit.value);
-    emit("add");
+    emit("done");
     show("success", "Added an unit!");
     unit.value = {};
     dialog.value = false;

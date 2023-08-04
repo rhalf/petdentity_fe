@@ -72,39 +72,10 @@ const users = ref();
 const user = ref();
 const params = ref({
   searchText: "",
-  columnName: "id",
+  columnName: "email",
   orderDirection: "asc",
   limitNumber: 5,
-  firstItem: "",
-  lastItem: "",
 });
-
-const loadItems = async () => {
-  try {
-    isLoading.value = true;
-    const items = await search(params.value);
-
-    const firstIndex = 0;
-    const lastIndex = items.length - 1;
-    params.value.firstItem = items[firstIndex][params.value.columnName];
-    params.value.lastItem = items[lastIndex][params.value.columnName];
-
-    users.value = items;
-  } catch ({ message }) {
-    console.log("error", message);
-  } finally {
-    isLoading.value = false;
-  }
-};
-
-onMounted(async () => {
-  loadItems();
-});
-
-const removeHandler = async (item) => {
-  user.value = item;
-  dialogUserRemove.value = true;
-};
 
 const viewHandler = ({ id }) => {
   console.log(id);
@@ -114,21 +85,32 @@ const viewHandler = ({ id }) => {
   });
 };
 
+const removeHandler = async (item) => {
+  user.value = item;
+  dialogUserRemove.value = true;
+};
+
+onMounted(async () => {
+  loadItems();
+});
+
+const loadItems = async () => {
+  try {
+    isLoading.value = true;
+    users.value = await search(params.value);
+  } catch ({ message }) {
+    console.log("error", message);
+  } finally {
+    isLoading.value = false;
+  }
+};
+
 const nextHandler = async () => {
   try {
     isLoading.value = true;
-    const result = await next(params.value);
-
-    if (result.length === 0) throw new Error("Last page!");
-
-    const firstIndex = 0;
-    const lastIndex = result.length - 1;
-    params.value.firstItem = result[firstIndex][params.value.columnName];
-    params.value.lastItem = result[lastIndex][params.value.columnName];
-
-    users.value = result;
+    users.value = await next(params.value);
   } catch ({ message }) {
-    show("error", message);
+    console.log("error", message);
   } finally {
     isLoading.value = false;
   }
@@ -137,18 +119,9 @@ const nextHandler = async () => {
 const prevHandler = async () => {
   try {
     isLoading.value = true;
-    const result = await prev(params.value);
-
-    if (result.length === 0) throw new Error("First page!");
-
-    const firstIndex = 0;
-    const lastIndex = result.length - 1;
-    params.value.firstItem = result[firstIndex][params.value.columnName];
-    params.value.lastItem = result[lastIndex][params.value.columnName];
-
-    users.value = result;
+    users.value = await prev(params.value);
   } catch ({ message }) {
-    show("error", message);
+    console.log("error", message);
   } finally {
     isLoading.value = false;
   }

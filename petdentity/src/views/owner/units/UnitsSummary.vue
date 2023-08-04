@@ -26,59 +26,68 @@
             :items-per-page="params.limitNumber"
             hide-default-footer
             withRemove
-            withUpdate
+            withView
             withAdd
             @remove="removeHandler"
-            @update="updateHandler"
-            @add="dialogUnitAdd = true"
+            @view="viewHandler"
+            @add="addHandler"
             @next="nextHandler"
             @prev="prevHandler"
           />
         </v-col>
       </v-row>
     </Sheet>
-    <DialogUnitAdd v-model="dialogUnitAdd" @add="loadItems" />
-    <DialogUnitUpdate
-      v-model="dialogUnitUpdate"
+
+    <v-alert type="info" class="mt-5">
+      <Label text medium> Cant add unit? </Label>
+      <Label caption> REASONS </Label>
+      <Label caption> • Unit(Microchip/Tag) is not from PETDENTITY </Label>
+      <Label caption> • Unit needs to be registered </Label>
+      <Label caption>
+        • Please contact us on Facebook Page
+        <Anchor @click="clickHandler"> Petdentity </Anchor> if u dont have unit
+        yet!
+      </Label>
+      <Label caption>
+        • For more details you may call us on PLDT(8711-4975),
+        Globe(0945-455-2018), Smart( 0939-649-3217).
+      </Label>
+    </v-alert>
+
+    <DialogUnitAddToOwner v-model="dialogUnitAddToOwner" @done="loadItems" />
+    <DialogUnitViewFromOwner
+      v-model="dialogUnitViewFromOwner"
       v-model:unit="unit"
-      @update="loadItems"
+      @done="loadItems"
     />
-    <DialogUnitRemove
-      v-model="dialogUnitRemove"
+    <DialogUnitRemoveFromOwner
+      v-model="dialogUnitRemoveFromOwner"
       v-model:unit="unit"
-      @remove="loadItems"
+      @done="loadItems"
     />
   </v-container>
 </template>
 
 <script setup>
 import Sheet from "@/components/common/Sheet.vue";
+import Anchor from "@/components/common/Anchor.vue";
 import Label from "@/components/common/Label.vue";
 import TextField from "@/components/common/TextField.vue";
 
 import DataTable from "@/components/tables/DataTable.vue";
 import { headers } from "./data";
 
-import DialogUnitAdd from "@/components/dialogs/unit/DialogUnitAdd.vue";
-import DialogUnitUpdate from "@/components/dialogs/unit/DialogUnitUpdate.vue";
-import DialogUnitRemove from "@/components/dialogs/unit/DialogUnitRemove.vue";
+import DialogUnitAddToOwner from "@/components/dialogs/unit/DialogUnitAddToOwner.vue";
+import DialogUnitViewFromOwner from "@/components/dialogs/unit/DialogUnitViewFromOwner.vue";
+import DialogUnitRemoveFromOwner from "@/components/dialogs/unit/DialogUnitRemoveFromOwner.vue";
 
-import { useSnackbarStore } from "@/store/snackbar";
-const { show } = useSnackbarStore();
-
-import { useUserStore } from "@/store/user";
-const userStore = useUserStore();
-
-import { storeToRefs } from "pinia";
-const { user } = storeToRefs(userStore);
-
-import { search, next, prev } from "@/api/user-unit";
+import { searchByOwner, nextByOwner, prevByOwner } from "@/api/unit";
 
 import { ref, onMounted } from "vue";
 
-const dialogUnitAdd = ref(false);
-const dialogUnitUpdate = ref(false);
-const dialogUnitRemove = ref(false);
+const dialogUnitAddToOwner = ref(false);
+const dialogUnitViewFromOwner = ref(false);
+const dialogUnitRemoveFromOwner = ref(false);
 
 const isLoading = ref(false);
 const units = ref();
@@ -88,58 +97,50 @@ const params = ref({
   columnName: "uid",
   orderDirection: "asc",
   limitNumber: 5,
-  firstItem: "",
-  lastItem: "",
+});
+
+const addHandler = () => {
+  dialogUnitAddToOwner.value = true;
+};
+
+const removeHandler = async (item) => {
+  unit.value = item;
+  dialogUnitRemoveFromOwner.value = true;
+};
+
+const viewHandler = (item) => {
+  unit.value = item;
+  dialogUnitViewFromOwner.value = true;
+};
+
+const clickHandler = () => {
+  window.open("https://www.facebook.com/Petdentity");
+};
+
+onMounted(async () => {
+  await loadItems();
 });
 
 const loadItems = async () => {
   try {
     isLoading.value = true;
 
-    const items = await search(user.value.id, params.value);
-
-    const firstIndex = 0;
-    const lastIndex = items.length - 1;
-    params.value.firstItem = items[firstIndex][params.value.columnName];
-    params.value.lastItem = items[lastIndex][params.value.columnName];
-
-    units.value = items;
+    units.value = await searchByOwner(params.value);
   } catch ({ message }) {
+    units.value = [];
     console.log("error", message);
   } finally {
     isLoading.value = false;
   }
 };
 
-onMounted(async () => {
-  loadItems();
-});
-
-const removeHandler = async (item) => {
-  unit.value = item;
-  dialogUnitRemove.value = true;
-};
-
-const updateHandler = (item) => {
-  unit.value = item;
-  dialogUnitUpdate.value = true;
-};
-
 const nextHandler = async () => {
   try {
     isLoading.value = true;
-    const result = await next(params.value);
 
-    if (result.length === 0) throw new Error("Last page!");
-
-    const firstIndex = 0;
-    const lastIndex = result.length - 1;
-    params.value.firstItem = result[firstIndex][params.value.columnName];
-    params.value.lastItem = result[lastIndex][params.value.columnName];
-
-    units.value = result;
+    units.value = await nextByOwner(params.value);
   } catch ({ message }) {
-    show("error", message);
+    console.log("error", message);
   } finally {
     isLoading.value = false;
   }
@@ -148,18 +149,10 @@ const nextHandler = async () => {
 const prevHandler = async () => {
   try {
     isLoading.value = true;
-    const result = await prev(params.value);
 
-    if (result.length === 0) throw new Error("First page!");
-
-    const firstIndex = 0;
-    const lastIndex = result.length - 1;
-    params.value.firstItem = result[firstIndex][params.value.columnName];
-    params.value.lastItem = result[lastIndex][params.value.columnName];
-
-    units.value = result;
+    units.value = await prevByOwner(params.value);
   } catch ({ message }) {
-    show("error", message);
+    console.log("error", message);
   } finally {
     isLoading.value = false;
   }

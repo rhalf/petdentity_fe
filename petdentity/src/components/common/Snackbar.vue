@@ -17,15 +17,9 @@
 </template>
 
 <script setup>
-import { onMounted } from "vue";
-
 import { storeToRefs } from "pinia";
 import { useSnackbarStore } from "@/store/snackbar";
 const { visible, color, message, timeout } = storeToRefs(useSnackbarStore());
-
-onMounted(() => {
-  // console.log(visible)
-});
 </script>
 
 <style scoped></style>

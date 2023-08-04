@@ -1,18 +1,16 @@
 <template>
-  <v-progress-linear v-bind="properties" />
+  <teleport to="#progress-line">
+    <v-progress-linear
+      :visible="status"
+      :indeterminate="status"
+      color="primary"
+      height="3"
+    />
+  </teleport>
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
-
-const emit = defineEmits(['click'])
-
-onMounted(() => {
-  // console.log(props)
-})
-
-const properties = {
-  absolute: true,
-  color: 'primary'
-}
+import { storeToRefs } from "pinia";
+import { useProgressLineStore } from "@/store/progress-line";
+const { status } = storeToRefs(useProgressLineStore());
 </script>

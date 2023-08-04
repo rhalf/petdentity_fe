@@ -1,7 +1,7 @@
 <template>
   <RadioGroup v-model="gender" inline>
-    <Radio :value="true" label="Male" />
-    <Radio :value="false" label="Female" />
+    <Radio value="MALE" label="Male" />
+    <Radio value="FEMALE" label="Female" />
   </RadioGroup>
 </template>
 
@@ -12,7 +12,7 @@ import { computed, toRefs } from "vue";
 import { useModel } from "@/utils/vue";
 
 const emit = defineEmits(["update:modelValue"]);
-const props = defineProps({ modelValue: Boolean });
+const props = defineProps({ modelValue: String });
 const propsRef = toRefs(props);
 
 const gender = computed(useModel(propsRef, emit, "modelValue"));

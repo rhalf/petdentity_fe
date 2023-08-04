@@ -1,8 +1,8 @@
 <template>
-  <Dialog v-model="dialog" :width="1024" expand>
+  <Dialog v-model="dialog" :width="640" expand>
     <Card>
       <v-card-title class="bg-primary pa-4">
-        <Label header class="text-black"> Add </Label>
+        <Label header class="text-black"> Add Animal</Label>
       </v-card-title>
       <v-card-text>
         <FormAnimal v-model="animal" />
@@ -11,7 +11,13 @@
         <v-row dense class="py-4 px-4">
           <v-spacer />
           <v-col cols="auto">
-            <Button @click="submitHandler" :loading="isLoading">Submit</Button>
+            <Button
+              @click="submitHandler"
+              :disabled="!animal.name"
+              :loading="isLoading"
+            >
+              Submit
+            </Button>
           </v-col>
           <v-col cols="auto">
             <Button @click="closeHandler" variant="outlined">Close</Button>
@@ -39,28 +45,17 @@ import { useModel } from "@/utils/vue";
 import { ref, toRefs, computed } from "vue";
 const props = defineProps({ modelValue: Boolean });
 const propsRef = toRefs(props);
-const emit = defineEmits(["update:modelValue", "add"]);
+const emit = defineEmits(["update:modelValue", "done"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propsRef, emit, "modelValue"));
-const animal = ref({
-  // name: "Dog",
-  // type: "Mammal",
-  // breeds: [
-  //   "Dobermann",
-  //   "Shih Tzu ",
-  //   "German Shepherd",
-  //   "Siberian Husky",
-  //   "Golden Retriever",
-  //   "Labrador Retriever",
-  // ],
-});
+const animal = ref({});
 
 const submitHandler = async () => {
   try {
     isLoading.value = true;
     const docRef = await create(animal.value);
-    emit("add");
+    emit("done");
     show("success", "Added an animal!");
     animal.value = {};
     dialog.value = false;

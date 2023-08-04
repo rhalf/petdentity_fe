@@ -1,4 +1,6 @@
 import { firestore } from "@/plugins/firebase";
+import { Timestamp } from "firebase/firestore";
+
 import {
   collection,
   getDocs,
@@ -19,10 +21,12 @@ import {
   getCountFromServer,
 } from "firebase/firestore";
 
-import { toUtcTimestamp } from "@/utils/vue";
-import { toObject, toArray } from "./index";
+import { toObject, toArray, getIndexes } from "./index";
 
 const collectionName = "users";
+const collectionRef = collection(firestore, collectionName);
+
+let indexes;
 
 export const search = async ({
   searchText,
@@ -30,7 +34,6 @@ export const search = async ({
   orderDirection,
   limitNumber,
 }) => {
-  const collectionRef = collection(firestore, collectionName);
   const q = await query(
     collectionRef,
     orderBy(columnName, orderDirection),
@@ -39,6 +42,9 @@ export const search = async ({
     limit(limitNumber)
   );
   const snapshots = await getDocs(q);
+  if (snapshots.empty) throw new Error("Emtpy page!");
+
+  indexes = getIndexes(snapshots);
   return toArray(snapshots);
 };
 
@@ -48,15 +54,16 @@ export const next = async ({
   orderDirection,
   limitNumber,
 }) => {
-  const collectionRef = collection(firestore, collectionName);
-
   const q = await query(
     collectionRef,
     orderBy(columnName, orderDirection),
-    startAfter(lastItem),
+    startAfter(indexes.lastItem),
     limit(limitNumber)
   );
   const snapshots = await getDocs(q);
+  if (snapshots.empty) throw new Error("Last page!");
+
+  indexes = getIndexes(snapshots);
   return toArray(snapshots);
 };
 
@@ -66,29 +73,18 @@ export const prev = async ({
   orderDirection,
   limitNumber,
 }) => {
-  const collectionRef = collection(firestore, collectionName);
   const q = await query(
     collectionRef,
     orderBy(columnName, orderDirection),
-    endBefore(firstItem),
+    endBefore(indexes.firstItem),
     limitToLast(limitNumber)
   );
   const snapshots = await getDocs(q);
+  if (snapshots.empty) throw new Error("First page!");
+
+  indexes = getIndexes(snapshots);
   return toArray(snapshots);
 };
-
-// const getAll = async () => {
-//   const users = [];
-//   const collectionRef = collection(firestore, collectionName);
-//   const snapshots = await getDocs(collectionRef);
-//   snapshots.forEach(async (snapshots) => {
-//     let document = { id: snapshots.id, ...snapshots.data() };
-//     document.role = await getDoc(document.role.path);
-//     document.status = await getDoc(document.status.path);
-//     users.push(document);
-//   });
-//   return users;
-// };
 
 export const get = async (id) => {
   const docRef = doc(firestore, collectionName, id);
@@ -98,44 +94,28 @@ export const get = async (id) => {
   else return null;
 };
 
-// const getByUid = async (id) => {
-//   const colRef = collection(firestore, collectionName);
-
-//   const q = await query(colRef, where("id", "==", id));
-//   const snapshots = await getDocs(q);
-
-//   if (snapshots.empty) return null;
-
-//   var snapshot = snapshots.docs[0];
-
-//   var document = {
-//     id: snapshot.id,
-//     ...snapshot.data(),
-//   };
-//   return document;
-// };
-
-export const create = async (document) => {
-  const docRef = doc(firestore, collectionName, document.id);
-  return setDoc(docRef, document);
+export const create = async (item) => {
+  item.createdAt = Timestamp.fromDate(new Date());
+  const docRef = doc(firestore, collectionName, item.id);
+  return setDoc(docRef, item);
 };
 
-// const createDefault = async (id) => {
-//   let document = { id: id };
-//   const docRoleRef = doc(auth, "roles", 0);
-//   const docStatusRef = doc(auth, "statuses", 0);
-//   document.role = docRoleRef;
-//   document.status = docStatusRef;
-//   return create(document);
-// };
+export const update = async (item) => {
+  item.updatedAt = Timestamp.fromDate(new Date());
 
-export const update = async (document) => {
-  const docRef = doc(firestore, collectionName, document.id);
-  const result = await setDoc(docRef, document);
+  // item.birthDate = Timestamp.fromDate(item.profile.birthDate);
+
+  const docRef = doc(firestore, collectionName, item.id);
+  const result = await setDoc(docRef, item);
   return result;
 };
 
-export const remove = async (document) => {
-  const docRef = doc(firestore, collectionName, document.id);
-  return await deleteDoc(docRef, document);
+export const remove = async (item) => {
+  const docRef = doc(firestore, collectionName, item.id);
+  return await deleteDoc(docRef, item);
+};
+
+export const count = async () => {
+  const snapshot = await getCountFromServer(collectionRef);
+  return snapshot.data().count;
 };

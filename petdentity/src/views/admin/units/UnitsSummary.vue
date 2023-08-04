@@ -3,7 +3,7 @@
     <Sheet>
       <v-row dense>
         <v-col cols="auto">
-          <Label title class="text-primary">Units</Label>
+          <Label title class="text-primary">Units Summary</Label>
         </v-col>
         <v-spacer />
         <v-col cols="12" md="3">
@@ -26,10 +26,10 @@
             :items-per-page="params.limitNumber"
             hide-default-footer
             withRemove
-            withUpdate
+            withView
             withAdd
+            @view="viewHandler"
             @remove="removeHandler"
-            @update="updateHandler"
             @add="dialogUnitAdd = true"
             @next="nextHandler"
             @prev="prevHandler"
@@ -37,16 +37,16 @@
         </v-col>
       </v-row>
     </Sheet>
-    <DialogUnitAdd v-model="dialogUnitAdd" @add="loadItems" />
-    <DialogUnitUpdate
-      v-model="dialogUnitUpdate"
+    <DialogUnitAdd v-model="dialogUnitAdd" @done="loadItems" />
+    <DialogUnitView
+      v-model="dialogUnitView"
       v-model:unit="unit"
-      @update="loadItems"
+      @done="loadItems"
     />
     <DialogUnitRemove
       v-model="dialogUnitRemove"
       v-model:unit="unit"
-      @remove="loadItems"
+      @done="loadItems"
     />
   </v-container>
 </template>
@@ -60,18 +60,18 @@ import DataTable from "@/components/tables/DataTable.vue";
 import { headers } from "./data";
 
 import DialogUnitAdd from "@/components/dialogs/unit/DialogUnitAdd.vue";
-import DialogUnitUpdate from "@/components/dialogs/unit/DialogUnitUpdate.vue";
+import DialogUnitView from "@/components/dialogs/unit/DialogUnitView.vue";
 import DialogUnitRemove from "@/components/dialogs/unit/DialogUnitRemove.vue";
 
-import { useSnackbarStore } from "@/store/snackbar";
-const { show } = useSnackbarStore();
+// import { useSnackbarStore } from "@/store/snackbar";
+// const { show } = useSnackbarStore();
 
 import { search, next, prev } from "@/api/unit";
 
 import { ref, onMounted } from "vue";
 
 const dialogUnitAdd = ref(false);
-const dialogUnitUpdate = ref(false);
+const dialogUnitView = ref(false);
 const dialogUnitRemove = ref(false);
 
 const isLoading = ref(false);
@@ -82,21 +82,26 @@ const params = ref({
   columnName: "uid",
   orderDirection: "asc",
   limitNumber: 5,
-  firstItem: "",
-  lastItem: "",
 });
+
+onMounted(async () => {
+  loadItems();
+});
+
+const viewHandler = (item) => {
+  unit.value = item;
+  dialogUnitView.value = true;
+};
+
+const removeHandler = async (item) => {
+  unit.value = item;
+  dialogUnitRemove.value = true;
+};
 
 const loadItems = async () => {
   try {
     isLoading.value = true;
-    const items = await search(params.value);
-
-    const firstIndex = 0;
-    const lastIndex = items.length - 1;
-    params.value.firstItem = items[firstIndex][params.value.columnName];
-    params.value.lastItem = items[lastIndex][params.value.columnName];
-
-    units.value = items;
+    units.value = await search(params.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {
@@ -104,35 +109,12 @@ const loadItems = async () => {
   }
 };
 
-onMounted(async () => {
-  loadItems();
-});
-
-const removeHandler = async (item) => {
-  unit.value = item;
-  dialogUnitRemove.value = true;
-};
-
-const updateHandler = (item) => {
-  unit.value = item;
-  dialogUnitUpdate.value = true;
-};
-
 const nextHandler = async () => {
   try {
     isLoading.value = true;
-    const result = await next(params.value);
-
-    if (result.length === 0) throw new Error("Last page!");
-
-    const firstIndex = 0;
-    const lastIndex = result.length - 1;
-    params.value.firstItem = result[firstIndex][params.value.columnName];
-    params.value.lastItem = result[lastIndex][params.value.columnName];
-
-    units.value = result;
+    units.value = await next(params.value);
   } catch ({ message }) {
-    show("error", message);
+    console.log("error", message);
   } finally {
     isLoading.value = false;
   }
@@ -141,18 +123,9 @@ const nextHandler = async () => {
 const prevHandler = async () => {
   try {
     isLoading.value = true;
-    const result = await prev(params.value);
-
-    if (result.length === 0) throw new Error("First page!");
-
-    const firstIndex = 0;
-    const lastIndex = result.length - 1;
-    params.value.firstItem = result[firstIndex][params.value.columnName];
-    params.value.lastItem = result[lastIndex][params.value.columnName];
-
-    units.value = result;
+    units.value = await prev(params.value);
   } catch ({ message }) {
-    show("error", message);
+    console.log("error", message);
   } finally {
     isLoading.value = false;
   }

@@ -16,7 +16,7 @@ import { toRefs, computed } from "vue";
 
 const emit = defineEmits(["update:modelValue", "upload"]);
 const props = defineProps({
-  modelValue: Boolean,
+  modelValue: String,
 });
 
 const propsRef = toRefs(props);

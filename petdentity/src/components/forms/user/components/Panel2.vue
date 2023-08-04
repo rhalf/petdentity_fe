@@ -1,7 +1,7 @@
 <template>
   <Sheet v-if="user" min-height="550">
     <div class="text-center">
-      <Avatar :src="user.profile?.photoUrl" size="220" />
+      <Avatar v-model="user.profile.photoUrl" size="220" />
     </div>
 
     <div class="mt-4">
