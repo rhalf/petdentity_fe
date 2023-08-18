@@ -27,64 +27,64 @@ const collectionRef = collection(firestore, collectionName);
 
 let indexes;
 
-// export const search = async (
-//   id,
-//   { searchText, columnName, orderDirection, limitNumber }
-// ) => {
-//   const q = await query(
-//     collectionRef,
-//     where("pet", "==", id),
-//     orderBy(columnName, orderDirection),
-//     startAt(searchText),
-//     endAt(searchText + "\uf8ff"),
-//     limit(limitNumber)
-//   );
-//   const snapshots = await getDocs(q);
-//   if (snapshots.empty) throw new Error("Empty page!");
+export const search = async (
+  id,
+  { searchText, columnName, orderDirection, limitNumber }
+) => {
+  const q = await query(
+    collectionRef,
+    where("pet", "==", id),
+    orderBy(columnName, orderDirection),
+    startAt(searchText),
+    endAt(searchText + "\uf8ff"),
+    limit(limitNumber)
+  );
+  const snapshots = await getDocs(q);
+  if (snapshots.empty) throw new Error("Empty page!");
 
-//   indexes = getIndexes(snapshots);
-//   return toArray(snapshots);
-// };
+  indexes = getIndexes(snapshots);
+  return toArray(snapshots);
+};
 
-// export const next = async (id, { columnName, orderDirection, limitNumber }) => {
-//   const q = await query(
-//     collectionRef,
-//     where("pet", "==", id),
-//     orderBy(columnName, orderDirection),
-//     startAfter(indexes.lastItem),
-//     limit(limitNumber)
-//   );
-//   const snapshots = await getDocs(q);
-//   if (snapshots.empty) throw new Error("Last page!");
+export const next = async (id, { columnName, orderDirection, limitNumber }) => {
+  const q = await query(
+    collectionRef,
+    where("pet", "==", id),
+    orderBy(columnName, orderDirection),
+    startAfter(indexes.lastItem),
+    limit(limitNumber)
+  );
+  const snapshots = await getDocs(q);
+  if (snapshots.empty) throw new Error("Last page!");
 
-//   indexes = getIndexes(snapshots);
-//   return toArray(snapshots);
-// };
+  indexes = getIndexes(snapshots);
+  return toArray(snapshots);
+};
 
-// export const prev = async (id, { columnName, orderDirection, limitNumber }) => {
-//   const q = await query(
-//     collectionRef,
-//     where("pet", "==", id),
-//     orderBy(columnName, orderDirection),
-//     endBefore(indexes.firstItem),
-//     limitToLast(limitNumber)
-//   );
-//   const snapshots = await getDocs(q);
-//   if (snapshots.empty) throw new Error("First page!");
+export const prev = async (id, { columnName, orderDirection, limitNumber }) => {
+  const q = await query(
+    collectionRef,
+    where("pet", "==", id),
+    orderBy(columnName, orderDirection),
+    endBefore(indexes.firstItem),
+    limitToLast(limitNumber)
+  );
+  const snapshots = await getDocs(q);
+  if (snapshots.empty) throw new Error("First page!");
 
-//   indexes = getIndexes(snapshots);
-//   return toArray(snapshots);
-// };
+  indexes = getIndexes(snapshots);
+  return toArray(snapshots);
+};
 
-// export const getAll = async (id, { columnName, orderDirection }) => {
-//   const q = await query(
-//     collectionRef,
-//     where("pet", "==", id),
-//     orderBy(columnName, orderDirection)
-//   );
-//   const snapshots = await getDocs(q);
-//   return toArray(snapshots);
-// };
+export const getAll = async (id, { columnName, orderDirection }) => {
+  const q = await query(
+    collectionRef,
+    where("pet", "==", id),
+    orderBy(columnName, orderDirection)
+  );
+  const snapshots = await getDocs(q);
+  return toArray(snapshots);
+};
 
 export const create = async (item) => {
   item.createdAt = Timestamp.fromDate(new Date());
@@ -109,34 +109,28 @@ export const count = async () => {
 };
 
 //Pet
-export const getAllByPet = async (
-  id,
-  { searchText, columnName, orderDirection, limitNumber }
-) => {
+export const getAllByPet = async (id, param) => {
   const q = await query(
     collectionRef,
     where("pet", "==", id),
-    orderBy(columnName, orderDirection),
-    limit(limitNumber)
+    orderBy(param.columnName, param.orderDirection),
+    startAt(param.searchText),
+    endAt(param.searchText + "\uf8ff"),
+    limit(param.limitNumber)
   );
-
   const snapshots = await getDocs(q);
-  if (snapshots.empty) throw new Error("Empty page!");
 
   indexes = getIndexes(snapshots);
   return toArray(snapshots);
 };
 
-export const getAllByPetNext = async (
-  id,
-  { columnName, orderDirection, limitNumber }
-) => {
+export const getAllByPetNext = async (id, param) => {
   const q = await query(
     collectionRef,
     where("pet", "==", id),
-    orderBy(columnName, orderDirection),
+    orderBy(param.columnName, param.orderDirection),
     startAfter(indexes.lastItem),
-    limit(limitNumber)
+    limit(param.limitNumber)
   );
   const snapshots = await getDocs(q);
   if (snapshots.empty) throw new Error("Last page!");

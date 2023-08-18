@@ -13,8 +13,8 @@
       @add="addHandler"
       @remove="removeHandler"
       @view="viewHandler"
-      @next="next"
-      @prev="prev"
+      @next="nextHandler"
+      @prev="prevHandler"
     />
 
     <DialogContactView
@@ -23,14 +23,14 @@
       readOnly
     />
 
-    <DialogContactAddToPet
-      v-model="dialogContactAddToPet"
+    <DialogPetContactAdd
+      v-model="dialogPetContactAdd"
       :pet="pet"
       @done="loadItems"
     />
 
-    <DialogContactRemoveFromPet
-      v-model="dialogContactRemoveFromPet"
+    <DialogPetContactRemove
+      v-model="dialogPetContactRemove"
       :contact="contact"
       @done="loadItems"
     />
@@ -43,24 +43,22 @@ import Panel from "@/components/common/Panel.vue";
 import DataTable from "@/components/tables/DataTable.vue";
 
 import DialogContactView from "@/components/dialogs/contact/DialogContactView.vue";
-import DialogContactAddToPet from "@/components/dialogs/contact/DialogContactAddToPet.vue";
-import DialogContactRemoveFromPet from "@/components/dialogs/contact/DialogContactRemoveFromPet.vue";
+import DialogPetContactAdd from "@/components/dialogs/pet-contact/DialogPetContactAdd.vue";
+import DialogPetContactRemove from "@/components/dialogs/pet-contact/DialogPetContactRemove.vue";
 
 import { headers } from "./data";
-import { getAllByPet, getAllByPetNext, getAllByPetPrev } from "@/api/contact";
+import { search, next, prev } from "@/api/pet-contacts";
 
-import { toRefs, ref, computed, onMounted, watch } from "vue";
-// import { useModel } from "@/utils/vue";
+import { toRefs, ref, watch } from "vue";
 
-// const emit = defineEmits(["update:modelValue"]);
 const props = defineProps({ pet: Object, readOnly: Boolean });
 
 const propsRef = toRefs(props);
 const { readOnly, pet } = propsRef;
 
 const dialogContactView = ref(false);
-const dialogContactAddToPet = ref(false);
-const dialogContactRemoveFromPet = ref(false);
+const dialogPetContactAdd = ref(false);
+const dialogPetContactRemove = ref(false);
 
 const isLoading = ref(false);
 
@@ -85,7 +83,7 @@ watch(
 const loadItems = async () => {
   try {
     isLoading.value = true;
-    contacts.value = await getAllByPet(pet.value, params.value);
+    contacts.value = await search(pet.value, params.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {
@@ -93,10 +91,10 @@ const loadItems = async () => {
   }
 };
 
-const next = async () => {
+const nextHandler = async () => {
   try {
     isLoading.value = true;
-    contacts.value = await getAllByPetNext(pet.value, params.value);
+    contacts.value = await next(pet.value, params.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {
@@ -104,10 +102,10 @@ const next = async () => {
   }
 };
 
-const prev = async () => {
+const prevHandler = async () => {
   try {
     isLoading.value = true;
-    contacts.value = await getAllByPetPrev(pet.value, params.value);
+    contacts.value = await prev(pet.value, params.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {
@@ -116,7 +114,7 @@ const prev = async () => {
 };
 
 const addHandler = (item) => {
-  dialogContactAddToPet.value = true;
+  dialogPetContactAdd.value = true;
 };
 
 const viewHandler = (item) => {
@@ -126,7 +124,7 @@ const viewHandler = (item) => {
 
 const removeHandler = (item) => {
   contact.value = item;
-  dialogContactRemoveFromPet.value = true;
+  dialogPetContactRemove.value = true;
 };
 </script>
 

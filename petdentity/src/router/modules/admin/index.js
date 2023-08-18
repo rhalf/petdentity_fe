@@ -66,5 +66,24 @@ export const admin = {
         },
       ],
     },
+    {
+      path: "governments",
+      children: [
+        {
+          path: "summary",
+          name: "AdminGovernmentsSummary",
+          component: () =>
+            import("@/views/admin/governments/GovernmentsSummary.vue"),
+          meta: { authenticated: true, authorization: "ADMIN" },
+        },
+        {
+          path: ":id",
+          name: "AdminGovernmentView",
+          component: () =>
+            import("@/views/admin/governments/GovernmentView.vue"),
+          meta: { authenticated: true, authorization: "ADMIN" },
+        },
+      ],
+    },
   ],
 };

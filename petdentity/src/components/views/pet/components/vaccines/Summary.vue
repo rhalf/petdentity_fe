@@ -71,8 +71,8 @@ const isLoading = ref(false);
 
 const params = ref({
   searchText: "",
-  columnName: "name",
-  orderDirection: "asc",
+  columnName: "applicationDate",
+  orderDirection: "desc",
   limitNumber: 5,
 });
 

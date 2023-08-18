@@ -42,4 +42,10 @@ export const items = [
     subtitle: "Manage Users",
     to: { name: "AdminUsersSummary" },
   },
+  {
+    icon: "mdi-shield-star",
+    title: "Government",
+    subtitle: "Manage Government",
+    to: { name: "AdminGovernmentsSummary" },
+  },
 ];

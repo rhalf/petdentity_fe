@@ -45,7 +45,7 @@ export const search = async ({
     limit(limitNumber)
   );
   const snapshots = await getDocs(q);
-  if (snapshots.empty) throw new Error("Emtpy page!");
+  if (snapshots.empty) throw new Error("Empty page!");
 
   indexes = getIndexes(snapshots);
   return toArray(snapshots);

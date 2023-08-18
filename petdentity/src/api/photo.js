@@ -38,3 +38,17 @@ export const uploadPetProfile = async (id, files) => {
 
   return await getDownloadURL(snapshots.ref);
 };
+
+export const uploadGovernmentProfile = async (id, files) => {
+  const profilePath = "/photos/governments";
+  const file = files[0];
+
+  if (file.size > totalSize)
+    throw new Error(`Photo should not exceed ${fileSize} KB!`);
+
+  const storageRef = ref(storage, `${profilePath}/${id}/profile`);
+
+  const snapshots = await uploadBytes(storageRef, file);
+
+  return await getDownloadURL(snapshots.ref);
+};
