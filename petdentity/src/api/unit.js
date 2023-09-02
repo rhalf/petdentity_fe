@@ -44,9 +44,8 @@ export const search = async ({
     limit(limitNumber)
   );
   const snapshots = await getDocs(q);
-  if (snapshots.empty) throw new Error("Empty page!");
+  if (!snapshots.empty) indexes = getIndexes(snapshots);
 
-  indexes = getIndexes(snapshots);
   return toArray(snapshots);
 };
 
@@ -58,9 +57,7 @@ export const next = async ({ columnName, orderDirection, limitNumber }) => {
     limit(limitNumber)
   );
   const snapshots = await getDocs(q);
-  if (snapshots.empty) throw new Error("Last page!");
-
-  indexes = getIndexes(snapshots);
+  if (!snapshots.empty) indexes = getIndexes(snapshots);
   return toArray(snapshots);
 };
 
@@ -72,9 +69,7 @@ export const prev = async ({ columnName, orderDirection, limitNumber }) => {
     limitToLast(limitNumber)
   );
   const snapshots = await getDocs(q);
-  if (snapshots.empty) throw new Error("First page!");
-
-  indexes = getIndexes(snapshots);
+  if (!snapshots.empty) indexes = getIndexes(snapshots);
   return toArray(snapshots);
 };
 
@@ -92,12 +87,11 @@ export const getByUid = async (uid) => {
 
 export const create = async (item) => {
   item.createdAt = Timestamp.fromDate(new Date());
-
   return await addDoc(collectionRef, item);
 };
 
 export const update = async (item) => {
-  document.updatedAt = Timestamp.fromDate(new Date());
+  item.updatedAt = Timestamp.fromDate(new Date());
   const documentRef = doc(firestore, collectionName, item.id);
   return await setDoc(documentRef, item);
 };
@@ -123,8 +117,7 @@ export const getAllByPet = async (pet, param) => {
     limit(param.limitNumber)
   );
   const snapshots = await getDocs(q);
-
-  indexes = getIndexes(snapshots);
+  if (!snapshots.empty) indexes = getIndexes(snapshots);
   return toArray(snapshots);
 };
 
@@ -137,9 +130,7 @@ export const getAllByPetNext = async ({ id }, param) => {
     limit(param.limitNumber)
   );
   const snapshots = await getDocs(q);
-  if (snapshots.empty) throw new Error("Last page!");
-
-  indexes = getIndexes(snapshots);
+  if (!snapshots.empty) indexes = getIndexes(snapshots);
   return toArray(snapshots);
 };
 
@@ -152,9 +143,7 @@ export const getAllByPetPrev = async ({ id }, param) => {
     limitToLast(param.limitNumber)
   );
   const snapshots = await getDocs(q);
-  if (snapshots.empty) throw new Error("First page!");
-
-  indexes = getIndexes(snapshots);
+  if (!snapshots.empty) indexes = getIndexes(snapshots);
   return toArray(snapshots);
 };
 
@@ -189,9 +178,7 @@ export const searchByOwner = async ({
   );
 
   const snapshots = await getDocs(q);
-  if (snapshots.empty) throw new Error("Empty page!");
-
-  indexes = getIndexes(snapshots);
+  if (!snapshots.empty) indexes = getIndexes(snapshots);
   return toArray(snapshots);
 };
 
@@ -209,9 +196,7 @@ export const nextByOwner = async ({
     limit(limitNumber)
   );
   const snapshots = await getDocs(q);
-  if (snapshots.empty) throw new Error("Last page!");
-
-  indexes = getIndexes(snapshots);
+  if (!snapshots.empty) indexes = getIndexes(snapshots);
   return toArray(snapshots);
 };
 
@@ -229,9 +214,7 @@ export const prevByOwner = async ({
     limitToLast(limitNumber)
   );
   const snapshots = await getDocs(q);
-  if (snapshots.empty) throw new Error("First page!");
-
-  indexes = getIndexes(snapshots);
+  if (!snapshots.empty) indexes = getIndexes(snapshots);
   return toArray(snapshots);
 };
 
@@ -239,6 +222,7 @@ export const getAllByOwner = async () => {
   const { uid } = await getCurrentUser();
   const q = await query(collectionRef, where("owner", "==", uid));
   const snapshots = await getDocs(q);
+  if (!snapshots.empty) indexes = getIndexes(snapshots);
   return toArray(snapshots);
 };
 
