@@ -104,3 +104,9 @@ export const VACCINATION = {
   pet: null, //PET
   veterinarian: null, //VET
 };
+
+//Default Government
+// export const GOVERNMENT = {
+//   name: null,
+//   address: null,
+// };

@@ -29,6 +29,7 @@
             withRemove
             withAdd
             @remove="removeHandler"
+            @add="addHandler"
             @view="viewHandler"
             @next="nextHandler"
             @prev="prevHandler"
@@ -37,11 +38,7 @@
       </v-row>
     </Sheet>
 
-    <DialogGovernmentAdd
-      v-model="dialogGovernmentAdd"
-      v-model:government="government"
-      @remove="loadItems"
-    />
+    <DialogGovernmentAdd v-model="dialogGovernmentAdd" @remove="loadItems" />
 
     <DialogGovernmentRemove
       v-model="dialogGovernmentRemove"
@@ -82,7 +79,7 @@ const governments = ref();
 const government = ref();
 const params = ref({
   searchText: "",
-  columnName: "email",
+  columnName: "name",
   orderDirection: "asc",
   limitNumber: 5,
 });

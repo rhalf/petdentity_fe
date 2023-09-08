@@ -1,165 +1,167 @@
 <template>
-  <v-row dense>
-    <v-col cols="12" :md="isPhilippines ? 4 : 3">
-      <Label text class="text-primary"> Country </Label>
-      <Select
-        v-model="address.country"
-        :items="countries"
-        placeholder="Country"
-        item-title="name"
-        item-value="name"
-        clearable
-        :disabled="props.disabled"
-        @update:modelValue="onCountry"
-        class="text-truncate mt-2"
-      />
-    </v-col>
-    <v-col v-if="!isPhilippines" cols="12" md="3">
-      <Label text class="text-primary"> State </Label>
-      <TextField
-        v-model="address.state"
-        placeholder="State"
-        clearable
-        :disabled="props.disabled"
-        class="text-truncate mt-2"
-      />
-    </v-col>
+  <div>
+    <v-row dense>
+      <v-col cols="12" :md="isPhilippines ? 4 : 3">
+        <Label text class="text-primary"> Country </Label>
+        <Select
+          v-model="address.country"
+          :items="countries"
+          placeholder="Country"
+          item-title="name"
+          item-value="name"
+          clearable
+          :disabled="props.disabled"
+          @update:modelValue="onCountry"
+          class="text-truncate mt-2"
+        />
+      </v-col>
+      <v-col v-if="!isPhilippines" cols="12" md="3">
+        <Label text class="text-primary"> State </Label>
+        <TextField
+          v-model="address.state"
+          placeholder="State"
+          clearable
+          :disabled="props.disabled"
+          class="text-truncate mt-2"
+        />
+      </v-col>
 
-    <v-col cols="12" :md="isPhilippines ? 4 : 3">
-      <Label text class="text-primary"> Region </Label>
-      <Select
-        v-if="isPhilippines"
-        v-model="address.region"
-        :items="datas.regions"
-        item-title="fullName"
-        item-value="name"
-        placeholder="Region"
-        clearable
-        :disabled="props.disabled"
-        @update:modelValue="onRegion"
-        class="text-truncate mt-2"
-      />
-      <TextField
-        v-else
-        v-model="address.region"
-        placeholder="Region"
-        clearable
-        :disabled="props.disabled"
-        class="text-truncate mt-2"
-      />
-    </v-col>
+      <v-col cols="12" :md="isPhilippines ? 4 : 3">
+        <Label text class="text-primary"> Region </Label>
+        <Select
+          v-if="isPhilippines"
+          v-model="address.region"
+          :items="datas.regions"
+          item-title="fullName"
+          item-value="name"
+          placeholder="Region"
+          clearable
+          :disabled="props.disabled"
+          @update:modelValue="onRegion"
+          class="text-truncate mt-2"
+        />
+        <TextField
+          v-else
+          v-model="address.region"
+          placeholder="Region"
+          clearable
+          :disabled="props.disabled"
+          class="text-truncate mt-2"
+        />
+      </v-col>
 
-    <v-col cols="12" :md="isPhilippines ? 4 : 3">
-      <Label text class="text-primary"> Province </Label>
+      <v-col cols="12" :md="isPhilippines ? 4 : 3">
+        <Label text class="text-primary"> Province </Label>
 
-      <Select
-        v-if="isPhilippines"
-        v-model="address.province"
-        :items="datas.provinces"
-        placeholder="Province"
-        clearable
-        :disabled="props.disabled"
-        @update:modelValue="onProvince"
-        class="text-truncate mt-2"
-      />
-      <TextField
-        v-else
-        v-model="address.province"
-        placeholder="Province"
-        clearable
-        :disabled="props.disabled"
-        class="text-truncate mt-2"
-      />
-    </v-col>
-  </v-row>
+        <Select
+          v-if="isPhilippines"
+          v-model="address.province"
+          :items="datas.provinces"
+          placeholder="Province"
+          clearable
+          :disabled="props.disabled"
+          @update:modelValue="onProvince"
+          class="text-truncate mt-2"
+        />
+        <TextField
+          v-else
+          v-model="address.province"
+          placeholder="Province"
+          clearable
+          :disabled="props.disabled"
+          class="text-truncate mt-2"
+        />
+      </v-col>
+    </v-row>
 
-  <v-row dense class="mt-2">
-    <v-col cols="12" md="4">
-      <Label text class="text-primary"> City / Municipality / Town </Label>
-      <Select
-        v-if="isPhilippines"
-        v-model="address.city"
-        :items="datas.cities"
-        placeholder="City / Municipality / Town"
-        clearable
-        :disabled="props.disabled"
-        @update:modelValue="onCity"
-        class="text-truncate mt-2"
-      />
-      <TextField
-        v-else
-        v-model="address.city"
-        placeholder="City / Municipality / Town"
-        clearable
-        :disabled="props.disabled"
-        class="text-truncate mt-2"
-      />
-    </v-col>
+    <v-row dense class="mt-2">
+      <v-col cols="12" md="4">
+        <Label text class="text-primary"> City / Municipality / Town </Label>
+        <Select
+          v-if="isPhilippines"
+          v-model="address.city"
+          :items="datas.cities"
+          placeholder="City / Municipality / Town"
+          clearable
+          :disabled="props.disabled"
+          @update:modelValue="onCity"
+          class="text-truncate mt-2"
+        />
+        <TextField
+          v-else
+          v-model="address.city"
+          placeholder="City / Municipality / Town"
+          clearable
+          :disabled="props.disabled"
+          class="text-truncate mt-2"
+        />
+      </v-col>
 
-    <v-col cols="12" md="4">
-      <Label text class="text-primary"> Barangay </Label>
+      <v-col cols="12" md="4">
+        <Label text class="text-primary"> Barangay </Label>
 
-      <Select
-        v-if="isPhilippines"
-        v-model="address.barangay"
-        :items="datas.barangays"
-        placeholder="Barangay"
-        clearable
-        :disabled="props.disabled"
-        class="text-truncate mt-2"
-      />
-      <TextField
-        v-else
-        v-model="address.barangay"
-        placeholder="Barangay"
-        clearable
-        :disabled="props.disabled"
-        class="text-truncate mt-2"
-      />
-    </v-col>
+        <Select
+          v-if="isPhilippines"
+          v-model="address.barangay"
+          :items="datas.barangays"
+          placeholder="Barangay"
+          clearable
+          :disabled="props.disabled"
+          class="text-truncate mt-2"
+        />
+        <TextField
+          v-else
+          v-model="address.barangay"
+          placeholder="Barangay"
+          clearable
+          :disabled="props.disabled"
+          class="text-truncate mt-2"
+        />
+      </v-col>
 
-    <v-col cols="12" md="4">
-      <Label text class="text-primary"> Zip Code </Label>
+      <v-col cols="12" md="4">
+        <Label text class="text-primary"> Zip Code </Label>
 
-      <TextField
-        v-model="address.zipcode"
-        placeholder="Zip Code"
-        clearable
-        :disabled="props.disabled"
-        class="text-truncate mt-2"
-      />
-    </v-col>
-  </v-row>
+        <TextField
+          v-model="address.zipcode"
+          placeholder="Zip Code"
+          clearable
+          :disabled="props.disabled"
+          class="text-truncate mt-2"
+        />
+      </v-col>
+    </v-row>
 
-  <v-row dense>
-    <v-col>
-      <Label text class="text-primary"> Subdivision, Zone, Phase </Label>
+    <v-row dense>
+      <v-col>
+        <Label text class="text-primary"> Subdivision, Zone, Phase </Label>
 
-      <TextField
-        v-model="address.division"
-        placeholder="Subdivision, Zone, Phase"
-        clearable
-        :disabled="props.disabled"
-        class="text-truncate mt-2"
-      />
-    </v-col>
-  </v-row>
+        <TextField
+          v-model="address.division"
+          placeholder="Subdivision, Zone, Phase"
+          clearable
+          :disabled="props.disabled"
+          class="text-truncate mt-2"
+        />
+      </v-col>
+    </v-row>
 
-  <v-row dense class="mt-2">
-    <v-col>
-      <Label text class="text-primary">
-        Unit, Floor, Building Number and Street
-      </Label>
+    <v-row dense class="mt-2">
+      <v-col>
+        <Label text class="text-primary">
+          Unit, Floor, Building Number and Street
+        </Label>
 
-      <TextField
-        v-model="address.exact"
-        placeholder="Unit, Floor, Building Number and Street"
-        clearable
-        :disabled="props.disabled"
-        class="text-truncate mt-2"
-      />
-    </v-col>
-  </v-row>
+        <TextField
+          v-model="address.exact"
+          placeholder="Unit, Floor, Building Number and Street"
+          clearable
+          :disabled="props.disabled"
+          class="text-truncate mt-2"
+        />
+      </v-col>
+    </v-row>
+  </div>
 </template>
 
 <script setup>
@@ -174,7 +176,7 @@ import { Address } from "@/constants";
 
 import { useModel } from "@/utils/vue";
 
-import _ from "lodash";
+import { cloneDeep } from "lodash";
 
 import { computed, reactive, watch, toRefs } from "vue";
 
@@ -183,7 +185,7 @@ const emit = defineEmits(["update:modelValue"]);
 const props = defineProps({
   modelValue: {
     type: Object,
-    default: Address,
+    default: cloneDeep(Address),
   },
   disabled: Boolean,
 });

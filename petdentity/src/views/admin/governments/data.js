@@ -10,7 +10,7 @@ export const headers = [
     title: "Name",
     align: "start",
     sortable: false,
-    key: "status",
+    key: "name",
     width: "200px",
   },
   {
@@ -27,11 +27,20 @@ export const headers = [
     key: "roles",
     width: "200px",
   },
+
   {
-    title: "Area",
+    title: "Level",
     align: "start",
     sortable: false,
-    key: "area",
+    key: "level",
+    width: "200px",
+  },
+
+  {
+    title: "Privacy",
+    align: "start",
+    sortable: false,
+    key: "privacy",
     width: "200px",
   },
 ];
