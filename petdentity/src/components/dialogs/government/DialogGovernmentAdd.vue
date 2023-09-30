@@ -22,7 +22,6 @@
             <Button @click="closeHandler" variant="outlined">Close</Button>
           </v-col>
         </v-row>
-        {{ government }}
       </v-card-actions>
     </Card>
   </Dialog>
@@ -39,6 +38,10 @@ import FormGovernment from "@/components/forms/government/FormGovernment.vue";
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
+import { cloneDeep } from "lodash";
+
+import { Address } from "@/constants";
+
 import { create } from "@/api/government";
 
 import { useModel } from "@/utils/vue";
@@ -51,7 +54,9 @@ const emit = defineEmits(["update:modelValue", "done"]);
 const isLoading = ref(false);
 const dialog = computed(useModel(propsRef, emit, "modelValue"));
 
-const government = ref({});
+const government = ref({
+  address: cloneDeep(Address),
+});
 
 const submitHandler = async () => {
   try {

@@ -10,6 +10,22 @@
 
     <v-row dense class="mt-2">
       <v-col cols="6">
+        <Label class="text-primary"> Email </Label>
+        <TextField
+          class="mt-2"
+          v-model="government.email"
+          :disabled="disabled"
+          type="email"
+        />
+      </v-col>
+      <v-col cols="6">
+        <Label class="text-primary"> Mobile </Label>
+        <Mobile class="mt-2" v-model="government.mobile" :disabled="disabled" />
+      </v-col>
+    </v-row>
+
+    <v-row dense class="mt-2">
+      <v-col cols="6">
         <Label class="text-primary"> Level </Label>
         <GovernmentLevel
           class="mt-2"
@@ -27,7 +43,7 @@
       </v-col>
     </v-row>
 
-    <Label class="mt-4 pa-2 bg-primary" header> Address </Label>
+    <Label class="mt-4 pa-2 bg-primary" text> Address </Label>
     <FormAddress
       class="mt-2"
       v-model="government.address"
@@ -39,6 +55,7 @@
 <script setup>
 import Label from "@/components/common/Label.vue";
 import TextField from "@/components/common/TextField.vue";
+import Mobile from "@/components/common/Mobile.vue";
 
 import GovernmentLevel from "@/components/pickers/GovernmentLevel.vue";
 import Privacy from "@/components/pickers/Privacy.vue";
