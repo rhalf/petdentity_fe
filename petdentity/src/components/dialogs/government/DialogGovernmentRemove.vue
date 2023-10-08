@@ -7,7 +7,7 @@
       <v-card-text>
         <Label text> Are you sure you want to remove this item?</Label>
         <br />
-        <Label header>Name : "{{ vaccine.name }}"" </Label>
+        <Label header>Name : "{{ government.name }}"" </Label>
       </v-card-text>
       <v-card-actions>
         <v-row dense class="py-4 px-4">
@@ -33,25 +33,25 @@ import Card from "@/components/common/Card.vue";
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
-import { remove } from "@/api/vaccine";
+import { remove } from "@/api/government";
 
 import { useModel, syncProp } from "@/utils/vue";
 
 import { ref, computed, toRefs } from "vue";
-const props = defineProps({ modelValue: Boolean, vaccine: Object });
+const props = defineProps({ modelValue: Boolean, government: Object });
 const propRef = toRefs(props);
-const emit = defineEmits(["update:modelValue", "update:vaccine", "done"]);
+const emit = defineEmits(["update:modelValue", "update:government", "remove"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propRef, emit, "modelValue"));
-const vaccine = computed(syncProp(propRef, emit, "vaccine"));
+const government = computed(syncProp(propRef, emit, "government"));
 
 const submitHandler = async () => {
   try {
     isLoading.value = true;
-    const result = await remove(vaccine.value);
+    const result = await remove(government.value);
     show("success", "Removed an item!");
-    emit("done");
+    emit("remove");
     dialog.value = false;
   } catch ({ message }) {
     show("error", message);

@@ -60,8 +60,8 @@ export const admin = {
         },
         {
           path: ":id",
-          name: "AdminUsersView",
-          component: () => import("@/views/admin/users/UsersView.vue"),
+          name: "AdminUserView",
+          component: () => import("@/views/admin/users/UserView.vue"),
           meta: { authenticated: true, authorization: "ADMIN" },
         },
       ],

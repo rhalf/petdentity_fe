@@ -83,6 +83,14 @@ export const getAll = async (id, { columnName, orderDirection }) => {
   return toArray(snapshots);
 };
 
+export const get = async (id) => {
+  const docRef = doc(firestore, collectionName, id);
+  const snapshot = await getDoc(docRef);
+
+  if (snapshot.exists()) return { id: snapshot.id, ...snapshot.data() };
+  else return null;
+};
+
 export const create = async (item) => {
   item.createdAt = Timestamp.fromDate(new Date());
   return await addDoc(collectionRef, item);

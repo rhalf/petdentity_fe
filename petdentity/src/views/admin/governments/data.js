@@ -21,10 +21,10 @@ export const headers = [
     width: "300px",
   },
   {
-    title: "Phone",
+    title: "Mobile",
     align: "start",
     sortable: false,
-    key: "roles",
+    key: "mobile",
     width: "200px",
   },
 

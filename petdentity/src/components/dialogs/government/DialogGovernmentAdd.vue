@@ -5,7 +5,7 @@
         <Label header class="text-black"> Add Government </Label>
       </v-card-title>
       <v-card-text>
-        <FormGovernment v-model="government" />
+        <FormGovernment v-model="government" v-model:form="form" />
       </v-card-text>
       <v-card-actions>
         <v-row dense class="py-4 px-4">
@@ -13,7 +13,7 @@
           <v-col cols="auto">
             <Button
               @click="submitHandler"
-              :disabled="!government.name"
+              :disabled="!government.name || !form"
               :loading="isLoading"
               >Submit</Button
             >
@@ -46,24 +46,25 @@ import { create } from "@/api/government";
 
 import { useModel } from "@/utils/vue";
 
+import { Government } from "@/constants";
+
 import { ref, toRefs, computed } from "vue";
 const props = defineProps({ modelValue: Boolean });
 const propsRef = toRefs(props);
-const emit = defineEmits(["update:modelValue", "done"]);
+const emit = defineEmits(["update:modelValue", "remove"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propsRef, emit, "modelValue"));
+const form = ref(false);
 
-const government = ref({
-  address: cloneDeep(Address),
-});
+const government = ref(cloneDeep(Government));
 
 const submitHandler = async () => {
   try {
     isLoading.value = true;
     await create(government.value);
-    emit("done");
     show("success", "Added a government!");
+    emit("remove");
     government.value = {};
     dialog.value = false;
   } catch ({ message }) {

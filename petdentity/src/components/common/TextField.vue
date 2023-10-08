@@ -2,9 +2,12 @@
   <v-text-field
     v-model="item"
     :type="type"
-    v-bind="properties"
     @blur="blurHandler"
     :rules="rules"
+    density="comfortable"
+    :persistentPlaceholder="true"
+    hideDetails="auto"
+    :clearable="true"
   />
 </template>
 
@@ -13,17 +16,13 @@ import validation from "@/utils/validation";
 import { useModel } from "@/utils/vue";
 import { toRefs, ref, computed, onMounted } from "vue";
 
-const properties = {
-  density: "comfortable",
-  persistentPlaceholder: true,
-  hideDetails: "auto",
-  clearable: true,
-};
-
 const emit = defineEmits(["update:modelValue"]);
 const props = defineProps({
   modelValue: { type: [String, Number] },
-  type: "String",
+  type: {
+    type: String,
+    default: undefined,
+  },
   withDecimal: Boolean,
   required: Boolean,
 });

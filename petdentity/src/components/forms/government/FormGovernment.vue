@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-form v-model="form" validate-on="input">
     <Label class="text-primary"> Name </Label>
     <TextField
       class="mt-2"
@@ -15,7 +15,9 @@
           class="mt-2"
           v-model="government.email"
           :disabled="disabled"
+          :rules="[validation.email]"
           type="email"
+          prepend-inner-icon="mdi-email"
         />
       </v-col>
       <v-col cols="6">
@@ -43,13 +45,22 @@
       </v-col>
     </v-row>
 
-    <Label class="mt-4 pa-2 bg-primary" text> Address </Label>
-    <FormAddress
-      class="mt-2"
-      v-model="government.address"
-      :disabled="disabled"
-    />
-  </div>
+    <v-row dense class="mt-2">
+      <v-col>
+        <Label class="mt-4 pa-2 bg-primary" text> Address </Label>
+      </v-col>
+    </v-row>
+
+    <v-row dense class="mt-2">
+      <v-col>
+        <FormAddress
+          class="mt-2"
+          v-model="government.address"
+          :disabled="disabled"
+        />
+      </v-col>
+    </v-row>
+  </v-form>
 </template>
 
 <script setup>
@@ -62,21 +73,23 @@ import Privacy from "@/components/pickers/Privacy.vue";
 
 import FormAddress from "@/components/forms/address/FormAddress.vue";
 
-// import Date from "@/components/pickers/Date.vue";
+import validation from "@/utils/validation";
 
 import { useModel } from "@/utils/vue";
 import { toRefs, computed } from "vue";
 
-const emit = defineEmits(["update:modelValue", "upload"]);
+const emit = defineEmits(["update:modelValue", "upload", "update:form"]);
 const props = defineProps({
   modelValue: Object,
   disabled: Boolean,
+  form: Boolean,
 });
 
 const propsRef = toRefs(props);
 const { disabled } = propsRef;
 
 const government = computed(useModel(propsRef, emit, "modelValue"));
+const form = computed(useModel(propsRef, emit, "form"));
 </script>
 
 <style></style>

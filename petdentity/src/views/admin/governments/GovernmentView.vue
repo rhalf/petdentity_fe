@@ -1,11 +1,11 @@
 <template>
   <v-container>
-    <FormUserView v-model="user" />
+    <FormGovernmentView v-model="government" />
   </v-container>
 </template>
 
 <script setup>
-import FormUserView from "@/components/forms/user/FormUserView.vue";
+import FormGovernmentView from "@/components/forms/government/FormGovernmentView.vue";
 
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
@@ -13,17 +13,17 @@ const { show } = useSnackbarStore();
 import { useRoute } from "vue-router";
 const route = useRoute();
 
-import { get } from "@/api/user";
+import { get } from "@/api/government";
 
 import { ref, onMounted } from "vue";
 
 const isLoading = ref(false);
-const user = ref();
+const government = ref({});
 
 const loadItem = async () => {
   try {
     isLoading.value = true;
-    user.value = await get(route.params.id);
+    government.value = await get(route.params.id);
   } catch ({ message }) {
     show("error", message);
   } finally {

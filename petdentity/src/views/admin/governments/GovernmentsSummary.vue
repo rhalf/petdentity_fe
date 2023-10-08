@@ -87,7 +87,7 @@ const params = ref({
 const viewHandler = ({ id }) => {
   console.log(id);
   router.push({
-    name: "AdminGovernmentsView",
+    name: "AdminGovernmentView",
     params: { id: id },
   });
 };
