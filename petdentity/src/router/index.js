@@ -7,6 +7,7 @@ import { admin } from "./modules/admin";
 import { session } from "./modules/session";
 import { owner } from "./modules/owner";
 import { search } from "./modules/search";
+import { government } from "./modules/government";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -37,6 +38,7 @@ const router = createRouter({
     { ...admin },
     { ...owner },
     { ...search },
+    { ...government },
   ],
 });
 

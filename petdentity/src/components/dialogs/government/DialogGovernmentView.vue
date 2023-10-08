@@ -2,10 +2,10 @@
   <Dialog v-model="dialog" :width="1024" expand>
     <Card>
       <v-card-title class="bg-primary pa-4">
-        <Label header class="text-black"> View Vaccine </Label>
+        <Label header class="text-black"> Government Vaccine </Label>
       </v-card-title>
       <v-card-text>
-        <FormVaccine v-model="vaccine" :disabled="disabled" />
+        <FormGovernment v-model="government" :disabled="disabled" />
       </v-card-text>
       <v-card-actions>
         <v-row dense class="py-4 px-4">
@@ -32,29 +32,29 @@
 import Button from "@/components/common/Button.vue";
 import Label from "@/components/common/Label.vue";
 import Dialog from "@/components/common/Dialog.vue";
-import FormVaccine from "@/components/forms/vaccine/FormVaccine.vue";
+import FormGovernment from "@/components/forms/government/FormGovernment.vue";
 import Card from "@/components/common/Card.vue";
 
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
-import { update } from "@/api/vaccine";
+import { update } from "@/api/government";
 
 import { useModel } from "@/utils/vue";
 
 import { ref, computed, toRefs } from "vue";
 const props = defineProps({
   modelValue: Boolean,
-  vaccine: Object,
+  government: Object,
   readOnly: Boolean,
 });
 const propRef = toRefs(props);
-const emit = defineEmits(["update:modelValue", "update:vaccine", "done"]);
+const emit = defineEmits(["update:modelValue", "update:government", "done"]);
 
 const isLoading = ref(false);
 const disabled = ref(true);
 const dialog = computed(useModel(propRef, emit, "modelValue"));
-const vaccine = computed(useModel(propRef, emit, "vaccine"));
+const government = computed(useModel(propRef, emit, "government"));
 
 const submitHandler = async () => {
   if (disabled.value) {
@@ -64,8 +64,8 @@ const submitHandler = async () => {
 
   try {
     isLoading.value = true;
-    const docRef = await update(vaccine.value);
-    show("success", "Updated a vaccine!");
+    const docRef = await update(government.value);
+    show("success", "Updated a government!");
     dialog.value = false;
     emit("done");
     disabled.value = true;

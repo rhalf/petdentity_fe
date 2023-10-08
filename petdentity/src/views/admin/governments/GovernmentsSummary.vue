@@ -12,6 +12,7 @@
             append-inner-icon="mdi-magnify"
             variant="outlined"
             @keypress.enter="loadItems"
+            uppercase
           />
         </v-col>
       </v-row>
@@ -38,7 +39,7 @@
       </v-row>
     </Sheet>
 
-    <DialogGovernmentAdd v-model="dialogGovernmentAdd" @remove="loadItems" />
+    <DialogGovernmentAdd v-model="dialogGovernmentAdd" @add="loadItems" />
 
     <DialogGovernmentRemove
       v-model="dialogGovernmentRemove"
@@ -85,7 +86,6 @@ const params = ref({
 });
 
 const viewHandler = ({ id }) => {
-  console.log(id);
   router.push({
     name: "AdminGovernmentView",
     params: { id: id },

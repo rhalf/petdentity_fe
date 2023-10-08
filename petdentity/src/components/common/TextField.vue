@@ -8,12 +8,14 @@
     :persistentPlaceholder="true"
     hideDetails="auto"
     :clearable="true"
+    @update:modelValue="updateModelHandler"
   />
 </template>
 
 <script setup>
 import validation from "@/utils/validation";
 import { useModel } from "@/utils/vue";
+import { nextTick } from "vue";
 import { toRefs, ref, computed, onMounted } from "vue";
 
 const emit = defineEmits(["update:modelValue"]);
@@ -25,11 +27,13 @@ const props = defineProps({
   },
   withDecimal: Boolean,
   required: Boolean,
+  uppercase: Boolean,
+  lowercase: Boolean,
 });
 
 const propsRef = toRefs(props);
 const item = computed(useModel(propsRef, emit, "modelValue"));
-const { type, withDecimal, required } = propsRef;
+const { type, withDecimal, required, uppercase, lowercase } = propsRef;
 
 const blurHandler = () => {
   if (type.value === "number" && withDecimal.value) {
@@ -42,6 +46,13 @@ const rules = ref([]);
 onMounted(() => {
   if (required.value) rules.value.push(validation.required);
 });
+
+const updateModelHandler = (event) => {
+  if (!event) return;
+  let value = String(event);
+  if (uppercase.value) item.value = value.toUpperCase();
+  if (lowercase.value) item.value = value.toLowerCase();
+};
 </script>
 
 <style scoped></style>

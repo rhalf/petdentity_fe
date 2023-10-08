@@ -1,12 +1,10 @@
 <template>
   <v-container>
-    <Sheet>
-      <Government />
-    </Sheet>
+    <Sheet> <Pet /> </Sheet>
   </v-container>
 </template>
 
 <script setup>
 import Sheet from "@/components/common/Sheet.vue";
-import Government from "@/components/views/government/Government.vue";
+import Pet from "@/components/views/pet/Pet.vue";
 </script>

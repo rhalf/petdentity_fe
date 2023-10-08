@@ -1,12 +1,29 @@
 <template>
   <v-form v-model="form" validate-on="input">
-    <Label class="text-primary"> Name </Label>
-    <TextField
-      class="mt-2"
-      v-model="government.name"
-      placeholder="Name"
-      :disabled="disabled"
-    />
+    <v-row dense>
+      <v-col>
+        <Label class="text-primary"> Name </Label>
+        <TextField
+          class="mt-2"
+          v-model="government.name"
+          placeholder="Name"
+          :disabled="disabled"
+          uppercase
+        />
+      </v-col>
+    </v-row>
+
+    <v-row dense class="mt-2">
+      <v-col>
+        <Label class="text-primary"> Description </Label>
+        <TextField
+          class="mt-2"
+          v-model="government.description"
+          placeholder="Description"
+          :disabled="disabled"
+        />
+      </v-col>
+    </v-row>
 
     <v-row dense class="mt-2">
       <v-col cols="6">

@@ -40,8 +40,6 @@ const { show } = useSnackbarStore();
 
 import { cloneDeep } from "lodash";
 
-import { Address } from "@/constants";
-
 import { create } from "@/api/government";
 
 import { useModel } from "@/utils/vue";
@@ -51,7 +49,7 @@ import { Government } from "@/constants";
 import { ref, toRefs, computed } from "vue";
 const props = defineProps({ modelValue: Boolean });
 const propsRef = toRefs(props);
-const emit = defineEmits(["update:modelValue", "remove"]);
+const emit = defineEmits(["update:modelValue", "add"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propsRef, emit, "modelValue"));
@@ -64,8 +62,9 @@ const submitHandler = async () => {
     isLoading.value = true;
     await create(government.value);
     show("success", "Added a government!");
-    emit("remove");
-    government.value = {};
+    emit("add");
+
+    government.value = cloneDeep(Government);
     dialog.value = false;
   } catch ({ message }) {
     show("error", message);
