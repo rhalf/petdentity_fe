@@ -1,29 +1,28 @@
 <template>
   <v-container>
     <Sheet>
-      <Label class="text-primary">
-        <v-row>
-          <v-col align="start"> Unit UID </v-col>
-          <v-col align="end">
-            <span v-if="units"> Unit Found: {{ units.length }}</span>
-          </v-col>
-        </v-row>
-      </Label>
-
-      <v-row class="mt-4">
+      <v-row>
         <v-col cols="12" md="" align="start">
           <TextField
-            v-model="searchText"
+            v-model="params.searchText"
             append-inner-icon="mdi-magnify"
             @keypress="keypressHandler"
             placeholder="Search"
+            uppercase
           />
         </v-col>
       </v-row>
 
-      <v-row class="mt-4" v-for="(unit, index) in units" :key="index">
-        <v-col cols="12" xs="6" sm="4" md="3" align="start">
-          <PetItem v-model="units[index].pet" v-if="units[index].pet" />
+      <v-row class="mt-4" :key="index">
+        <v-col
+          cols="12"
+          xs="12"
+          sm="6"
+          md="4"
+          align="start"
+          v-for="(government, index) in governments"
+        >
+          <GovernmentItem v-model="governments[index]" />
         </v-col>
       </v-row>
     </Sheet>
@@ -35,7 +34,7 @@ import TextField from "@/components/common/TextField.vue";
 import Label from "@/components/common/Label.vue";
 import Sheet from "@/components/common/Sheet.vue";
 
-import PetItem from "./components/PetItem.vue";
+import GovernmentItem from "./components/GovernmentItem.vue";
 
 import { debounce } from "lodash";
 
@@ -45,29 +44,46 @@ const { show } = useSnackbarStore();
 import { useProgressLineStore } from "@/store/progress-line";
 const { start, stop } = useProgressLineStore();
 
-import { getByUid } from "@/api/unit";
+import { get, getAllByName } from "@/api/government";
 
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 
-const searchText = ref();
+const governments = ref();
 
-const units = ref();
+const params = ref({
+  searchText: "",
+  columnName: "name",
+  orderDirection: "asc",
+  limitNumber: 5,
+});
 
 const keypressHandler = debounce(() => {
   submitHandler();
 }, 1000);
 
+const getItems = async () => {
+  try {
+    start();
+    governments.value = await getAllByName(params.value);
+    console.log("governments", governments.value);
+  } catch ({ message }) {
+    console.log(message);
+  } finally {
+    stop();
+  }
+};
+
+onMounted(() => {
+  getItems();
+});
+
 const submitHandler = async () => {
   try {
-    if (!searchText.value) return;
-
     start();
-
-    units.value = await getByUid(searchText.value);
-
-    if (!units.value.length) throw new Error("Unit not found!");
-  } catch {
-    show("error", "Unit not found!");
+    governments.value = await getAllByName(params.value);
+    console.log("governments", governments.value);
+  } catch ({ message }) {
+    console.log(message);
   } finally {
     stop();
   }

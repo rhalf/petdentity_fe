@@ -91,6 +91,19 @@ export const get = async (id) => {
   else return null;
 };
 
+export const getAllByName = async (params) => {
+  const q = await query(
+    collectionRef,
+    orderBy(params.columnName, params.orderDirection),
+    startAt(params.searchText),
+    endAt(params.searchText + "\uf8ff"),
+    limit(params.limitNumber)
+  );
+  const snapshots = await getDocs(q);
+  if (!snapshots.empty) indexes = getIndexes(snapshots);
+  return toArray(snapshots);
+};
+
 export const create = async (item) => {
   item.createdAt = Timestamp.fromDate(new Date());
   return await addDoc(collectionRef, item);
