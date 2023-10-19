@@ -31,7 +31,7 @@ export const owner = {
           meta: { authenticated: true, authorization: "OWNER" },
         },
         {
-          path: ":id",
+          path: ":petId",
           name: "OwnerPetView",
           component: () => import("@/views/owner/pets/PetView.vue"),
           meta: { authenticated: true, authorization: "OWNER", mode: "UPDATE" },

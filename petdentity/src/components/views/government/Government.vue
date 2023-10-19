@@ -11,18 +11,20 @@
     </v-col>
   </v-row>
 
-  <!--
   <v-row dense class="mt-2">
     <v-col cols="12" class="text-center">
-      <Contacts v-model:government="government" :readOnly="readOnly" />
+      <Users v-model:government="government" :readOnly="readOnly" />
     </v-col>
   </v-row>
 
   <v-row dense class="mt-2">
     <v-col cols="12" class="text-center">
-      <Vaccines v-model:government="government" :readOnly="readOnly" />
+      <Units v-model:government="government" :readOnly="readOnly" />
     </v-col>
   </v-row>
+
+  <!--
+
 
   <v-row dense class="mt-2">
     <v-col cols="12" class="text-center">
@@ -34,9 +36,10 @@
 <script setup>
 import Header from "./components/header/Header.vue";
 import Profile from "./components/profile/Profile.vue";
+import Users from "./components/users/Users.vue";
 // import Contacts from "./components/contacts/Summary.vue";
 // import Vaccines from "./components/vaccines/Summary.vue";
-// import Units from "./components/units/Summary.vue";
+import Units from "./components/units/Summary.vue";
 
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();

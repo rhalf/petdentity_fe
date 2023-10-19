@@ -44,7 +44,7 @@ const userStore = useUserStore();
 import { storeToRefs } from "pinia";
 const { user } = storeToRefs(userStore);
 
-import { update } from "@/api/user";
+import { update } from "@/api/users";
 
 const isLoading = ref(false);
 

@@ -103,6 +103,6 @@ const onSubmitHandler = handleSubmit(async (values) => {
 });
 
 const searchHandler = () => {
-  router.push({ name: "SearchDashboard" });
+  router.push({ name: "SearchPetsDashboard" });
 };
 </script>

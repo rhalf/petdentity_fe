@@ -21,7 +21,7 @@ import {
   writeBatch,
 } from "firebase/firestore";
 
-import { toObject, toArray, getIndexes } from "./index";
+import { toObject, toArray, getIndexes } from "./indexes";
 
 import { getCurrentUser } from "@/utils/firebase";
 
@@ -160,6 +160,7 @@ export const removeUnitFromPet = async (item) => {
   const documentRef = doc(firestore, collectionName, item.id);
   return await setDoc(documentRef, item);
 };
+
 //owner
 export const searchByOwner = async ({
   searchText,
@@ -240,14 +241,104 @@ export const countByOwner = async () => {
   return snapshot.data().count;
 };
 
-//Owner
-export const getByOwnerAndId = async (id) => {
+export const getByOwnerAndId = async (unitId) => {
   const { uid } = await getCurrentUser();
 
   const q = await query(
     collectionRef,
     where("owner", "==", uid),
-    where("uid", "==", id),
+    where("uid", "==", unitId),
+    limit(1)
+  );
+  const snapshots = await getDocs(q);
+  return toArray(snapshots);
+};
+
+//government
+export const searchByUsers = async (government, params) => {
+  const { id } = government;
+  const { searchText, columnName, orderDirection, limitNumber } = params;
+  const q = await query(
+    collectionRef,
+    where("government", "==", id),
+    orderBy(columnName, orderDirection),
+    startAt(searchText),
+    endAt(searchText + "\uf8ff"),
+    limit(limitNumber)
+  );
+
+  const snapshots = await getDocs(q);
+
+  if (!snapshots.empty) indexes = getIndexes(snapshots);
+  return toArray(snapshots);
+};
+
+export const nextByUsers = async (government, params) => {
+  const { id } = government;
+  const { columnName, orderDirection, limitNumber } = params;
+  const q = await query(
+    collectionRef,
+    where("government", "==", id),
+    orderBy(columnName, orderDirection),
+    startAfter(indexes.lastItem),
+    limit(limitNumber)
+  );
+  const snapshots = await getDocs(q);
+  if (!snapshots.empty) indexes = getIndexes(snapshots);
+  return toArray(snapshots);
+};
+
+export const prevByUsers = async (government, params) => {
+  const { id } = government;
+  const { columnName, orderDirection, limitNumber } = params;
+  const q = await query(
+    collectionRef,
+    where("government", "==", id),
+    orderBy(columnName, orderDirection),
+    endBefore(indexes.firstItem),
+    limitToLast(limitNumber)
+  );
+  const snapshots = await getDocs(q);
+  if (!snapshots.empty) indexes = getIndexes(snapshots);
+  return toArray(snapshots);
+};
+
+export const getAllByGovernment = async (uid) => {
+  const q = await query(collectionRef, where("government", "==", uid));
+  const snapshots = await getDocs(q);
+  if (!snapshots.empty) indexes = getIndexes(snapshots);
+  return toArray(snapshots);
+};
+
+export const addGovernment = async (government, unit) => {
+  const { id: governmentId } = government;
+
+  unit.updatedAt = Timestamp.fromDate(new Date());
+  unit.government = governmentId;
+  const documentRef = doc(firestore, collectionName, unit.id);
+  return await setDoc(documentRef, unit);
+};
+
+export const removeGovernment = async (item) => {
+  item.updatedAt = Timestamp.fromDate(new Date());
+  item.government = null;
+  const documentRef = doc(firestore, collectionName, item.id);
+  return await setDoc(documentRef, item);
+};
+
+export const countByGovernment = async (government) => {
+  const { id } = government;
+  const q = query(collectionRef, where("government", "==", id));
+  const snapshot = await getCountFromServer(q);
+  return snapshot.data().count;
+};
+
+export const getByGovernmentAndId = async (government, unitUid) => {
+  const { id: governmentId } = government;
+  const q = await query(
+    collectionRef,
+    where("government", "==", governmentId),
+    where("uid", "==", unitUid),
     limit(1)
   );
   const snapshots = await getDocs(q);

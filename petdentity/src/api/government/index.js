@@ -20,7 +20,7 @@ import {
   getCountFromServer,
 } from "firebase/firestore";
 
-import { toObject, toArray, getIndexes } from "./index";
+import { toObject, toArray, getIndexes } from "../indexes";
 
 const collectionName = "governments";
 const collectionRef = collection(firestore, collectionName);

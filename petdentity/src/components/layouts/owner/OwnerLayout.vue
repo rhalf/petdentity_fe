@@ -28,7 +28,7 @@ import { useRouter, useRoute } from "vue-router";
 const router = useRouter();
 const route = useRoute();
 
-import { get } from "@/api/user";
+import { get } from "@/api/users";
 import { getCurrentUser } from "@/utils/firebase";
 
 import { ref, onMounted } from "vue";

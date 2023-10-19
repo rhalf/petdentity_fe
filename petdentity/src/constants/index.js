@@ -1,5 +1,4 @@
 import { cloneDeep } from "lodash";
-import { getByUid } from "./../api/unit";
 
 export const UserGroups = {
   ADMIN: "ADMIN",
@@ -64,6 +63,8 @@ export const User = {
   roles: [UserGroups.OWNER],
   status: Statuses.ENABLED,
   profile: cloneDeep(Profile),
+  government: [],
+  government: [],
 };
 
 //Default PET
@@ -105,4 +106,5 @@ export const Government = {
   privacy: null,
   photoUrl: null,
   address: cloneDeep(Address),
+  users: [],
 };

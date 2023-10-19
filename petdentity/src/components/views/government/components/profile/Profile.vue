@@ -2,7 +2,7 @@
   <Panel
     title="Profile"
     label="profile"
-    icon="mdi-shield-star"
+    icon="mdi-card-account-details-star"
     min-height="300"
     v-if="government"
   >

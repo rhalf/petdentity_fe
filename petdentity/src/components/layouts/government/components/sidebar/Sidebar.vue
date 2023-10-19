@@ -22,8 +22,8 @@
 import Label from "@/components/common/Label.vue";
 import { items } from "./data";
 
-import { useModel } from "@/utils/vue";
 import { ref, toRefs, computed } from "vue";
+import { useModel } from "@/utils/vue";
 
 const itemsRef = ref(items);
 

@@ -5,7 +5,7 @@
     </template>
 
     <template v-slot:title>
-      <Label header medium> GOVERNMENT SEARCH </Label>
+      <Label header medium> GOVERNMENT </Label>
     </template>
 
     <template v-slot:append>

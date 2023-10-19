@@ -1,7 +1,7 @@
 <template>
   <v-sheet v-if="government">
-    <div>
-      <Image :src="image" :lazy-src="image" cover :aspectRatio="18 / 6">
+    <Card>
+      <Image :src="image" :lazy-src="image" cover :aspectRatio="16 / 9">
         <div class="overlapButton">
           <ButtonIcon
             icon="mdi-pencil"
@@ -20,21 +20,14 @@
           />
         </div>
       </Image>
-    </div>
+    </Card>
 
     <div class="bg-primary pa-4">
       <v-row dense>
         <v-col class="text-left">
           <Label medium header>{{ government.name }}</Label>
           <Label medium>{{ government.description }}</Label>
-          <Label caption>1M Likes</Label>
-        </v-col>
-
-        <v-col cols="auto">
-          <Button variant="outlined" color="black" readonly>
-            <v-icon class="mr-2">mdi-thumb-up</v-icon>
-            Like
-          </Button>
+          <Label caption>{{ likes }} Likes</Label>
         </v-col>
       </v-row>
     </div>
@@ -42,14 +35,16 @@
 </template>
 
 <script setup>
+import Card from "@/components/common/Card.vue";
 import Label from "@/components/common/Label.vue";
 
 import Image from "@/components/common/Image.vue";
 import FileInput from "@/components/common/FileInput.vue";
 import ButtonIcon from "@/components/common/ButtonIcon.vue";
-import Button from "@/components/common/Button.vue";
 
 import Wave from "./wave.svg";
+
+import { countLikes } from "@/api/government/likes";
 
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
@@ -58,6 +53,7 @@ import { uploadGovernmentProfile } from "@/api/photo";
 import { update } from "@/api/government";
 
 import { toRefs, ref, computed } from "vue";
+import { onMounted } from "vue";
 
 const emit = defineEmits(["done"]);
 const props = defineProps({ readOnly: Boolean, government: Object });
@@ -66,6 +62,19 @@ const propsRef = toRefs(props);
 const { readOnly, government } = propsRef;
 
 const isLoading = ref(false);
+const likes = ref(0);
+
+const getLikes = async () => {
+  try {
+    likes.value = await countLikes(government.value);
+  } catch ({ message }) {
+    console.log(message);
+  }
+};
+
+onMounted(() => {
+  getLikes();
+});
 
 const updatePhotoHandler = async () => {
   let fileUpload = document.getElementById("fileUpload");

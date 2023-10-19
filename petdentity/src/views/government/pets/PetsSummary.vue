@@ -1,0 +1,144 @@
+<template>
+  <v-container>
+    <Sheet>
+      <v-row dense>
+        <v-col cols="auto">
+          <Label title class="text-primary">Pets : {{ countPets }}</Label>
+        </v-col>
+        <v-spacer />
+        <v-col cols="12" md="3">
+          <TextField
+            v-model="params.searchText"
+            append-inner-icon="mdi-magnify"
+            variant="outlined"
+            @keypress.enter="loadItems"
+          />
+        </v-col>
+      </v-row>
+
+      <v-row dense class="mt-5">
+        <v-col>
+          <DataTable
+            hover
+            :loading="isLoading"
+            :headers="headers"
+            :items="pets"
+            :items-per-pageNumber="params.limitNumber"
+            hide-default-footer
+            withRemove
+            withView
+            @home="loadItems"
+            @remove="removeHandler"
+            @view="viewHandler"
+            @next="nextHandler"
+            @prev="prevHandler"
+          />
+        </v-col>
+      </v-row>
+    </Sheet>
+    <DialogPetView
+      v-model="dialogPetView"
+      v-model:pet="pet"
+      @done="loadItems"
+    />
+    <DialogPetRemove
+      v-model="dialogPetRemove"
+      v-model:pet="pet"
+      @done="loadItems"
+    />
+  </v-container>
+</template>
+
+<script setup>
+import Sheet from "@/components/common/Sheet.vue";
+import Label from "@/components/common/Label.vue";
+import TextField from "@/components/common/TextField.vue";
+
+import DataTable from "@/components/tables/DataTable.vue";
+import { headers } from "./data";
+
+import DialogPetView from "@/components/dialogs/pet/DialogPetView.vue";
+import DialogPetRemove from "@/components/dialogs/pet/DialogPetRemove.vue";
+
+import { useRouter } from "vue-router";
+const router = useRouter();
+
+import { search, next, prev, count } from "@/api/government/pets";
+
+import { ref, watch, inject } from "vue";
+
+const dialogPetView = ref(false);
+const dialogPetRemove = ref(false);
+
+const isLoading = ref(false);
+const government = inject("government");
+
+const pets = ref();
+const pet = ref();
+
+const countPets = ref(0);
+
+const params = ref({
+  searchText: "",
+  columnName: "name",
+  orderDirection: "asc",
+  limitNumber: 5,
+});
+
+const removeHandler = async (item) => {
+  pet.value = item;
+  dialogPetRemove.value = true;
+};
+
+const viewHandler = async (item) => {
+  router.push({
+    name: "GovernmentPetView",
+    params: {
+      id: government.id,
+      petId: item.id,
+    },
+  });
+};
+
+const loadItems = async () => {
+  try {
+    isLoading.value = true;
+    pets.value = await search(government.value, params.value);
+    countPets.value = await count(government.value);
+  } catch ({ message }) {
+    console.log("error", message);
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+const nextHandler = async () => {
+  try {
+    isLoading.value = true;
+    pets.value = await next(government.value, params.value);
+  } catch ({ message }) {
+    console.log("error", message);
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+const prevHandler = async () => {
+  try {
+    isLoading.value = true;
+    pets.value = await prev(government.value, params.value);
+  } catch ({ message }) {
+    console.log("error", message);
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+watch(
+  government,
+  () => {
+    if (government.value) loadItems();
+  },
+  { immediate: true }
+);
+</script>

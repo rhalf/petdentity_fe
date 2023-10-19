@@ -166,7 +166,7 @@ import DialogGender from "@/components/dialogs/gender/DialogGender.vue";
 
 import { toStringDate, getAge } from "@/utils/vue";
 import { computed, onMounted, reactive, ref, watch } from "vue";
-import { update } from "@/api/user";
+import { update } from "@/api/users";
 
 import { uploadOwnerProfile } from "@/api/photo";
 import { toRefs } from "vue";

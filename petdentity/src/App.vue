@@ -28,7 +28,7 @@ const { show } = useSnackbarStore();
 
 import { User } from "@/constants";
 
-import { get, create } from "@/api/user";
+import { get, create } from "@/api/users";
 
 import { useRouter } from "vue-router";
 const router = useRouter();

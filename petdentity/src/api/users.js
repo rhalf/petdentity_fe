@@ -21,7 +21,7 @@ import {
   getCountFromServer,
 } from "firebase/firestore";
 
-import { toObject, toArray, getIndexes } from "./index";
+import { toObject, toArray, getIndexes } from "./indexes";
 
 const collectionName = "users";
 const collectionRef = collection(firestore, collectionName);
@@ -48,12 +48,7 @@ export const search = async ({
   return toArray(snapshots);
 };
 
-export const next = async ({
-  lastItem,
-  columnName,
-  orderDirection,
-  limitNumber,
-}) => {
+export const next = async ({ columnName, orderDirection, limitNumber }) => {
   const q = await query(
     collectionRef,
     orderBy(columnName, orderDirection),
@@ -67,12 +62,7 @@ export const next = async ({
   return toArray(snapshots);
 };
 
-export const prev = async ({
-  firstItem,
-  columnName,
-  orderDirection,
-  limitNumber,
-}) => {
+export const prev = async ({ columnName, orderDirection, limitNumber }) => {
   const q = await query(
     collectionRef,
     orderBy(columnName, orderDirection),
@@ -119,3 +109,53 @@ export const count = async () => {
   const snapshot = await getCountFromServer(collectionRef);
   return snapshot.data().count;
 };
+
+//Government
+// export const searchByUsers = async (users, params) => {
+//   const { searchText, columnName, orderDirection, limitNumber } = params;
+//   const q = await query(
+//     collectionRef,
+//     where("id", "in", users),
+//     orderBy(columnName, orderDirection),
+//     startAt(searchText),
+//     endAt(searchText + "\uf8ff"),
+//     limit(limitNumber)
+//   );
+//   const snapshots = await getDocs(q);
+//   if (snapshots.empty) throw new Error("Empty page!");
+
+//   indexes = getIndexes(snapshots);
+//   return toArray(snapshots);
+// };
+
+// export const nextByUsers = async (users, params) => {
+//   const { columnName, orderDirection, limitNumber } = params;
+//   const q = await query(
+//     collectionRef,
+//     where("id", "in", users),
+//     orderBy(columnName, orderDirection),
+//     startAfter(indexes.lastItem),
+//     limit(limitNumber)
+//   );
+//   const snapshots = await getDocs(q);
+//   if (snapshots.empty) throw new Error("Last page!");
+
+//   indexes = getIndexes(snapshots);
+//   return toArray(snapshots);
+// };
+
+// export const prevByUsers = async (users, params) => {
+//   const { columnName, orderDirection, limitNumber } = params;
+//   const q = await query(
+//     collectionRef,
+//     where("id", "in", users),
+//     orderBy(columnName, orderDirection),
+//     endBefore(indexes.firstItem),
+//     limitToLast(limitNumber)
+//   );
+//   const snapshots = await getDocs(q);
+//   if (snapshots.empty) throw new Error("First page!");
+
+//   indexes = getIndexes(snapshots);
+//   return toArray(snapshots);
+// };

@@ -13,7 +13,7 @@ const { show } = useSnackbarStore();
 import { useRoute } from "vue-router";
 const route = useRoute();
 
-import { get } from "@/api/user";
+import { get } from "@/api/users";
 
 import { ref, onMounted } from "vue";
 

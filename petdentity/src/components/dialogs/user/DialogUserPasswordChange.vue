@@ -35,9 +35,9 @@ import Card from "@/components/common/Card.vue";
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
-import { remove } from "@/api/user";
+import { remove } from "@/api/users";
 
-import { useModel, syncProp } from "@/utils/vue";
+import { useModel } from "@/utils/vue";
 
 import { ref, computed, toRefs } from "vue";
 const props = defineProps({ modelValue: Boolean, user: Object });
@@ -46,12 +46,12 @@ const emit = defineEmits(["update:modelValue", "update:user", "done"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propRef, emit, "modelValue"));
-const user = computed(syncProp(propRef, emit, "user"));
+const user = computed(useModel(propRef, emit, "user"));
 
 const submitHandler = async () => {
   try {
     isLoading.value = true;
-    const result = await remove(user.value);
+    await remove(user.value);
     show("success", "Removed an item!");
     emit("done");
     dialog.value = false;
