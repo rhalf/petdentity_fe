@@ -1,4 +1,4 @@
-import UserLayout from "@/components/layouts/user/UserLayout.vue";
+import UserLayout from "@/layouts/user/UserLayout.vue";
 
 export const user = {
   path: "/user",

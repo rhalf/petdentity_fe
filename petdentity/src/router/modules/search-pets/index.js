@@ -1,4 +1,4 @@
-import SearchLayout from "@/components/layouts/search-pets/SearchPetsLayout.vue";
+import SearchLayout from "@/layouts/search-pets/SearchPetsLayout.vue";
 
 export const searchPets = {
   path: "/search-pets",

@@ -1,4 +1,4 @@
-import SearchGovernmentsLayout from "@/components/layouts/search-governments/SearchGovernmentsLayout.vue";
+import SearchGovernmentsLayout from "@/layouts/search-governments/SearchGovernmentsLayout.vue";
 
 export const searchGovernments = {
   path: "/search-governments",
@@ -10,11 +10,5 @@ export const searchGovernments = {
       component: () =>
         import("@/views/search-governments/dashboard/DashboardView.vue"),
     },
-    // {
-    //   path: "searchGovernments/:id",
-    //   name: "SearchGovernment",
-    //   component: () => import("@/views/searchGovernments/searchGovernments/GovernmentView.vue"),
-    //   meta: { mode: "VIEW" },
-    // },
   ],
 };

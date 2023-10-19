@@ -1,4 +1,4 @@
-import OwnerLayout from "@/components/layouts/owner/OwnerLayout.vue";
+import OwnerLayout from "@/layouts/owner/OwnerLayout.vue";
 
 export const owner = {
   path: "/owner",

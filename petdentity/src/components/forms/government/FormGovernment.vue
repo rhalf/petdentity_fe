@@ -1,5 +1,5 @@
 <template>
-  <v-form v-model="form" validate-on="input">
+  <v-form v-model="form" validate-on="input" v-if="government">
     <v-row dense>
       <v-col>
         <Label class="text-primary"> Name </Label>
@@ -26,7 +26,7 @@
     </v-row>
 
     <v-row dense class="mt-2">
-      <v-col cols="6">
+      <v-col cols="12" md="6">
         <Label class="text-primary"> Email </Label>
         <TextField
           class="mt-2"
@@ -37,7 +37,7 @@
           prepend-inner-icon="mdi-email"
         />
       </v-col>
-      <v-col cols="6">
+      <v-col cols="12" md="6">
         <Label class="text-primary"> Mobile </Label>
         <Mobile class="mt-2" v-model="government.mobile" :disabled="disabled" />
       </v-col>

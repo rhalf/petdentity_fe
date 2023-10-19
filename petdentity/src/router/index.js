@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-// import HomeLayout from "@/components/layouts/home/HomeLayout.vue";
+// import HomeLayout from "@/layouts/home/HomeLayout.vue";
 
 import { user } from "./modules/user";
 import { admin } from "./modules/admin";

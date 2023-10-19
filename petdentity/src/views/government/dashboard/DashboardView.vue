@@ -1,8 +1,8 @@
 <template>
   <v-container v-if="government">
     <Sheet>
-      <Label header class="text-primary">{{ government.name }}</Label>
-      <Label text>{{ government.description }}</Label>
+      <Label header class="text-primary">{{ government?.name }}</Label>
+      <Label text>{{ government?.description }}</Label>
     </Sheet>
   </v-container>
 </template>

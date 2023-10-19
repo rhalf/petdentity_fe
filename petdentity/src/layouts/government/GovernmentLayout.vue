@@ -38,7 +38,6 @@ const drawer = ref(false);
 
 const user = ref(null);
 const government = ref(null);
-const governmentUser = ref(null);
 
 provide("user", user);
 provide("government", government);
@@ -48,16 +47,18 @@ onMounted(async () => {
     start();
 
     const { uid } = await getCurrentUser();
-    user.value = await getUser(uid);
-    government.value = await getGovernment(route.params.governmentId);
-    governmentUser.value = await getGovernmentUser(
-      government.value,
-      user.value
-    );
 
-    if (!governmentUser.value) {
+    const newUser = await getUser(uid);
+    const newGovernment = await getGovernment(route.params.governmentId);
+    const userStatus = await getGovernmentUser(newGovernment, newUser);
+
+    if (!userStatus) {
       show("error", "You are not authorized to access!");
-      await router.back();
+
+      router.push({ name: "SearchGovernmentsDashboard" });
+    } else {
+      government.value = newGovernment;
+      user.value = newUser;
     }
   } catch ({ message }) {
     show("error", message);

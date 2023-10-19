@@ -1,4 +1,4 @@
-import AdminLayout from "@/components/layouts/admin/AdminLayout.vue";
+import AdminLayout from "@/layouts/admin/AdminLayout.vue";
 
 export const admin = {
   path: "/admin",

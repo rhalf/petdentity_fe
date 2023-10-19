@@ -1,4 +1,4 @@
-import GovernmentLayout from "@/components/layouts/government/GovernmentLayout.vue";
+import GovernmentLayout from "@/layouts/government/GovernmentLayout.vue";
 
 export const government = {
   path: "/government",
