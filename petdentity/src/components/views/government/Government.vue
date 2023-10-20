@@ -1,36 +1,29 @@
 <template>
-  <v-row dense class="mt-2">
-    <v-col cols="12" class="text-center">
-      <Header v-model:government="government" :readOnly="readOnly" />
-    </v-col>
-  </v-row>
+  <div v-if="government">
+    <v-row dense class="mt-2">
+      <v-col cols="12" class="text-center">
+        <Header v-model:government="government" :readOnly="readOnly" />
+      </v-col>
+    </v-row>
 
-  <v-row dense class="mt-2">
-    <v-col cols="12" class="text-center">
-      <Profile v-model:government="government" :readOnly="readOnly" />
-    </v-col>
-  </v-row>
+    <v-row dense class="mt-2">
+      <v-col cols="12" class="text-center">
+        <Profile v-model:government="government" :readOnly="readOnly" />
+      </v-col>
+    </v-row>
 
-  <v-row dense class="mt-2">
-    <v-col cols="12" class="text-center">
-      <Users v-model:government="government" :readOnly="readOnly" />
-    </v-col>
-  </v-row>
+    <v-row dense class="mt-2">
+      <v-col cols="12" class="text-center">
+        <Users v-model:government="government" :readOnly="readOnly" />
+      </v-col>
+    </v-row>
 
-  <v-row dense class="mt-2">
-    <v-col cols="12" class="text-center">
-      <Units v-model:government="government" :readOnly="readOnly" />
-    </v-col>
-  </v-row>
-
-  <!--
-
-
-  <v-row dense class="mt-2">
-    <v-col cols="12" class="text-center">
-      <Units v-model:government="government" :readOnly="readOnly" />
-    </v-col>
-  </v-row> -->
+    <v-row dense class="mt-2">
+      <v-col cols="12" class="text-center">
+        <Units v-model:government="government" :readOnly="readOnly" />
+      </v-col>
+    </v-row>
+  </div>
 </template>
 
 <script setup>
@@ -52,7 +45,7 @@ import { get } from "@/api/government";
 import { computed, onMounted, ref } from "vue";
 
 const isLoading = ref(false);
-const government = ref();
+const government = ref(null);
 
 const readOnly = computed(() => {
   return route.meta.mode === "VIEW" || false;

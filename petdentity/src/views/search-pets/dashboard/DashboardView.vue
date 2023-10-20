@@ -64,10 +64,11 @@ const submitHandler = async () => {
     start();
 
     units.value = await getByUid(searchText.value);
+    console.log(searchText.value);
 
     if (!units.value.length) throw new Error("Unit not found!");
-  } catch {
-    show("error", "Unit not found!");
+  } catch ({ message }) {
+    show("error", "Unit: " + message);
   } finally {
     stop();
   }

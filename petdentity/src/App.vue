@@ -13,7 +13,7 @@
 </template>
 
 <script setup>
-import _ from "lodash";
+import { cloneDeep } from "lodash";
 
 import Snackbar from "@/components/common/Snackbar.vue";
 
@@ -45,7 +45,7 @@ const loadUser = async (authUser) => {
     const result = await get(authUser.uid);
 
     if (result === null) {
-      const user = _.cloneDeep(User);
+      const user = cloneDeep(User);
       user.id = authUser.uid;
       user.email = authUser.email;
       user.emailVerified = authUser.emailVerified;
@@ -80,3 +80,6 @@ onAuthStateChanged(auth, async (user) => {
 </script>
 
 <style scoped></style>
+
+<!-- defect logs for FPI later sa discussion -->
+<!-- alignment with sir marc on tasks -->

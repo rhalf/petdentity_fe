@@ -45,7 +45,7 @@ const route = useRoute();
 
 import { get } from "@/api/pet";
 
-import { computed, onMounted, ref, provide } from "vue";
+import { computed, onMounted, ref } from "vue";
 
 const isLoading = ref(false);
 const pet = ref();
@@ -63,7 +63,7 @@ const loadItem = async () => {
     isLoading.value = true;
     pet.value = await get(route.params.petId);
   } catch ({ message }) {
-    show("error", message);
+    show("error", "Pet: " + message);
   } finally {
     isLoading.value = false;
   }

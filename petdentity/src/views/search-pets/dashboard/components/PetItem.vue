@@ -43,7 +43,6 @@
 <script setup>
 import { get } from "@/api/pet";
 
-import Avatar from "@/components/common/Avatar.vue";
 import Image from "@/components/common/Image.vue";
 import Card from "@/components/common/Card.vue";
 import Label from "@/components/common/Label.vue";

@@ -63,16 +63,14 @@ import DialogGovernmentAdd from "@/components/dialogs/government/DialogGovernmen
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
-import { useRoute, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 const router = useRouter();
-const route = useRoute();
 
 import { search, next, prev } from "@/api/government";
 
 import { ref, onMounted } from "vue";
 
 const dialogGovernmentAdd = ref(false);
-const dialogGovernmentView = ref(false);
 const dialogGovernmentRemove = ref(false);
 
 const isLoading = ref(false);
@@ -86,6 +84,7 @@ const params = ref({
 });
 
 const viewHandler = ({ id }) => {
+  console.log(id);
   router.push({
     name: "AdminGovernmentView",
     params: { id: id },
