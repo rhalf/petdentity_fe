@@ -44,7 +44,7 @@ import ButtonIcon from "@/components/common/ButtonIcon.vue";
 
 import Wave from "./wave.svg";
 
-import { countLikes } from "@/api/government/likes";
+import { count } from "@/api/government/likes";
 
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
@@ -65,7 +65,7 @@ const likes = ref(0);
 
 const getLikes = async () => {
   try {
-    likes.value = await countLikes(government.value);
+    likes.value = await count(government.value);
   } catch ({ message }) {
     console.log(message);
   }

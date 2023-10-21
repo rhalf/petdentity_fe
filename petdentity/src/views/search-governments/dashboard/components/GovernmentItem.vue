@@ -47,7 +47,7 @@
 </template>
 
 <script setup>
-import { like, unlike, isLike, countLikes } from "@/api/government/likes";
+import { like, unlike, isLike, count } from "@/api/government/likes";
 
 import Image from "@/components/common/Image.vue";
 import Card from "@/components/common/Card.vue";
@@ -81,7 +81,7 @@ const viewHandler = ({ id }) => {
 
 const updateLike = async () => {
   likeStatus.value = await isLike(government.value);
-  likes.value = await countLikes(government.value);
+  likes.value = await count(government.value);
 };
 
 const likeHandler = async () => {

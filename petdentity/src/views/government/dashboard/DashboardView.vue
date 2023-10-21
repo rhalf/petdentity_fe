@@ -28,6 +28,7 @@ import Counter from "@/components/views/counter/Counter.vue";
 import { useProgressLineStore } from "@/store/progress-line";
 const { start, stop } = useProgressLineStore();
 
+import { count as countLikes } from "@/api/government/likes";
 import { count as countPets } from "@/api/government/pets";
 import { count as countUnits } from "@/api/government/units";
 import { count as countUsers } from "@/api/government/users";
@@ -43,9 +44,10 @@ const government = inject("government");
 const loadCounters = async () => {
   try {
     start();
-    counters.value[0].count = await countPets(government.value);
-    counters.value[1].count = await countUnits(government.value);
-    counters.value[2].count = await countUsers(government.value);
+    counters.value[0].count = await countLikes(government.value);
+    counters.value[1].count = await countPets(government.value);
+    counters.value[2].count = await countUnits(government.value);
+    counters.value[3].count = await countUsers(government.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {

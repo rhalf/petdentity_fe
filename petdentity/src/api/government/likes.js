@@ -72,7 +72,7 @@ export const isLike = async (government) => {
   return snapshot.exists();
 };
 
-export const countLikes = async (government) => {
+export const count = async (government) => {
   const { id } = government;
 
   const likesRef = collection(firestore, collectionName + "/" + id + "/likes");
