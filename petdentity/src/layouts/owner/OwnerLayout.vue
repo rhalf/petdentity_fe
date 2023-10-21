@@ -14,7 +14,6 @@
 </template>
 
 <script setup>
-import _ from "lodash";
 import Navbar from "./components/navbar/Navbar.vue";
 import Sidebar from "./components/sidebar/Sidebar.vue";
 
@@ -31,15 +30,21 @@ const route = useRoute();
 import { get } from "@/api/users";
 import { getCurrentUser } from "@/utils/firebase";
 
-import { ref, onMounted } from "vue";
+import { ref, onMounted, provide } from "vue";
 const drawer = ref(false);
+
+const user = ref(null);
+
+provide("user", user);
 
 onMounted(async () => {
   try {
     start();
     const { uid } = await getCurrentUser();
-    const user = await get(uid);
-    if (user.roles.includes(route.meta.authorization)) console.log("ALLOWED");
+    user.value = await get(uid);
+
+    if (user.value.roles.includes(route.meta.authorization))
+      console.log("ALLOWED");
     else router.push({ name: "ForbiddenView" });
   } catch ({ message }) {
     show("error", message);

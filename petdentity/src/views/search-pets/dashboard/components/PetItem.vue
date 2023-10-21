@@ -65,7 +65,7 @@ const viewHandler = ({ id }) => {
   router.push({
     name: "SearchPet",
     params: {
-      id: id,
+      petId: id,
     },
   });
 };

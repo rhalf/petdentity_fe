@@ -3,7 +3,7 @@
     <Sheet>
       <v-row dense>
         <v-col cols="auto">
-          <Label title class="text-primary">Users : {{ usersCount }}</Label>
+          <Label title class="text-primary">Users </Label>
         </v-col>
         <v-spacer />
         <v-col cols="12" md="3">
@@ -29,7 +29,7 @@
             withRemove
             withAdd
             @add="addHandler"
-            @home="loadItems"
+            @refresh="loadItems"
             @remove="removeHandler"
             @view="viewHandler"
             @next="nextHandler"
@@ -80,7 +80,6 @@ const dialogUserAddGovernment = ref(false);
 const isLoading = ref(false);
 const government = inject("government");
 
-const usersCount = ref(0);
 const users = ref();
 const user = ref();
 
@@ -112,7 +111,6 @@ const loadItems = async () => {
   try {
     isLoading.value = true;
     users.value = await search(government.value, params.value);
-    usersCount.value = await count(government.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {

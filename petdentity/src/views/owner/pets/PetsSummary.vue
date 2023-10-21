@@ -28,6 +28,7 @@
             withRemove
             withAdd
             withView
+            @refresh="loadItems"
             @remove="removeHandler"
             @view="viewHandler"
             @add="addHandler"
@@ -69,10 +70,10 @@ const { show } = useSnackbarStore();
 import { useRouter, useRoute } from "vue-router";
 const router = useRouter();
 
-import { search, next, prev, countByOwner as countPet } from "@/api/pet";
-import { countByOwner as countUnit } from "@/api/unit";
+import { search, next, prev, count as countPets } from "@/api/owner/pets";
+import { countByOwner as countUnits } from "@/api/unit";
 
-import { ref, onMounted } from "vue";
+import { ref, watchEffect, inject } from "vue";
 
 const dialogPetAdd = ref(false);
 const dialogPetView = ref(false);
@@ -81,6 +82,9 @@ const dialogPetRemove = ref(false);
 const isLoading = ref(false);
 const pets = ref();
 const pet = ref();
+
+const user = inject("user");
+
 const params = ref({
   searchText: "",
   columnName: "name",
@@ -92,8 +96,8 @@ const addHandler = async () => {
   try {
     isLoading.value = true;
 
-    const unitCount = await countUnit();
-    const petCount = await countPet();
+    const unitCount = await countUnits();
+    const petCount = await countPets();
 
     if (unitCount <= petCount)
       throw new Error("Please add more units to continue!");
@@ -106,33 +110,24 @@ const addHandler = async () => {
   }
 };
 
-const updateHandler = (item) => {
-  pet.value = item;
-  dialogPetView.value = true;
-};
-
 const removeHandler = async (item) => {
   pet.value = item;
   dialogPetRemove.value = true;
 };
 
-const viewHandler = async (item) => {
+const viewHandler = async ({ id }) => {
   router.push({
     name: "OwnerPetView",
     params: {
-      id: item.id,
+      petId: id,
     },
   });
 };
 
-onMounted(async () => {
-  await loadItems();
-});
-
 const loadItems = async () => {
   try {
     isLoading.value = true;
-    pets.value = await search(params.value);
+    pets.value = await search(user.value, params.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {
@@ -143,7 +138,7 @@ const loadItems = async () => {
 const nextHandler = async () => {
   try {
     isLoading.value = true;
-    pets.value = await next(params.value);
+    pets.value = await next(user.value, params.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {
@@ -154,11 +149,15 @@ const nextHandler = async () => {
 const prevHandler = async () => {
   try {
     isLoading.value = true;
-    pets.value = await prev(params.value);
+    pets.value = await prev(user.value, params.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {
     isLoading.value = false;
   }
 };
+
+watchEffect(async () => {
+  if (user.value) loadItems();
+});
 </script>

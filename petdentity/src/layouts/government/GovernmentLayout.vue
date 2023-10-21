@@ -6,7 +6,9 @@
 
       <router-view v-slot="{ Component }">
         <!-- <v-fade-transition> -->
-        <component :is="Component" />
+        <KeepAlive>
+          <component :is="Component" />
+        </KeepAlive>
         <!-- </v-fade-transition> -->
       </router-view>
     </v-main>
@@ -36,6 +38,8 @@ import { get as getGovernmentUser } from "@/api/government/users";
 import { ref, onMounted, provide } from "vue";
 const drawer = ref(false);
 
+import { UserGroups } from "@/constants";
+
 const user = ref(null);
 const government = ref(null);
 
@@ -51,6 +55,12 @@ onMounted(async () => {
     const newUser = await getUser(uid);
     const newGovernment = await getGovernment(route.params.governmentId);
     const userStatus = await getGovernmentUser(newGovernment, newUser);
+
+    if (newUser.roles.includes(UserGroups.ADMIN)) {
+      government.value = newGovernment;
+      user.value = newUser;
+      return;
+    }
 
     if (!userStatus) {
       show("error", "You are not authorized to access!");

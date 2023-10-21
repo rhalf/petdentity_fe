@@ -13,17 +13,7 @@
           v-for="(counter, index) in counters"
           :key="index"
         >
-          <v-card>
-            <v-row dense class="pa-4 bg-primary">
-              <v-col cols="auto" align="left" justify="center">
-                <v-icon class="text-h2">{{ counter.icon }}</v-icon>
-              </v-col>
-              <v-col cols="" align="right" justify="center">
-                <Label title medium>{{ format(counter.count) }}</Label>
-                <Label text medium>{{ counter.title }}</Label>
-              </v-col>
-            </v-row>
-          </v-card>
+          <Counter v-model="counters[index]" />
         </v-col>
       </v-row>
 
@@ -38,48 +28,42 @@
 </template>
 
 <script setup>
-import _ from "lodash";
 import Label from "@/components/common/Label.vue";
 import Sheet from "@/components/common/Sheet.vue";
 
-import Partners from "@/components/views/partners/Partners.vue";
+import Counter from "@/components/views/counter/Counter.vue";
 
-import { useSnackbarStore } from "@/store/snackbar";
-const { show } = useSnackbarStore();
+import Partners from "@/components/views/partners/Partners.vue";
 
 import { useProgressLineStore } from "@/store/progress-line";
 const { start, stop } = useProgressLineStore();
 
-import { countByOwner as countUnits } from "@/api/unit";
-import { countByOwner as countPets } from "@/api/pet";
-import { count as countContacts } from "@/api/contact";
+import { count as countUnits } from "@/api/owner/units";
+import { count as countPets } from "@/api/owner/pets";
+import { count as countContacts } from "@/api/owner/contacts";
 
-import { ref, onMounted } from "vue";
+import { ref, watchEffect, inject } from "vue";
 
-const counters = ref([
-  { title: "Contacts", icon: "mdi-account-group", count: 0 },
-  { title: "Units", icon: "mdi-access-point", count: 0 },
-  { title: "Pets", icon: "mdi-paw", count: 0 },
-]);
+import { dashboardItems } from "./data";
 
-onMounted(async () => {
+const user = inject("user");
+
+const counters = ref(dashboardItems);
+
+const loadCounters = async () => {
   try {
     start();
-    counters.value[0].count = await countContacts();
-    counters.value[1].count = await countUnits();
-    counters.value[2].count = await countPets();
+    counters.value[0].count = await countContacts(user.value);
+    counters.value[1].count = await countUnits(user.value);
+    counters.value[2].count = await countPets(user.value);
   } catch ({ message }) {
-    show("error", message);
+    console.log("error", message);
   } finally {
     stop();
   }
+};
+
+watchEffect(async () => {
+  if (user.value) loadCounters();
 });
-
-const format = (number) => {
-  return number.toLocaleString("en-US");
-};
-
-const pad = (value) => {
-  return _.padStart(value, 7, "0");
-};
 </script>

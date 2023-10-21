@@ -20,7 +20,7 @@ import {
   getCountFromServer,
 } from "firebase/firestore";
 
-import { toObject, toArray, getIndexes } from "./indexes";
+import { toObject, toArray, getIndexes } from "../indexes";
 
 import { getCurrentUser } from "@/utils/firebase";
 
@@ -48,11 +48,12 @@ export const search = async (user, params) => {
   return toArray(snapshots);
 };
 
-export const next = async ({ columnName, orderDirection, limitNumber }) => {
-  const { uid } = await getCurrentUser();
+export const next = async (user, params) => {
+  const { id } = user;
+  const { columnName, orderDirection, limitNumber } = params;
   const q = await query(
     collectionRef,
-    where("owner", "==", uid),
+    where("owner", "==", id),
     orderBy(columnName, orderDirection),
     startAfter(indexes.lastItem),
     limit(limitNumber)
@@ -64,11 +65,12 @@ export const next = async ({ columnName, orderDirection, limitNumber }) => {
   return toArray(snapshots);
 };
 
-export const prev = async ({ columnName, orderDirection, limitNumber }) => {
-  const { uid } = await getCurrentUser();
+export const prev = async (user, params) => {
+  const { id } = user;
+  const { columnName, orderDirection, limitNumber } = params;
   const q = await query(
     collectionRef,
-    where("owner", "==", uid),
+    where("owner", "==", id),
     orderBy(columnName, orderDirection),
     endBefore(indexes.firstItem),
     limitToLast(limitNumber)
@@ -106,11 +108,6 @@ export const remove = async (document) => {
 };
 
 export const count = async () => {
-  const snapshot = await getCountFromServer(collectionRef);
-  return snapshot.data().count;
-};
-
-export const countByOwner = async () => {
   const { uid } = await getCurrentUser();
   const q = query(collectionRef, where("owner", "==", uid));
   const snapshot = await getCountFromServer(q);

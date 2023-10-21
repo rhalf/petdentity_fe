@@ -118,6 +118,7 @@ export const remove = async (document) => {
 
 export const count = async (government) => {
   const units = await unitsByGovernment(government);
+
   const petList = units.map((unit) => unit.pet);
 
   const q = await query(petCollectionRef, where("id", "in", petList));

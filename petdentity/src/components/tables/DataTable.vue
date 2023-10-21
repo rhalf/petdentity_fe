@@ -34,8 +34,8 @@
           </Button>
         </v-col>
         <v-col cols="3" md="auto">
-          <Button @click="emit('home')" block>
-            <v-icon>mdi-home</v-icon>
+          <Button @click="emit('refresh')" block>
+            <v-icon>mdi-refresh</v-icon>
           </Button>
         </v-col>
         <v-col cols="3" md="auto">
@@ -144,7 +144,7 @@ const emit = defineEmits([
   "remove",
   "add",
   "prev",
-  "home",
+  "refresh",
   "next",
 ]);
 const props = defineProps({

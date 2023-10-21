@@ -119,9 +119,9 @@ export const remove = async (document) => {
   return await deleteDoc(documentRef);
 };
 
-export const count = async () => {
-  const { uid } = await getCurrentUser();
-  const q = query(collectionRef, where("owner", "==", uid));
+export const count = async (user) => {
+  const { id } = user;
+  const q = query(collectionRef, where("owner", "==", id));
   const snapshot = await getCountFromServer(q);
   return snapshot.data().count;
 };

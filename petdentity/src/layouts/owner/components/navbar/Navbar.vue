@@ -23,11 +23,6 @@
 import Label from "@/components/common/Label.vue";
 import ButtonIcon from "@/components/common/ButtonIcon.vue";
 
-import { UserGroups } from "@/constants";
-
-import { useRouter } from "vue-router";
-const router = useRouter();
-
 import { syncProp } from "@/utils/vue";
 import { toRefs, computed } from "vue";
 

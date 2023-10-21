@@ -3,7 +3,7 @@
     <Sheet>
       <v-row dense>
         <v-col cols="auto">
-          <Label title class="text-primary">Pets : {{ countPets }}</Label>
+          <Label title class="text-primary">Pets</Label>
         </v-col>
         <v-spacer />
         <v-col cols="12" md="3">
@@ -27,7 +27,7 @@
             hide-default-footer
             withRemove
             withView
-            @home="loadItems"
+            @refresh="loadItems"
             @remove="removeHandler"
             @view="viewHandler"
             @next="nextHandler"
@@ -76,8 +76,6 @@ const government = inject("government");
 const pets = ref();
 const pet = ref();
 
-const countPets = ref(0);
-
 const params = ref({
   searchText: "",
   columnName: "name",
@@ -104,7 +102,6 @@ const loadItems = async () => {
   try {
     isLoading.value = true;
     pets.value = await search(government.value, params.value);
-    countPets.value = await count(government.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {
