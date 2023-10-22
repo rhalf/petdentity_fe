@@ -61,9 +61,9 @@ onMounted(() => {
 const loadItem = async () => {
   try {
     isLoading.value = true;
-    pet.value = await get(route.params.id);
+    pet.value = await get(route.params.petId);
   } catch ({ message }) {
-    show("error", message);
+    show("error", "Pet: " + message);
   } finally {
     isLoading.value = false;
   }

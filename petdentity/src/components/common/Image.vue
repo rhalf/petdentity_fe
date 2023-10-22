@@ -1,10 +1,7 @@
 <template>
-  <v-img v-bind="properties" />
+  <v-img :aspectRatio="1">
+    <slot />
+  </v-img>
 </template>
 
-<script setup>
-const properties = {
-  width: 150,
-  aspectRatio: 1,
-};
-</script>
+<script setup></script>

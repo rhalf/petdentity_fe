@@ -20,7 +20,7 @@ import {
   getCountFromServer,
 } from "firebase/firestore";
 
-import { toObject, toArray, getIndexes } from "./index";
+import { toObject, toArray, getIndexes } from "./indexes";
 
 import { getCurrentUser } from "@/utils/firebase";
 
@@ -29,23 +29,20 @@ const collectionRef = collection(firestore, collectionName);
 
 let indexes;
 
-export const search = async ({
-  searchText,
-  columnName,
-  orderDirection,
-  limitNumber,
-}) => {
-  const { uid } = await getCurrentUser();
+export const search = async (user, params) => {
+  const { id } = user;
+  const { searchText, columnName, orderDirection, limitNumber } = params;
+
   const q = await query(
     collectionRef,
-    where("owner", "==", uid),
+    where("owner", "==", id),
     orderBy(columnName, orderDirection),
     startAt(searchText),
     endAt(searchText + "\uf8ff"),
     limit(limitNumber)
   );
   const snapshots = await getDocs(q);
-  if (snapshots.empty) throw new Error("Emtpy page!");
+  if (snapshots.empty) throw new Error("Empty page!");
 
   indexes = getIndexes(snapshots);
   return toArray(snapshots);

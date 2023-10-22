@@ -61,7 +61,7 @@ import { useRouter, useRoute } from "vue-router";
 const router = useRouter();
 const route = useRoute();
 
-import { search, next, prev } from "@/api/user";
+import { search, next, prev } from "@/api/users";
 
 import { ref, onMounted } from "vue";
 
@@ -80,7 +80,7 @@ const params = ref({
 const viewHandler = ({ id }) => {
   console.log(id);
   router.push({
-    name: "AdminUsersView",
+    name: "AdminUserView",
     params: { id: id },
   });
 };

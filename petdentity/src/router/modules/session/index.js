@@ -1,4 +1,4 @@
-import SessionLayout from "@/components/layouts/session/SessionLayout.vue";
+import SessionLayout from "@/layouts/session/SessionLayout.vue";
 
 export const session = {
   path: "/session",

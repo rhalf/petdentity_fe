@@ -28,6 +28,7 @@
             withRemove
             withView
             withAdd
+            @refresh="loadItems"
             @remove="removeHandler"
             @view="viewHandler"
             @add="addHandler"
@@ -81,17 +82,20 @@ import DialogUnitAddToOwner from "@/components/dialogs/unit/DialogUnitAddToOwner
 import DialogUnitViewFromOwner from "@/components/dialogs/unit/DialogUnitViewFromOwner.vue";
 import DialogUnitRemoveFromOwner from "@/components/dialogs/unit/DialogUnitRemoveFromOwner.vue";
 
-import { searchByOwner, nextByOwner, prevByOwner } from "@/api/unit";
+import { search, next, prev } from "@/api/owner/units";
 
-import { ref, onMounted } from "vue";
+import { ref, watchEffect, inject } from "vue";
 
 const dialogUnitAddToOwner = ref(false);
 const dialogUnitViewFromOwner = ref(false);
 const dialogUnitRemoveFromOwner = ref(false);
 
+const user = inject("user");
+
 const isLoading = ref(false);
 const units = ref();
 const unit = ref();
+
 const params = ref({
   searchText: "",
   columnName: "uid",
@@ -117,15 +121,11 @@ const clickHandler = () => {
   window.open("https://www.facebook.com/Petdentity");
 };
 
-onMounted(async () => {
-  await loadItems();
-});
-
 const loadItems = async () => {
   try {
     isLoading.value = true;
 
-    units.value = await searchByOwner(params.value);
+    units.value = await search(user.value, params.value);
   } catch ({ message }) {
     units.value = [];
     console.log("error", message);
@@ -138,7 +138,7 @@ const nextHandler = async () => {
   try {
     isLoading.value = true;
 
-    units.value = await nextByOwner(params.value);
+    units.value = await next(user.value, params.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {
@@ -150,11 +150,15 @@ const prevHandler = async () => {
   try {
     isLoading.value = true;
 
-    units.value = await prevByOwner(params.value);
+    units.value = await prev(user.value, params.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {
     isLoading.value = false;
   }
 };
+
+watchEffect(async () => {
+  if (user.value) loadItems();
+});
 </script>

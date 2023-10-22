@@ -28,20 +28,31 @@
 
     <template v-slot:bottom="{ item, index }">
       <v-row dense class="mt-2">
-        <v-col cols="4" md="auto">
-          <Button @click="emit('prev')" block>{{ "< PREV " }} </Button>
+        <v-col cols="3" md="auto">
+          <Button @click="emit('prev')" block>
+            <v-icon>mdi-skip-previous</v-icon>
+          </Button>
         </v-col>
-        <v-col cols="4" md="auto">
-          <Button @click="emit('next')" block>{{ "Next >" }}</Button>
+        <v-col cols="3" md="auto">
+          <Button @click="emit('refresh')" block>
+            <v-icon>mdi-refresh</v-icon>
+          </Button>
+        </v-col>
+        <v-col cols="3" md="auto">
+          <Button @click="emit('next')" block>
+            <v-icon>mdi-skip-next</v-icon>
+          </Button>
         </v-col>
         <v-spacer v-if="md || lg || xl" />
         <v-col
-          cols="4"
+          cols="3"
           md="auto"
           class="d-flex justify-end"
           v-if="withAdd && !disabled"
         >
-          <Button @click="emit('add')">+ ADD</Button>
+          <Button @click="emit('add')">
+            <v-icon>mdi-plus</v-icon>
+          </Button>
         </v-col>
       </v-row>
     </template>
@@ -127,7 +138,15 @@ import Button from "@/components/common/Button";
 
 import { getAge, toStringAge } from "@/utils/vue";
 
-const emit = defineEmits(["view", "update", "remove", "add", "prev", "next"]);
+const emit = defineEmits([
+  "view",
+  "update",
+  "remove",
+  "add",
+  "prev",
+  "refresh",
+  "next",
+]);
 const props = defineProps({
   withView: Boolean,
   withUpdate: Boolean,

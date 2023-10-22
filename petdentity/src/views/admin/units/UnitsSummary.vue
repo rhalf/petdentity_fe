@@ -12,6 +12,7 @@
             append-inner-icon="mdi-magnify"
             variant="outlined"
             @keypress.enter="loadItems"
+            @click:clear="loadItems"
           />
         </v-col>
       </v-row>

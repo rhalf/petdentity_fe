@@ -4,7 +4,9 @@
       <v-row dense>
         <v-col cols="auto">
           <Label title class="text-primary"> Units Bulk Upload</Label>
-          <Label subtitle class="text-grey"> Maximum of 100 units </Label>
+          <Label subtitle class="text-grey">
+            Maximum of {{ MAX_UNIT }} units
+          </Label>
         </v-col>
         <v-spacer />
         <v-col cols="12" md="3">
@@ -100,6 +102,7 @@ const dialogUnitProperties = ref(false);
 const dialogUnitGenerate = ref(false);
 const dialogUnitViewFromUpload = ref(false);
 
+const MAX_UNIT = 500;
 const isLoading = ref(false);
 const units = ref();
 const unit = ref({

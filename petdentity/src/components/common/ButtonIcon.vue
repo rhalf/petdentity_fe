@@ -1,11 +1,5 @@
 <template>
-  <v-btn v-bind="properties" />
+  <v-btn variant="plain" size="small" />
 </template>
 
-<script setup>
-const properties = {
-  //default
-  variant: "plain",
-  size: "small",
-};
-</script>
+<script setup></script>

@@ -20,7 +20,7 @@ import {
   getCountFromServer,
 } from "firebase/firestore";
 
-import { toObject, toArray, getIndexes } from "./index";
+import { toObject, toArray, getIndexes } from "./indexes";
 
 const collectionName = "colors";
 const collectionRef = collection(firestore, collectionName);
@@ -40,7 +40,7 @@ export const search = async (
     limit(limitNumber)
   );
   const snapshots = await getDocs(q);
-  if (snapshots.empty) throw new Error("Emtpy page!");
+  if (snapshots.empty) throw new Error("Empty page!");
 
   indexes = getIndexes(snapshots);
   return toArray(snapshots);

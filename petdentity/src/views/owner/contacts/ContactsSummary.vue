@@ -66,13 +66,15 @@ import DialogContactRemove from "@/components/dialogs/contact/DialogContactRemov
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
-import { search, next, prev } from "@/api/contact";
+import { search, next, prev } from "@/api/owner/contacts";
 
-import { ref, onMounted } from "vue";
+import { ref, watchEffect, inject } from "vue";
 
 const dialogContactAdd = ref(false);
 const dialogContactView = ref(false);
 const dialogContactRemove = ref(false);
+
+const user = inject("user");
 
 const isLoading = ref(false);
 const contacts = ref([]);
@@ -98,14 +100,10 @@ const removeHandler = async (item) => {
   dialogContactRemove.value = true;
 };
 
-onMounted(async () => {
-  loadItems();
-});
-
 const loadItems = async () => {
   try {
     isLoading.value = true;
-    contacts.value = await search(params.value);
+    contacts.value = await search(user.value, params.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {
@@ -116,7 +114,7 @@ const loadItems = async () => {
 const nextHandler = async () => {
   try {
     isLoading.value = true;
-    contacts.value = await next(params.value);
+    contacts.value = await next(user.value, params.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {
@@ -127,11 +125,15 @@ const nextHandler = async () => {
 const prevHandler = async () => {
   try {
     isLoading.value = true;
-    contacts.value = await prev(params.value);
+    contacts.value = await prev(user.value, params.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {
     isLoading.value = false;
   }
 };
+
+watchEffect(async () => {
+  if (user.value) loadItems();
+});
 </script>

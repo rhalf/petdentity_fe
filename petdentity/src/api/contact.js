@@ -20,7 +20,7 @@ import {
   getCountFromServer,
 } from "firebase/firestore";
 
-import { toObject, toArray, getIndexes } from "./index";
+import { toObject, toArray, getIndexes } from "./indexes";
 
 import { getCurrentUser } from "@/utils/firebase";
 
@@ -46,7 +46,7 @@ export const search = async ({
     limit(limitNumber)
   );
   const snapshots = await getDocs(q);
-  if (snapshots.empty) throw new Error("Emtpy page!");
+  if (snapshots.empty) throw new Error("Empty page!");
 
   indexes = getIndexes(snapshots);
   return toArray(snapshots);
@@ -119,9 +119,9 @@ export const remove = async (document) => {
   return await deleteDoc(documentRef);
 };
 
-export const count = async () => {
-  const { uid } = await getCurrentUser();
-  const q = query(collectionRef, where("owner", "==", uid));
+export const count = async (user) => {
+  const { id } = user;
+  const q = query(collectionRef, where("owner", "==", id));
   const snapshot = await getCountFromServer(q);
   return snapshot.data().count;
 };

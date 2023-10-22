@@ -30,7 +30,7 @@
             <Button
               @click="generateHandler"
               :loading="isLoading"
-              :disabled="!(total > 0 && total <= 100)"
+              :disabled="!(total > 0 && total <= MAX_UNIT)"
             >
               Generate
             </Button>
@@ -67,6 +67,7 @@ const dialog = computed(useModel(propsRef, emit, "modelValue"));
 const unit = computed(useModel(propsRef, emit, "unit"));
 const options = computed(useModel(propsRef, emit, "options"));
 
+const MAX_UNIT = 500;
 const units = ref([]);
 const isLoading = ref(false);
 

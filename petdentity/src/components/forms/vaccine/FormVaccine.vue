@@ -65,7 +65,7 @@
     </v-row>
 
     <v-row dense class="mt-2">
-      <v-col md="6">
+      <v-col md="12">
         <Label class="text-primary"> Veterinarian </Label>
         <TextField
           class="mt-2"
@@ -74,12 +74,24 @@
           :disabled="disabled"
         />
       </v-col>
+    </v-row>
+
+    <v-row dense class="mt-2">
       <v-col md="6">
         <Label class="text-primary"> PRC Number </Label>
         <TextField
           class="mt-2"
           v-model="vaccine.prcNumber"
-          placeholder="PRC Number"
+          placeholder="Veterinarian"
+          :disabled="disabled"
+        />
+      </v-col>
+      <v-col md="6">
+        <Label class="text-primary"> PTC Number </Label>
+        <TextField
+          class="mt-2"
+          v-model="vaccine.ptcNumber"
+          placeholder="PTC Number"
           :disabled="disabled"
         />
       </v-col>

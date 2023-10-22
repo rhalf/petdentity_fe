@@ -1,4 +1,4 @@
-import AdminLayout from "@/components/layouts/admin/AdminLayout.vue";
+import AdminLayout from "@/layouts/admin/AdminLayout.vue";
 
 export const admin = {
   path: "/admin",
@@ -60,8 +60,27 @@ export const admin = {
         },
         {
           path: ":id",
-          name: "AdminUsersView",
-          component: () => import("@/views/admin/users/UsersView.vue"),
+          name: "AdminUserView",
+          component: () => import("@/views/admin/users/UserView.vue"),
+          meta: { authenticated: true, authorization: "ADMIN" },
+        },
+      ],
+    },
+    {
+      path: "governments",
+      children: [
+        {
+          path: "summary",
+          name: "AdminGovernmentsSummary",
+          component: () =>
+            import("@/views/admin/governments/GovernmentsSummary.vue"),
+          meta: { authenticated: true, authorization: "ADMIN" },
+        },
+        {
+          path: ":governmentId",
+          name: "AdminGovernmentView",
+          component: () =>
+            import("@/views/admin/governments/GovernmentView.vue"),
           meta: { authenticated: true, authorization: "ADMIN" },
         },
       ],

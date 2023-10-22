@@ -39,7 +39,7 @@ import { useModel } from "@/utils/vue";
 
 const props = defineProps({ modelValue: Boolean, address: Object });
 const propsRef = toRefs(props);
-const emit = defineEmits(["update:modelValue", "done"]);
+const emit = defineEmits(["update:modelValue", "added"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propsRef, emit, "modelValue"));
@@ -48,9 +48,9 @@ const address = ref({});
 const submitHandler = async () => {
   try {
     isLoading.value = true;
-    const result = await create(address.value);
+    await create(address.value);
     show("success", "Added an address!");
-    emit("done");
+    emit("added");
     dialog.value = false;
   } catch ({ message }) {
     show("error", message);

@@ -24,15 +24,14 @@ const errors = [
   },
   {
     code: "auth/id-token-revoked",
-    description:
-      "The Firebase ID token has been revoked.",
+    description: "The Firebase ID token has been revoked.",
   },
   {
     code: "auth/insufficient-permission",
     description:
       "The credential used to initialize the Admin SDK has insufficient permission to access the requested Authentication resource. Refer to Set up a Firebase project for documentation on how to generate a credential with appropriate permissions and use it to authenticate the Admin SDKs.",
   },
-  {
+ {
     code: "auth/invalid-argument",
     description:
       "An invalid argument was provided to an Authentication method. The error message should contain additional information.",
@@ -263,7 +262,6 @@ const errors = [
       "The domain of the continue URL is not whitelisted. Whitelist the domain in the Firebase Console.",
   },
 ];
-
 
 export const getDescription = async (code) => {
   const error = await errors.filter((error) => error.code === code);

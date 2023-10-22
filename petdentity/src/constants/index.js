@@ -1,4 +1,4 @@
-import _ from "lodash";
+import { cloneDeep } from "lodash";
 
 export const UserGroups = {
   ADMIN: "ADMIN",
@@ -24,27 +24,6 @@ export const PetStatuses = {
   FOUND: "FOUND",
 };
 
-// export const LEVEL = {
-//   SUPER: "SUPER",
-//   ADMIN: "ADMIN",
-//   ENCODER: "ENCODER",
-//   DEMO: "DEMO",
-// };
-
-// export const VACCINE = {
-//   serial: null,
-//   name: null,
-//   description: null,
-//   location: null,
-
-//   applicationDate: null,
-//   injectedDate: null,
-//   effectivityDate: null,
-
-//   verified: null,
-//   verifiedBy: null,
-// };
-
 export const Address = {
   country: null,
   state: null,
@@ -65,8 +44,8 @@ export const Name = {
 };
 
 export const Profile = {
-  name: _.cloneDeep(Name),
-  address: _.cloneDeep(Address),
+  name: cloneDeep(Name),
+  address: cloneDeep(Address),
   gender: null,
   birthDate: null,
   photoUrl: null,
@@ -83,10 +62,12 @@ export const User = {
 
   roles: [UserGroups.OWNER],
   status: Statuses.ENABLED,
-  profile: _.cloneDeep(Profile),
+  profile: cloneDeep(Profile),
+  government: [],
+  government: [],
 };
 
-//Default Beneficiary
+//Default PET
 export const PET = {
   name: null,
   animal: null,
@@ -100,7 +81,30 @@ export const PET = {
   photo: [],
 };
 
-export const VACCINATION = {
+export const Vaccine = {
   pet: null, //PET
   veterinarian: null, //VET
 };
+
+export const Unit = {
+  formType: null,
+  unitType: null,
+  status: null,
+  uid: null,
+  applicationDate: null,
+  pet: null,
+  owner: null,
+  veterinarian: null,
+  government: null,
+};
+
+export const Government = Object.freeze({
+  name: null,
+  email: null,
+  mobile: null,
+  level: null,
+  privacy: null,
+  photoUrl: null,
+  address: cloneDeep(Address),
+  users: [],
+});

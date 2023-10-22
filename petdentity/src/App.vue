@@ -13,13 +13,14 @@
 </template>
 
 <script setup>
-import _ from "lodash";
+import { cloneDeep } from "lodash";
 
 import Snackbar from "@/components/common/Snackbar.vue";
 
 import ProgressLine from "@/components/common/ProgressLine.vue";
 
 import { useProgressLineStore } from "@/store/progress-line";
+
 const { start, stop } = useProgressLineStore();
 const progressLine = useProgressLineStore();
 
@@ -28,13 +29,18 @@ const { show } = useSnackbarStore();
 
 import { User } from "@/constants";
 
-import { get, create } from "@/api/user";
+import { get, create } from "@/api/users";
 
 import { useRouter } from "vue-router";
 const router = useRouter();
 
-import { useUserStore } from "@/store/user";
-const user = useUserStore();
+// import { useUserStore } from "@/store/user";
+// const user = useUserStore();
+
+import { ref, provide } from "vue";
+
+const user = ref(null);
+provide("user", user);
 
 const loadUser = async (authUser) => {
   try {
@@ -45,20 +51,23 @@ const loadUser = async (authUser) => {
     const result = await get(authUser.uid);
 
     if (result === null) {
-      const user = _.cloneDeep(User);
+      const user = cloneDeep(User);
       user.id = authUser.uid;
       user.email = authUser.email;
       user.emailVerified = authUser.emailVerified;
 
-      await create(user);
+      user.value = await create(user);
       show("success", "created a user");
-
-      setTimeout(() => {
-        router.go();
-      }, 1000);
     } else {
-      user.set(result);
+      user.value = result;
     }
+
+    //   setTimeout(() => {
+    //     router.go();
+    //   }, 1000);
+    // } else {
+    //   user.set(result);
+    // }
   } catch ({ message }) {
     show("error", message);
   } finally {
@@ -80,3 +89,6 @@ onAuthStateChanged(auth, async (user) => {
 </script>
 
 <style scoped></style>
+
+<!-- defect logs for FPI later sa discussion -->
+<!-- alignment with sir marc on tasks -->
