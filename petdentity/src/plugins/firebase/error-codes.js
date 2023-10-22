@@ -22,10 +22,17 @@ const errors = [
     description:
       "There is no existing user record corresponding to the provided identifier.",
   },
+  {
+    code: "auth/id-token-revoked",
+    description: "The Firebase ID token has been revoked.",
+  },
+  {
+    code: "auth/insufficient-permission",
+    description:
+      "The credential used to initialize the Admin SDK has insufficient permission to access the requested Authentication resource. Refer to Set up a Firebase project for documentation on how to generate a credential with appropriate permissions and use it to authenticate the Admin SDKs.",
+  },
 ];
-// 	.
-// auth/id-token-revoked	The Firebase ID token has been revoked.
-// auth/insufficient-permission	The credential used to initialize the Admin SDK has insufficient permission to access the requested Authentication resource. Refer to Set up a Firebase project for documentation on how to generate a credential with appropriate permissions and use it to authenticate the Admin SDKs.
+// auth/insufficient-permission
 // auth/internal-error	The Authentication server encountered an unexpected error while trying to process the request. The error message should contain the response from the Authentication server containing additional information. If the error persists, please report the problem to our Bug Report support channel.
 // auth/invalid-argument	An invalid argument was provided to an Authentication method. The error message should contain additional information.
 // auth/invalid-claims	The custom claim attributes provided to setCustomUserClaims() are invalid.

@@ -17,20 +17,35 @@
       </v-col>
     </v-row>
 
-    <v-form v-model="form" @submit.prevent="onSubmitHandler" validate-on="input">
-
+    <v-form
+      v-model="form"
+      @submit.prevent="onSubmitHandler"
+      validate-on="input"
+    >
       <v-row dense>
         <v-col align="start">
           <v-row dense class="mt-3">
             <v-col>
-              <TextField name="email" v-model="email" placeholder="Email" prependInnerIcon="mdi-account" type="email"
-                :rules="[validation.required, validation.email]" />
+              <TextField
+                name="email"
+                v-model="email"
+                placeholder="Email"
+                prependInnerIcon="mdi-account"
+                type="email"
+                :rules="[validation.required, validation.email]"
+              />
             </v-col>
           </v-row>
           <v-row dense class="mt-3">
             <v-col>
-              <TextField name="password" v-model="password" placeholder="Password" prependInnerIcon="mdi-lock"
-                type="password" :rules="[validation.required]" />
+              <TextField
+                name="password"
+                v-model="password"
+                placeholder="Password"
+                prependInnerIcon="mdi-lock"
+                type="password"
+                :rules="[validation.required]"
+              />
             </v-col>
           </v-row>
 
@@ -99,9 +114,10 @@ const onSubmitHandler = async (event) => {
     } else {
       await router.push({ name: "UserDashboard" });
     }
-  } catch ({ code }) {
-    const description = await getDescription(code);
-    show("error", description);
+  } catch (error) {
+    console.log(error.code);
+    if (error.code) show("error", await getDescription(error.code));
+    else show("error", message);
   } finally {
     stop();
   }
