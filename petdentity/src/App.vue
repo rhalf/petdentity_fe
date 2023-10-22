@@ -20,6 +20,7 @@ import Snackbar from "@/components/common/Snackbar.vue";
 import ProgressLine from "@/components/common/ProgressLine.vue";
 
 import { useProgressLineStore } from "@/store/progress-line";
+
 const { start, stop } = useProgressLineStore();
 const progressLine = useProgressLineStore();
 
@@ -33,8 +34,13 @@ import { get, create } from "@/api/users";
 import { useRouter } from "vue-router";
 const router = useRouter();
 
-import { useUserStore } from "@/store/user";
-const user = useUserStore();
+// import { useUserStore } from "@/store/user";
+// const user = useUserStore();
+
+import { ref, provide } from "vue";
+
+const user = ref(null);
+provide("user", user);
 
 const loadUser = async (authUser) => {
   try {
@@ -50,15 +56,18 @@ const loadUser = async (authUser) => {
       user.email = authUser.email;
       user.emailVerified = authUser.emailVerified;
 
-      await create(user);
+      user.value = await create(user);
       show("success", "created a user");
-
-      setTimeout(() => {
-        router.go();
-      }, 1000);
     } else {
-      user.set(result);
+      user.value = result;
     }
+
+    //   setTimeout(() => {
+    //     router.go();
+    //   }, 1000);
+    // } else {
+    //   user.set(result);
+    // }
   } catch ({ message }) {
     show("error", message);
   } finally {

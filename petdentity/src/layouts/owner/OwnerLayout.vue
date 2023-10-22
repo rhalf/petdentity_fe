@@ -27,24 +27,19 @@ import { useRouter, useRoute } from "vue-router";
 const router = useRouter();
 const route = useRoute();
 
-import { get } from "@/api/users";
-import { getCurrentUser } from "@/utils/firebase";
-
-import { ref, onMounted, provide } from "vue";
+import { ref, watchEffect, inject } from "vue";
 const drawer = ref(false);
 
-const user = ref(null);
+const user = inject("user");
 
-provide("user", user);
-
-onMounted(async () => {
+watchEffect(async () => {
   try {
     start();
-    const { uid } = await getCurrentUser();
-    user.value = await get(uid);
 
-    if (user.value.roles.includes(route.meta.authorization))
-      console.log("ALLOWED");
+    const { roles } = user.value;
+    const included = roles.includes(route.meta.authorization);
+
+    if (included) console.log("ALLOWED");
     else router.push({ name: "ForbiddenView" });
   } catch ({ message }) {
     show("error", message);

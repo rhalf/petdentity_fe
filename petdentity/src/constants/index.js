@@ -81,7 +81,7 @@ export const PET = {
   photo: [],
 };
 
-export const Vaccination = {
+export const Vaccine = {
   pet: null, //PET
   veterinarian: null, //VET
 };
@@ -98,7 +98,7 @@ export const Unit = {
   government: null,
 };
 
-export const Government = {
+export const Government = Object.freeze({
   name: null,
   email: null,
   mobile: null,
@@ -107,4 +107,4 @@ export const Government = {
   photoUrl: null,
   address: cloneDeep(Address),
   users: [],
-};
+});

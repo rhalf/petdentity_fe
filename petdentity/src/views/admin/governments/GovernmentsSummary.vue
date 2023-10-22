@@ -60,9 +60,6 @@ import { headers } from "./data";
 import DialogGovernmentRemove from "@/components/dialogs/government/DialogGovernmentRemove.vue";
 import DialogGovernmentAdd from "@/components/dialogs/government/DialogGovernmentAdd.vue";
 
-import { useSnackbarStore } from "@/store/snackbar";
-const { show } = useSnackbarStore();
-
 import { useRouter } from "vue-router";
 const router = useRouter();
 
@@ -84,10 +81,9 @@ const params = ref({
 });
 
 const viewHandler = ({ id }) => {
-  console.log(id);
   router.push({
-    name: "AdminGovernmentView",
-    params: { id: id },
+    name: "GovernmentDashboard",
+    params: { governmentId: id },
   });
 };
 

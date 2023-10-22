@@ -25,12 +25,13 @@ import Module from "./components/module/Module.vue";
 import { UserGroups } from "@/constants";
 const { OWNER, VETERINARIAN, ADMIN, GOVERNMENT } = UserGroups;
 
-import { storeToRefs } from "pinia";
-import { computed, watch, ref } from "vue";
+import { computed, watch, ref, inject } from "vue";
 
-import { useUserStore } from "@/store/user";
-const userStore = useUserStore();
-const { user } = storeToRefs(userStore);
+// import { storeToRefs } from "pinia";
+// import { useUserStore } from "@/store/user";
+// const userStore = useUserStore();
+// const { user } = storeToRefs(userStore);
+const user = inject("user");
 
 import { dashboardItems } from "./data";
 

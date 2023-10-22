@@ -29,9 +29,6 @@ import { unitsByGovernment } from "./units";
 const collectionName = "pets";
 const collectionRef = collection(firestore, collectionName);
 
-const petCollectionName = "pets";
-const petCollectionRef = collection(firestore, petCollectionName);
-
 let indexes;
 
 export const search = async (government, params) => {
@@ -41,7 +38,7 @@ export const search = async (government, params) => {
   const { searchText, columnName, orderDirection, limitNumber } = params;
 
   const q = await query(
-    petCollectionRef,
+    collectionRef,
     where("id", "in", petList),
     orderBy(columnName, orderDirection),
     startAt(searchText),
@@ -121,7 +118,7 @@ export const count = async (government) => {
 
   const petList = units.map((unit) => unit.pet);
 
-  const q = await query(petCollectionRef, where("id", "in", petList));
+  const q = await query(collectionRef, where("id", "in", petList));
 
   const snapshot = await getCountFromServer(q);
   return snapshot.data().count;

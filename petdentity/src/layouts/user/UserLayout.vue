@@ -12,6 +12,5 @@
 </template>
 
 <script setup>
-import _ from "lodash";
 import Navbar from "./components/navbar/Navbar.vue";
 </script>

@@ -6,9 +6,7 @@
 
       <router-view v-slot="{ Component }">
         <!-- <v-fade-transition> -->
-        <KeepAlive>
-          <component :is="Component" />
-        </KeepAlive>
+        <component :is="Component" />
         <!-- </v-fade-transition> -->
       </router-view>
     </v-main>
@@ -29,46 +27,34 @@ import { useRoute, useRouter } from "vue-router";
 const route = useRoute();
 const router = useRouter();
 
-import { getCurrentUser } from "@/utils/firebase";
-
-import { get as getUser } from "@/api/users";
 import { get as getGovernment } from "@/api/government";
 import { get as getGovernmentUser } from "@/api/government/users";
 
-import { ref, onMounted, provide } from "vue";
+import { ref, watchEffect, provide, inject } from "vue";
 const drawer = ref(false);
 
 import { UserGroups } from "@/constants";
 
-const user = ref(null);
+const user = inject("user");
 const government = ref(null);
 
-provide("user", user);
 provide("government", government);
 
-onMounted(async () => {
+watchEffect(async () => {
   try {
     start();
-
-    const { uid } = await getCurrentUser();
-
-    const newUser = await getUser(uid);
     const newGovernment = await getGovernment(route.params.governmentId);
-    const userStatus = await getGovernmentUser(newGovernment, newUser);
+    const userStatus = await getGovernmentUser(newGovernment, user.value);
 
-    if (newUser.roles.includes(UserGroups.ADMIN)) {
+    const { roles } = user.value;
+    const included = roles.includes(UserGroups.ADMIN);
+
+    if (!!userStatus || included) {
+      console.log("ALLOWED");
       government.value = newGovernment;
-      user.value = newUser;
-      return;
-    }
-
-    if (!userStatus) {
-      show("error", "You are not authorized to access!");
-
-      router.push({ name: "SearchGovernmentsDashboard" });
     } else {
-      government.value = newGovernment;
-      user.value = newUser;
+      show("error", "You are not authorized to access!");
+      router.push({ name: "SearchGovernmentsDashboard" });
     }
   } catch ({ message }) {
     show("error", message);

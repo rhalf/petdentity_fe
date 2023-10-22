@@ -77,7 +77,7 @@ export const admin = {
           meta: { authenticated: true, authorization: "ADMIN" },
         },
         {
-          path: ":id",
+          path: ":governmentId",
           name: "AdminGovernmentView",
           component: () =>
             import("@/views/admin/governments/GovernmentView.vue"),
