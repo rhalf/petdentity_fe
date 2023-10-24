@@ -11,11 +11,7 @@
         <v-row dense class="py-4 px-4">
           <v-spacer />
           <v-col cols="auto">
-            <Button
-              @click="submitHandler"
-              :loading="isLoading"
-              :disabled="!color.name"
-            >
+            <Button @click="submitHandler" :loading="isLoading" :disabled="!color.name">
               Submit
             </Button>
           </v-col>
@@ -45,7 +41,7 @@ import { useModel } from "@/utils/vue";
 import { ref, toRefs, computed } from "vue";
 const props = defineProps({ modelValue: Boolean, animal: Object });
 const propsRef = toRefs(props);
-const emit = defineEmits(["update:modelValue", "done"]);
+const emit = defineEmits(["update:modelValue", "added"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propsRef, emit, "modelValue"));
@@ -57,7 +53,7 @@ const submitHandler = async () => {
     isLoading.value = true;
     color.value.animal = animal.value.id;
     await create(color.value);
-    emit("done");
+    emit("added");
     show("success", "Added an color!");
     color.value = {};
     dialog.value = false;

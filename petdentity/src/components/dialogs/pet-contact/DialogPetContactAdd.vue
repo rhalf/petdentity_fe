@@ -40,7 +40,7 @@ import _ from "lodash";
 import { ref, toRefs, computed } from "vue";
 const props = defineProps({ modelValue: Boolean, pet: Object });
 const propsRef = toRefs(props);
-const emit = defineEmits(["update:modelValue", "done"]);
+const emit = defineEmits(["update:modelValue", "added"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propsRef, emit, "modelValue"));
@@ -54,7 +54,7 @@ const submitHandler = async () => {
     const newContact = { ...contact.value, pet: pet.value.id };
     await create(newContact);
 
-    emit("done");
+    emit("added");
     show("success", "Added a contact!");
     dialog.value = false;
   } catch ({ message }) {

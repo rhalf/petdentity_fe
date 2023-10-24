@@ -11,11 +11,7 @@
         <v-row dense class="py-4 px-4">
           <v-spacer />
           <v-col cols="auto">
-            <Button
-              @click="submitHandler"
-              :disabled="!color.name"
-              :loading="isLoading"
-            >
+            <Button @click="submitHandler" :disabled="!color.name" :loading="isLoading">
               Submit
             </Button>
           </v-col>
@@ -49,7 +45,7 @@ const props = defineProps({
   color: Object,
 });
 const propsRef = toRefs(props);
-const emit = defineEmits(["update:modelValue", "update:color", "done"]);
+const emit = defineEmits(["update:modelValue", "update:color", "updated"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propsRef, emit, "modelValue"));
@@ -59,7 +55,7 @@ const submitHandler = async () => {
   try {
     isLoading.value = true;
     await update(color.value);
-    emit("done");
+    emit("updated");
     show("success", "Added an color!");
     color.value = {};
     dialog.value = false;

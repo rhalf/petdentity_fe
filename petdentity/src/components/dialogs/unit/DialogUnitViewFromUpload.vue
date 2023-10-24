@@ -5,21 +5,17 @@
         <Label header class="text-black"> View Unit </Label>
       </v-card-title>
       <v-card-text>
-        <FormUnit
-          v-model="unit"
-          :option="[
-            'uid',
-            'unitType',
-            'formType',
-            'status',
-            'applicationDate',
-            'pet',
-            'owner',
-            'veterinarian',
-            'government',
-          ]"
-          :disabled="disabled"
-        />
+        <FormUnit v-model="unit" :option="[
+          'uid',
+          'unitType',
+          'formType',
+          'status',
+          'applicationDate',
+          'pet',
+          'owner',
+          'veterinarian',
+          'government',
+        ]" :disabled="disabled" />
       </v-card-text>
       <v-card-actions>
         <v-row dense class="py-4 px-4">
@@ -56,7 +52,7 @@ const props = defineProps({
   unit: Object,
 });
 const propRef = toRefs(props);
-const emit = defineEmits(["update:modelValue", "update:unit", "done"]);
+const emit = defineEmits(["update:modelValue", "update:unit", "updated"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propRef, emit, "modelValue"));

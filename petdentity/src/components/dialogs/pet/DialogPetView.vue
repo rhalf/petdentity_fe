@@ -11,11 +11,7 @@
         <v-row dense class="py-4 px-4">
           <v-spacer />
           <v-col cols="auto">
-            <Button
-              @click="submitHandler"
-              :loading="isLoading"
-              v-if="!readOnly"
-            >
+            <Button @click="submitHandler" :loading="isLoading" v-if="!readOnly">
               {{ buttonLabel }}
             </Button>
           </v-col>
@@ -49,7 +45,7 @@ const props = defineProps({
   readOnly: Boolean,
 });
 const propRef = toRefs(props);
-const emit = defineEmits(["update:modelValue", "update:pet", "done"]);
+const emit = defineEmits(["update:modelValue", "update:pet", "updated"]);
 
 const isLoading = ref(false);
 const disabled = ref(true);
@@ -64,7 +60,7 @@ const submitHandler = async () => {
     try {
       isLoading.value = true;
       const docRef = await update(pet.value);
-      emit("done");
+      emit("updated");
       show("success", "Updated a pet!");
       dialog.value = false;
       disabled.value = true;

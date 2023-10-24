@@ -40,7 +40,7 @@ import { useModel, syncProp } from "@/utils/vue";
 import { ref, computed, toRefs } from "vue";
 const props = defineProps({ modelValue: Boolean, pet: Object });
 const propRef = toRefs(props);
-const emit = defineEmits(["update:modelValue", "update:pet", "done"]);
+const emit = defineEmits(["update:modelValue", "update:pet", "removed"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propRef, emit, "modelValue"));
@@ -51,7 +51,7 @@ const submitHandler = async () => {
     isLoading.value = true;
     const result = await remove(pet.value);
     show("success", "Removed an item!");
-    emit("done");
+    emit("removed");
     dialog.value = false;
   } catch ({ message }) {
     show("error", message);

@@ -5,29 +5,21 @@
         <Label header class="text-black"> Properties Unit </Label>
       </v-card-title>
       <v-card-text>
-        <FormUnit
-          v-model="unit"
-          :disabled="disabled"
-          :option="[
-            'unitType',
-            'formType',
-            'status',
-            'applicationDate',
-            'owner',
-            'veterinarian',
-            'government',
-          ]"
-        />
+        <FormUnit v-model="unit" :disabled="disabled" :option="[
+          'unitType',
+          'formType',
+          'status',
+          'applicationDate',
+          'owner',
+          'veterinarian',
+          'government',
+        ]" />
       </v-card-text>
       <v-card-actions>
         <v-row dense class="py-4 px-4">
           <v-spacer />
           <v-col cols="auto">
-            <Button
-              @click="submitHandler"
-              :loading="isLoading"
-              v-if="!readOnly"
-            >
+            <Button @click="submitHandler" :loading="isLoading" v-if="!readOnly">
               {{ buttonLabel }}
             </Button>
           </v-col>
@@ -56,7 +48,7 @@ const props = defineProps({
   readOnly: Boolean,
 });
 const propsRef = toRefs(props);
-const emit = defineEmits(["update:modelValue", "update:unit", "done"]);
+const emit = defineEmits(["update:modelValue", "update:unit", "updated"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propsRef, emit, "modelValue"));
