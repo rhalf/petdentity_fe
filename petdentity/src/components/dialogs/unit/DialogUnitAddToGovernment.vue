@@ -15,11 +15,7 @@
         <v-row dense class="py-4 px-4">
           <v-spacer />
           <v-col cols="auto">
-            <Button
-              @click="submitHandler"
-              :loading="isLoading"
-              :disabled="!unitUid"
-            >
+            <Button @click="submitHandler" :loading="isLoading" :disabled="!unitUid">
               Submit
             </Button>
           </v-col>
@@ -50,7 +46,7 @@ import { ref, toRefs, computed } from "vue";
 
 const props = defineProps({ modelValue: Boolean, government: Object });
 const propsRef = toRefs(props);
-const emit = defineEmits(["update:modelValue", "update:government", "done"]);
+const emit = defineEmits(["update:modelValue", "update:government", "added"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propsRef, emit, "modelValue"));
@@ -75,7 +71,7 @@ const submitHandler = async () => {
 
     await addGovernment(government.value, unit);
 
-    emit("done");
+    emit("added");
     show("success", "Added a unit!");
 
     dialog.value = false;

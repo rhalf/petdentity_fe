@@ -6,20 +6,10 @@
       </v-card-title>
       <v-card-text>
         <Label text class="text-primary"> UID (Starts At) </Label>
-        <TextField
-          v-model="options.uidStart"
-          class="mt-2"
-          type="number"
-          counter
-        />
+        <TextField v-model="options.uidStart" class="mt-2" type="number" counter />
         <!-- 990000010586524 -->
         <Label class="text-primary"> UID (Ends At) </Label>
-        <TextField
-          v-model="options.uidEnd"
-          class="mt-2"
-          type="number"
-          counter
-        />
+        <TextField v-model="options.uidEnd" class="mt-2" type="number" counter />
 
         <Label class="text-primary text-center"> Total ({{ total }})</Label>
       </v-card-text>
@@ -27,11 +17,7 @@
         <v-row dense class="py-4 px-4">
           <v-spacer />
           <v-col cols="auto">
-            <Button
-              @click="generateHandler"
-              :loading="isLoading"
-              :disabled="!(total > 0 && total <= MAX_UNIT)"
-            >
+            <Button @click="generateHandler" :loading="isLoading" :disabled="!(total > 0 && total <= MAX_UNIT)">
               Generate
             </Button>
           </v-col>
@@ -61,7 +47,7 @@ const props = defineProps({
   options: Object,
 });
 const propsRef = toRefs(props);
-const emit = defineEmits(["update:modelValue", "generate"]);
+const emit = defineEmits(["update:modelValue", "generated"]);
 
 const dialog = computed(useModel(propsRef, emit, "modelValue"));
 const unit = computed(useModel(propsRef, emit, "unit"));
@@ -95,7 +81,7 @@ const generateHandler = () => {
     units.value.push({ uid: String(uid), ...item });
   }
 
-  emit("generate", units);
+  emit("generated", units);
   dialog.value = false;
 };
 

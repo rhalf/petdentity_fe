@@ -11,12 +11,7 @@
         <v-row dense class="py-4 px-4">
           <v-spacer />
           <v-col cols="auto">
-            <Button
-              @click="submitHandler"
-              :disabled="!contact.name"
-              :loading="isLoading"
-              >Submit</Button
-            >
+            <Button @click="submitHandler" :disabled="!contact.name" :loading="isLoading">Submit</Button>
           </v-col>
           <v-col cols="auto">
             <Button @click="closeHandler" variant="outlined">Close</Button>
@@ -47,7 +42,7 @@ import _ from "lodash";
 import { ref, toRefs, computed } from "vue";
 const props = defineProps({ modelValue: Boolean });
 const propsRef = toRefs(props);
-const emit = defineEmits(["update:modelValue", "done"]);
+const emit = defineEmits(["update:modelValue", "added"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propsRef, emit, "modelValue"));
@@ -59,7 +54,7 @@ const submitHandler = async () => {
   try {
     isLoading.value = true;
     const docRef = await create(contact.value);
-    emit("done");
+    emit("added");
     show("success", "Added an contact!");
     dialog.value = false;
   } catch ({ message }) {

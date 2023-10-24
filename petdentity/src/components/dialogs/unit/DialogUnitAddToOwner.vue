@@ -45,7 +45,7 @@ import { getCurrentUser } from "@/utils/firebase";
 
 const props = defineProps({ modelValue: Boolean });
 const propsRef = toRefs(props);
-const emit = defineEmits(["update:modelValue", "done"]);
+const emit = defineEmits(["update:modelValue", "added"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propsRef, emit, "modelValue"));
@@ -70,7 +70,7 @@ const submitHandler = async () => {
     await update(unit);
     // const docRef = await create(unit.value);
 
-    emit("done");
+    emit("added");
     show("success", "Added a unit!");
 
     dialog.value = false;

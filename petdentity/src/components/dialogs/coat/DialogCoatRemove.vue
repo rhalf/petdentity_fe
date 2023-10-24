@@ -40,7 +40,7 @@ import { useModel } from "@/utils/vue";
 import { ref, computed, toRefs } from "vue";
 const props = defineProps({ modelValue: Boolean, coat: Object });
 const propRef = toRefs(props);
-const emit = defineEmits(["update:modelValue", "update:coat", "done"]);
+const emit = defineEmits(["update:modelValue", "update:coat", "removed"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propRef, emit, "modelValue"));
@@ -51,7 +51,7 @@ const submitHandler = async () => {
     isLoading.value = true;
     await remove(coat.value);
     show("success", "Removed an item!");
-    emit("done");
+    emit("removed");
     dialog.value = false;
   } catch ({ message }) {
     show("error", message);
