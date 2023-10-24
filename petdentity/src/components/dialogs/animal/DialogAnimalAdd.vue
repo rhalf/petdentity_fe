@@ -54,7 +54,7 @@ const animal = ref({});
 const submitHandler = async () => {
   try {
     isLoading.value = true;
-    const docRef = await create(animal.value);
+    await create(animal.value);
     emit("added");
     show("success", "Added an animal!");
     animal.value = {};

@@ -31,7 +31,7 @@
     </template>
   </v-app-bar>
 
-  <DialogUserPasswordChange />
+  <DialogUserPasswordChange v-model="dialogUserPasswordChange" />
 </template>
 
 <script setup>
@@ -44,9 +44,9 @@ import DialogUserPasswordChange from "@/components/dialogs/user/DialogUserPasswo
 import { signOut } from "@/api/session.js";
 
 import { useRouter } from "vue-router";
-import { ref } from "vue";
 const router = useRouter();
 
+import { ref } from "vue";
 const dialogUserPasswordChange = ref(false);
 
 const items = [

@@ -12,6 +12,7 @@
           class="mt-3"
           placeholder="Enter breed here!"
           @update:modelValue="updateModelHandler"
+          uppercase
         />
       </v-card-text>
       <v-card-actions>

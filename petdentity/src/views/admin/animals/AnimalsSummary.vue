@@ -29,6 +29,7 @@
             withRemove
             withAdd
             withView
+            @refresh="loadItems"
             @remove="removeHandler"
             @view="viewHandler"
             @add="addHandler"
@@ -38,16 +39,16 @@
         </v-col>
       </v-row>
     </Sheet>
-    <DialogAnimalAdd v-model="dialogAnimalAdd" @done="loadItems" />
+    <DialogAnimalAdd v-model="dialogAnimalAdd" @added="loadItems" />
     <DialogAnimalView
       v-model="dialogAnimalView"
       v-model:animal="animal"
-      @done="loadItems"
+      @updated="loadItems"
     />
     <DialogAnimalRemove
       v-model="dialogAnimalRemove"
       v-model:animal="animal"
-      @done="loadItems"
+      @removed="loadItems"
     />
   </v-container>
 </template>
@@ -64,15 +65,11 @@ import DialogAnimalAdd from "@/components/dialogs/animal/DialogAnimalAdd.vue";
 import DialogAnimalRemove from "@/components/dialogs/animal/DialogAnimalRemove.vue";
 import DialogAnimalView from "@/components/dialogs/animal/DialogAnimalView.vue";
 
-// import { useSnackbarStore } from "@/store/snackbar";
-// const { show } = useSnackbarStore();
-
 import { search, next, prev } from "@/api/animal";
 
 import { ref, onMounted } from "vue";
 
 const dialogAnimalAdd = ref(false);
-const dialogAnimalUpdate = ref(false);
 const dialogAnimalRemove = ref(false);
 const dialogAnimalView = ref(false);
 

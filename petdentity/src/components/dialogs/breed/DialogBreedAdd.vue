@@ -6,11 +6,11 @@
       </v-card-title>
       <v-card-text>
         <Label text class="text-primary">Breed</Label>
-
         <TextField
           v-model="breed.name"
           class="mt-3"
           placeholder="Enter breed here!"
+          uppercase
         />
       </v-card-text>
       <v-card-actions>

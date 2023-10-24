@@ -11,6 +11,7 @@
           v-model="coat.name"
           class="mt-3"
           placeholder="Enter coat here!"
+          uppercase
         />
       </v-card-text>
       <v-card-actions>
@@ -44,29 +45,36 @@ import Card from "@/components/common/Card.vue";
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
+import { cloneDeep } from "lodash";
 import { update } from "@/api/coat";
-
 import { useModel } from "@/utils/vue";
 
-import { ref, toRefs, computed } from "vue";
+import { ref, toRefs, computed, watchEffect } from "vue";
+
 const props = defineProps({
   modelValue: Boolean,
   coat: Object,
 });
+
 const propsRef = toRefs(props);
-const emit = defineEmits(["update:modelValue", "update:coat", "done"]);
+const emit = defineEmits(["update:modelValue", "updated"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propsRef, emit, "modelValue"));
-const coat = computed(useModel(propsRef, emit, "coat"));
+const item = computed(useModel(propsRef, emit, "coat"));
+
+const coat = ref();
+
+watchEffect(() => {
+  if (dialog.value) coat.value = cloneDeep(item.value);
+});
 
 const submitHandler = async () => {
   try {
     isLoading.value = true;
     await update(coat.value);
-    emit("done");
+    emit("updated");
     show("success", "Added an coat!");
-    coat.value = {};
     dialog.value = false;
   } catch ({ message }) {
     show("error", message);

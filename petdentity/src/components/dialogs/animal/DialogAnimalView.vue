@@ -40,31 +40,36 @@ import SummaryBreeds from "@/components/forms/breed/SummaryBreeds.vue";
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
+import { cloneDeep } from "lodash";
 import { update } from "@/api/animal";
-
 import { useModel } from "@/utils/vue";
 
-import { ref, toRefs, computed } from "vue";
+import { ref, toRefs, computed, watchEffect } from "vue";
 const props = defineProps({ modelValue: Boolean, animal: Object });
 const propsRef = toRefs(props);
-const emit = defineEmits(["update:modelValue", "update:animal", "done"]);
+const emit = defineEmits(["update:modelValue", "update:animal", "updated"]);
 
 const isLoading = ref(false);
 const disabled = ref(true);
 const dialog = computed(useModel(propsRef, emit, "modelValue"));
-const animal = computed(useModel(propsRef, emit, "animal"));
+const item = computed(useModel(propsRef, emit, "animal"));
+
+const animal = ref();
+
+watchEffect(() => {
+  if (dialog.value) animal.value = cloneDeep(item.value);
+});
 
 const submitHandler = async () => {
   if (disabled.value) {
     disabled.value = false;
-    return;
   } else {
     try {
       isLoading.value = true;
-      const docRef = await update(animal.value);
+      await update(animal.value);
       show("success", "Updated an animal!");
       dialog.value = false;
-      emit("done");
+      emit("updated");
       disabled.value = true;
     } catch ({ message }) {
       show("error", message);

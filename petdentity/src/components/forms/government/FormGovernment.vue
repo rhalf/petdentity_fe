@@ -95,7 +95,7 @@ import validation from "@/utils/validation";
 import { useModel } from "@/utils/vue";
 import { toRefs, computed } from "vue";
 
-const emit = defineEmits(["update:modelValue", "upload", "update:form"]);
+const emit = defineEmits(["update:modelValue", "update:form"]);
 const props = defineProps({
   modelValue: Object,
   disabled: Boolean,

@@ -23,6 +23,15 @@ const errors = [
       "There is no existing user record corresponding to the provided identifier.",
   },
   {
+    code: "auth/wrong-password",
+    description: "You have entered wrong password.",
+  },
+
+  {
+    code: "auth/too-many-requests",
+    description: "The number of requests exceeds the maximum allowed.",
+  },
+  {
     code: "auth/id-token-revoked",
     description: "The Firebase ID token has been revoked.",
   },
@@ -31,7 +40,7 @@ const errors = [
     description:
       "The credential used to initialize the Admin SDK has insufficient permission to access the requested Authentication resource. Refer to Set up a Firebase project for documentation on how to generate a credential with appropriate permissions and use it to authenticate the Admin SDKs.",
   },
- {
+  {
     code: "auth/invalid-argument",
     description:
       "An invalid argument was provided to an Authentication method. The error message should contain additional information.",
@@ -43,13 +52,11 @@ const errors = [
   },
   {
     code: "auth/invalid-continue-uri",
-    description:
-      "The continue URL must be a valid URL string.",
+    description: "The continue URL must be a valid URL string.",
   },
   {
     code: "auth/invalid-creation-time",
-    description:
-      "The creation time must be a valid UTC date string.",
+    description: "The creation time must be a valid UTC date string.",
   },
   {
     code: "auth/invalid-credential",
@@ -83,33 +90,27 @@ const errors = [
   },
   {
     code: "auth/invalid-hash-block-size",
-    description:
-      "The hash block size must be a valid number.",
+    description: "The hash block size must be a valid number.",
   },
   {
     code: "auth/invalid-hash-derived-key-length",
-    description:
-      "The hash derived key length must be a valid number.",
+    description: "The hash derived key length must be a valid number.",
   },
   {
     code: "auth/invalid-hash-key",
-    description:
-      "The hash key must a valid byte buffer.",
+    description: "The hash key must a valid byte buffer.",
   },
   {
     code: "auth/invalid-hash-memory-cost",
-    description:
-      "The hash memory cost must be a valid number.",
+    description: "The hash memory cost must be a valid number.",
   },
   {
     code: "auth/invalid-hash-parallelization",
-    description:
-      "The hash parallelization must be a valid number.",
+    description: "The hash parallelization must be a valid number.",
   },
   {
     code: "auth/invalid-hash-rounds",
-    description:
-      "The hash rounds must be a valid number.",
+    description: "The hash rounds must be a valid number.",
   },
   {
     code: "auth/invalid-hash-salt-separator",
@@ -118,13 +119,11 @@ const errors = [
   },
   {
     code: "auth/invalid-id-token",
-    description:
-      "The provided ID token is not a valid Firebase ID token.",
+    description: "The provided ID token is not a valid Firebase ID token.",
   },
   {
     code: "auth/invalid-last-sign-in-time",
-    description:
-      "The last sign-in time must be a valid UTC date string.",
+    description: "The last sign-in time must be a valid UTC date string.",
   },
   {
     code: "auth/invalid-page-token",
@@ -138,13 +137,11 @@ const errors = [
   },
   {
     code: "auth/invalid-password-hash",
-    description:
-      "The password hash must be a valid byte buffer.",
+    description: "The password hash must be a valid byte buffer.",
   },
   {
     code: "auth/invalid-password-salt",
-    description:
-      "The password salt must be a valid byte buffer.",
+    description: "The password salt must be a valid byte buffer.",
   },
   {
     code: "auth/invalid-phone-number",
@@ -158,8 +155,7 @@ const errors = [
   },
   {
     code: "auth/invalid-provider-data",
-    description:
-      "The providerData must be a valid array of UserInfo objects.",
+    description: "The providerData must be a valid array of UserInfo objects.",
   },
   {
     code: "auth/invalid-provider-id",
@@ -168,8 +164,7 @@ const errors = [
   },
   {
     code: "auth/invalid-oauth-responsetype",
-    description:
-      "Only exactly one OAuth responseType should be set to true.",
+    description: "Only exactly one OAuth responseType should be set to true.",
   },
   {
     code: "auth/invalid-session-cookie-duration",
@@ -183,8 +178,7 @@ const errors = [
   },
   {
     code: "auth/invalid-user-import",
-    description:
-      "The user record to import is invalid.",
+    description: "The user record to import is invalid.",
   },
   {
     code: "auth/maximum-user-count-exceeded",
@@ -198,8 +192,7 @@ const errors = [
   },
   {
     code: "auth/missing-continue-uri",
-    description:
-      "A valid continue URL must be provided in the request.",
+    description: "A valid continue URL must be provided in the request.",
   },
   {
     code: "auth/missing-hash-algorithm",
@@ -208,13 +201,11 @@ const errors = [
   },
   {
     code: "auth/missing-ios-bundle-id",
-    description:
-      "The request is missing a Bundle ID.",
+    description: "The request is missing a Bundle ID.",
   },
   {
     code: "auth/missing-uid",
-    description:
-      "A uid identifier is required for the current operation.",
+    description: "A uid identifier is required for the current operation.",
   },
   {
     code: "auth/missing-oauth-client-secret",
@@ -243,13 +234,11 @@ const errors = [
   },
   {
     code: "auth/session-cookie-expired",
-    description:
-      "The provided Firebase session cookie is expired.",
+    description: "The provided Firebase session cookie is expired.",
   },
   {
     code: "auth/session-cookie-revoked",
-    description:
-      "The Firebase session cookie has been revoked.",
+    description: "The Firebase session cookie has been revoked.",
   },
   {
     code: "auth/uid-already-exists",

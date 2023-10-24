@@ -20,15 +20,19 @@ import {
   getCountFromServer,
 } from "firebase/firestore";
 
-import { toObject, toArray, getIndexes } from "./indexes";
+import { toObject, toArray, getIndexes } from "../indexes";
 
-const collectionName = "coats";
+const collectionName = "animals";
 const collectionRef = collection(firestore, collectionName);
 
 let indexes;
 
-export const search = async (params) => {
-  const { searchText, columnName, orderDirection, limitNumber } = params;
+export const search = async ({
+  searchText,
+  columnName,
+  orderDirection,
+  limitNumber,
+}) => {
   const q = await query(
     collectionRef,
     orderBy(columnName, orderDirection),
@@ -36,15 +40,14 @@ export const search = async (params) => {
     endAt(searchText + "\uf8ff"),
     limit(limitNumber)
   );
-
   const snapshots = await getDocs(q);
-  if (!snapshots.empty) indexes = getIndexes(snapshots);
+  if (snapshots.empty) throw new Error("Empty page!");
 
+  indexes = getIndexes(snapshots);
   return toArray(snapshots);
 };
 
-export const next = async (params) => {
-  const { columnName, orderDirection, limitNumber } = params;
+export const next = async ({ columnName, orderDirection, limitNumber }) => {
   const q = await query(
     collectionRef,
     orderBy(columnName, orderDirection),
@@ -53,13 +56,13 @@ export const next = async (params) => {
   );
 
   const snapshots = await getDocs(q);
-  if (!snapshots.empty) indexes = getIndexes(snapshots);
+  if (snapshots.empty) throw new Error("Last page!");
 
+  indexes = getIndexes(snapshots);
   return toArray(snapshots);
 };
 
-export const prev = async (params) => {
-  const { columnName, orderDirection, limitNumber } = params;
+export const prev = async ({ columnName, orderDirection, limitNumber }) => {
   const q = await query(
     collectionRef,
     orderBy(columnName, orderDirection),
@@ -67,8 +70,15 @@ export const prev = async (params) => {
     limitToLast(limitNumber)
   );
   const snapshots = await getDocs(q);
-  if (!snapshots.empty) indexes = getIndexes(snapshots);
+  if (snapshots.empty) throw new Error("First page!");
 
+  indexes = getIndexes(snapshots);
+  return toArray(snapshots);
+};
+
+export const getAll = async ({ columnName, orderDirection }) => {
+  const q = await query(collectionRef, orderBy(columnName, orderDirection));
+  const snapshots = await getDocs(q);
   return toArray(snapshots);
 };
 
@@ -76,12 +86,6 @@ export const get = async (id) => {
   const documentRef = doc(firestore, collectionName, id);
   const snapshot = await getDoc(documentRef);
   return toObject(snapshot);
-};
-
-export const getAll = async (id) => {
-  const q = await query(collectionRef, orderBy("name", "asc"));
-  const snapshots = await getDocs(q);
-  return toArray(snapshots);
 };
 
 export const create = async (item) => {

@@ -5,12 +5,12 @@ export default {
   },
 
   minimum: (value, length = 8, name = "field") => {
-    if (value?.length <= length) return true;
+    if (value?.length >= length) return true;
     return `The ${name} must be atleast ${length} characters.`;
   },
 
   maximum: (value, length = 8, name = "field") => {
-    if (value?.length >= length) return true;
+    if (value?.length <= length) return true;
     return `The ${name} must not exceed ${length} characters.`;
   },
 

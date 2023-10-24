@@ -12,7 +12,7 @@
             append-inner-icon="mdi-magnify"
             variant="outlined"
             @keypress.enter="loadItems"
-            @update:modelValue="updateModelHandler"
+            uppercase
           />
         </v-col>
       </v-row>
@@ -29,6 +29,7 @@
             withRemove
             withUpdate
             withAdd
+            @refresh="loadItems"
             @remove="removeHandler"
             @update="updateHandler"
             @add="dialogCoatAdd = true"
@@ -38,16 +39,16 @@
         </v-col>
       </v-row>
     </Sheet>
-    <DialogCoatAdd v-model="dialogCoatAdd" @done="loadItems" />
+    <DialogCoatAdd v-model="dialogCoatAdd" @added="loadItems" />
     <DialogCoatUpdate
       v-model="dialogCoatUpdate"
       v-model:coat="coat"
-      @done="loadItems"
+      @updated="loadItems"
     />
     <DialogCoatRemove
       v-model="dialogCoatRemove"
       v-model:coat="coat"
-      @done="loadItems"
+      @removed="loadItems"
     />
   </v-container>
 </template>
@@ -63,9 +64,6 @@ import { headers } from "./data";
 import DialogCoatAdd from "@/components/dialogs/coat/DialogCoatAdd.vue";
 import DialogCoatUpdate from "@/components/dialogs/coat/DialogCoatUpdate.vue";
 import DialogCoatRemove from "@/components/dialogs/coat/DialogCoatRemove.vue";
-
-// import { useSnackbarStore } from "@/store/snackbar";
-// const { show } = useSnackbarStore();
 
 import { search, next, prev } from "@/api/coat";
 
@@ -130,10 +128,5 @@ const prevHandler = async () => {
   } finally {
     isLoading.value = false;
   }
-};
-
-const updateModelHandler = () => {
-  if (typeof params.value.searchText != "string") return;
-  params.value.searchText = params.value.searchText.toUpperCase();
 };
 </script>

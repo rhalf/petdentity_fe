@@ -7,6 +7,7 @@
         v-model="animal.name"
         placeholder="Name"
         :disabled="disabled"
+        uppercase
       />
     </v-col>
     <v-col cols="12" md="6">

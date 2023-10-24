@@ -10,7 +10,7 @@
         append-inner-icon="mdi-magnify"
         variant="outlined"
         @keypress.enter="loadItems"
-        @update:modelValue="updateModelHandler"
+        uppercase
       />
     </v-col>
   </v-row>
@@ -25,6 +25,7 @@
     withRemove
     withUpdate
     withAdd
+    @refresh="loadItems"
     @add="addHandler"
     @update="updateHandler"
     @remove="removeHandler"
@@ -35,17 +36,17 @@
   <DialogBreedAdd
     v-model="dialogBreedAdd"
     v-model:animal="animal"
-    @done="loadItems"
+    @added="loadItems"
   />
   <DialogBreedUpdate
     v-model="dialogBreedUpdate"
     v-model:breed="breed"
-    @done="loadItems"
+    @updated="loadItems"
   />
   <DialogBreedRemove
     v-model="dialogBreedRemove"
     v-model:breed="breed"
-    @done="loadItems"
+    @removed="loadItems"
   />
 </template>
 
@@ -60,10 +61,7 @@ import DialogBreedAdd from "@/components/dialogs/breed/DialogBreedAdd.vue";
 import DialogBreedUpdate from "@/components/dialogs/breed/DialogBreedUpdate.vue";
 import DialogBreedRemove from "@/components/dialogs/breed/DialogBreedRemove.vue";
 
-import { countByAnimal, search, next, prev } from "@/api/breed";
-
-// import { useSnackbarStore } from "@/store/snackbar";
-// const { show } = useSnackbarStore();
+import { search, next, prev, count } from "@/api/animal/breeds";
 
 import { computed, toRefs, ref } from "vue";
 import { useModel } from "@/utils/vue";
@@ -101,8 +99,8 @@ onMounted(() => {
 const loadItems = async () => {
   try {
     isLoading.value = true;
-    breeds.value = await search(animal.value.id, params.value);
-    totalCount.value = await countByAnimal(animal.value.id);
+    breeds.value = await search(animal.value, params.value);
+    totalCount.value = await count(animal.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {
@@ -113,7 +111,7 @@ const loadItems = async () => {
 const nextHandler = async () => {
   try {
     isLoading.value = true;
-    breeds.value = await next(animal.value.id, params.value);
+    breeds.value = await next(animal.value, params.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {
@@ -124,7 +122,7 @@ const nextHandler = async () => {
 const prevHandler = async () => {
   try {
     isLoading.value = true;
-    breeds.value = await prev(animal.value.id, params.value);
+    breeds.value = await prev(animal.value, params.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {
@@ -144,11 +142,6 @@ const updateHandler = async (item) => {
 const removeHandler = async (item) => {
   breed.value = item;
   dialogBreedRemove.value = true;
-};
-
-const updateModelHandler = () => {
-  if (typeof params.value.searchText != "string") return;
-  params.value.searchText = params.value.searchText.toUpperCase();
 };
 </script>
 

@@ -1,4 +1,4 @@
-import { auth } from '@/plugins/firebase'
+import { auth } from "@/plugins/firebase";
 import {
   setPersistence,
   signInWithEmailAndPassword,
@@ -7,9 +7,10 @@ import {
   createUserWithEmailAndPassword,
   updateProfile,
   sendEmailVerification,
-  sendPasswordResetEmail
+  sendPasswordResetEmail,
+  updatePassword as changePassword,
   // listUsers
-} from 'firebase/auth'
+} from "firebase/auth";
 
 export const signIn = (email, password) => {
   return setPersistence(auth, browserLocalPersistence).then(() => {
@@ -20,32 +21,32 @@ export const signIn = (email, password) => {
     // New sign-in will be persisted with session persistence.
     // return signInWithEmailAndPassword(auth, email, password);
 
-    return signInWithEmailAndPassword(auth, email, password)
-  })
-}
+    return signInWithEmailAndPassword(auth, email, password);
+  });
+};
 
 export const signOut = () => {
-  return logOut(auth)
-}
+  return logOut(auth);
+};
 
 export const signUp = (email, password) => {
-  return createUserWithEmailAndPassword(auth, email, password)
-}
+  return createUserWithEmailAndPassword(auth, email, password);
+};
 
 export const updateDetails = (name, mobile) => {
   return updateProfile(auth.currentUser, {
     displayName: name,
-    phoneNumber: mobile
-  })
-}
+    phoneNumber: mobile,
+  });
+};
 
 export const emailVerification = () => {
-  return sendEmailVerification(auth.currentUser)
-}
+  return sendEmailVerification(auth.currentUser);
+};
 
 export const passwordResetEmail = (email) => {
-  return sendPasswordResetEmail(auth, email)
-}
+  return sendPasswordResetEmail(auth, email);
+};
 
 // export const getAllUsers = (nextPageToken) => {
 //   // List batch of users, 1000 at a time.
@@ -59,3 +60,8 @@ export const passwordResetEmail = (email) => {
 //     // }
 //   })
 // }
+
+export const updatePassword = (password) => {
+  const user = auth.currentUser;
+  return changePassword(user, password);
+};
