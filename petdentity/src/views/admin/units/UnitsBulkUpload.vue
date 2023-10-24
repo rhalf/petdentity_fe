@@ -73,7 +73,7 @@
       v-model="dialogUnitGenerate"
       v-model:unit="unit"
       v-model:options="options"
-      @generate="generateItems"
+      @generated="generateItems"
     />
   </v-container>
 </template>
