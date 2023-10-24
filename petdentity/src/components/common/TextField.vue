@@ -8,7 +8,6 @@
     :persistentPlaceholder="true"
     hideDetails="auto"
     :clearable="true"
-    @update:modelValue="updateModelHandler"
   />
 </template>
 

@@ -11,7 +11,6 @@
           v-model="breed.name"
           class="mt-3"
           placeholder="Enter breed here!"
-          @update:modelValue="updateModelHandler"
           uppercase
         />
       </v-card-text>
@@ -46,32 +45,29 @@ import Card from "@/components/common/Card.vue";
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
-import { cloneDeep } from "lodash";
-import { update } from "@/api/breed";
+import { update } from "@/api/animal/breeds";
 import { useModel } from "@/utils/vue";
 
-import { ref, toRefs, computed, watchEffect } from "vue";
+import { ref, toRefs, computed } from "vue";
 const props = defineProps({
   modelValue: Boolean,
   breed: Object,
+  animal: Object,
 });
+
 const propsRef = toRefs(props);
-const emit = defineEmits(["update:modelValue", "update:breed", "updated"]);
 
 const isLoading = ref(false);
+
+const emit = defineEmits(["update:modelValue", "updated"]);
 const dialog = computed(useModel(propsRef, emit, "modelValue"));
-const item = computed(useModel(propsRef, emit, "breed"));
 
-const breed = ref();
-
-watchEffect(() => {
-  if (dialog.value) breed.value = cloneDeep(item.value);
-});
+const { breed, animal } = propsRef;
 
 const submitHandler = async () => {
   try {
     isLoading.value = true;
-    await update(breed.value);
+    await update(animal.value, breed.value);
     emit("updated");
     show("success", "Added an breed!");
     closeHandler();
@@ -84,10 +80,6 @@ const submitHandler = async () => {
 
 const closeHandler = () => {
   dialog.value = false;
-};
-
-const updateModelHandler = () => {
-  breed.value.name = breed.value.name.toUpperCase();
 };
 </script>
 

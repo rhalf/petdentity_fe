@@ -117,4 +117,5 @@ export const Animal = Object.freeze({
 export const Breed = Object.freeze({
   name: null,
   type: null,
+  animal: null,
 });

@@ -33,23 +33,28 @@ import Card from "@/components/common/Card.vue";
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
-import { remove } from "@/api/breed";
+import { remove } from "@/api/animal/breeds";
 
 import { useModel } from "@/utils/vue";
 
 import { ref, computed, toRefs } from "vue";
-const props = defineProps({ modelValue: Boolean, breed: Object });
-const propRef = toRefs(props);
+const props = defineProps({
+  modelValue: Boolean,
+  animal: Object,
+  breed: Object,
+});
+const propsRef = toRefs(props);
 const emit = defineEmits(["update:modelValue", "update:breed", "removed"]);
 
 const isLoading = ref(false);
-const dialog = computed(useModel(propRef, emit, "modelValue"));
-const breed = computed(useModel(propRef, emit, "breed"));
+const dialog = computed(useModel(propsRef, emit, "modelValue"));
+// const breed = computed(useModel(propsRef, emit, "breed"));
+const { breed, animal } = propsRef;
 
 const submitHandler = async () => {
   try {
     isLoading.value = true;
-    await remove(breed.value);
+    await remove(animal.value, breed.value);
     show("success", "Removed an item!");
     emit("removed");
     dialog.value = false;

@@ -61,7 +61,7 @@ const submitHandler = async () => {
     emit("added");
     show("success", "Added an animal!");
     animal.value = cloneDeep(Animal);
-    dialog.value = false;
+    closeHandler();
   } catch ({ message }) {
     show("error", message);
   } finally {

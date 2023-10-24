@@ -12,7 +12,6 @@
             append-inner-icon="mdi-magnify"
             variant="outlined"
             @keypress.enter="loadItems"
-            @update:modelValue="updateModelHandler"
           />
         </v-col>
       </v-row>

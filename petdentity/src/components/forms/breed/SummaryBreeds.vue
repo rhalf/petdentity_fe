@@ -41,11 +41,13 @@
   <DialogBreedUpdate
     v-model="dialogBreedUpdate"
     v-model:breed="breed"
+    v-model:animal="animal"
     @updated="loadItems"
   />
   <DialogBreedRemove
     v-model="dialogBreedRemove"
     v-model:breed="breed"
+    v-model:animal="animal"
     @removed="loadItems"
   />
 </template>
