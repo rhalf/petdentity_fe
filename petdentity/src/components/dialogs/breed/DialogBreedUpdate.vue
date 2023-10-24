@@ -8,7 +8,7 @@
         <Label text class="text-primary">Breed</Label>
 
         <TextField
-          v-model="breed.name"
+          v-model="model.name"
           class="mt-3"
           placeholder="Enter breed here!"
           uppercase
@@ -20,7 +20,7 @@
           <v-col cols="auto">
             <Button
               @click="submitHandler"
-              :disabled="!breed.name"
+              :disabled="!model.name"
               :loading="isLoading"
             >
               Submit
@@ -48,7 +48,7 @@ const { show } = useSnackbarStore();
 import { update } from "@/api/animal/breeds";
 import { useModel } from "@/utils/vue";
 
-import { ref, toRefs, computed } from "vue";
+import { ref, toRefs, computed, watchEffect } from "vue";
 const props = defineProps({
   modelValue: Boolean,
   breed: Object,
@@ -64,10 +64,16 @@ const dialog = computed(useModel(propsRef, emit, "modelValue"));
 
 const { breed, animal } = propsRef;
 
+const model = ref();
+
+watchEffect(() => {
+  model.value = breed.value;
+});
+
 const submitHandler = async () => {
   try {
     isLoading.value = true;
-    await update(animal.value, breed.value);
+    await update(animal.value, model.value);
     emit("updated");
     show("success", "Added an breed!");
     closeHandler();
