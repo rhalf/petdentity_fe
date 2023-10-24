@@ -46,30 +46,35 @@ import Card from "@/components/common/Card.vue";
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
+import { cloneDeep } from "lodash";
 import { update } from "@/api/breed";
-
 import { useModel } from "@/utils/vue";
 
-import { ref, toRefs, computed } from "vue";
+import { ref, toRefs, computed, watchEffect } from "vue";
 const props = defineProps({
   modelValue: Boolean,
   breed: Object,
 });
 const propsRef = toRefs(props);
-const emit = defineEmits(["update:modelValue", "update:breed", "done"]);
+const emit = defineEmits(["update:modelValue", "update:breed", "updated"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propsRef, emit, "modelValue"));
-const breed = computed(useModel(propsRef, emit, "breed"));
+const item = computed(useModel(propsRef, emit, "breed"));
+
+const breed = ref();
+
+watchEffect(() => {
+  if (dialog.value) breed.value = cloneDeep(item.value);
+});
 
 const submitHandler = async () => {
   try {
     isLoading.value = true;
     await update(breed.value);
-    // emit("done");
+    emit("updated");
     show("success", "Added an breed!");
-    breed.value = {};
-    dialog.value = false;
+    closeHandler();
   } catch ({ message }) {
     show("error", message);
   } finally {

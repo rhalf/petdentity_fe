@@ -108,3 +108,13 @@ export const Government = Object.freeze({
   address: cloneDeep(Address),
   users: [],
 });
+
+export const Animal = Object.freeze({
+  name: null,
+  type: null,
+});
+
+export const Breed = Object.freeze({
+  name: null,
+  type: null,
+});

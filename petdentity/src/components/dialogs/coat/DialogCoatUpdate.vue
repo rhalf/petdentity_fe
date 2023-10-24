@@ -75,7 +75,7 @@ const submitHandler = async () => {
     await update(coat.value);
     emit("updated");
     show("success", "Added an coat!");
-    dialog.value = false;
+    closeHandler();
   } catch ({ message }) {
     show("error", message);
   } finally {

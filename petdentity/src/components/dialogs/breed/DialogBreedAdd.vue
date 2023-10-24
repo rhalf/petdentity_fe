@@ -51,7 +51,7 @@ import { useModel } from "@/utils/vue";
 import { ref, toRefs, computed } from "vue";
 const props = defineProps({ modelValue: Boolean, animal: Object });
 const propsRef = toRefs(props);
-const emit = defineEmits(["update:modelValue", "done"]);
+const emit = defineEmits(["update:modelValue", "added"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propsRef, emit, "modelValue"));
@@ -63,9 +63,9 @@ const submitHandler = async () => {
     isLoading.value = true;
     breed.value.animal = animal.value.id;
     await create(breed.value);
-    emit("done");
+    emit("added");
     show("success", "Added an breed!");
-    breed.value = {};
+
     dialog.value = false;
   } catch ({ message }) {
     show("error", message);

@@ -41,6 +41,8 @@ const { show } = useSnackbarStore();
 import { create } from "@/api/animal";
 
 import { useModel } from "@/utils/vue";
+import { Animal } from "@/constants";
+import { cloneDeep } from "lodash";
 
 import { ref, toRefs, computed } from "vue";
 const props = defineProps({ modelValue: Boolean });
@@ -49,7 +51,8 @@ const emit = defineEmits(["update:modelValue", "added"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propsRef, emit, "modelValue"));
-const animal = ref({});
+
+const animal = ref(cloneDeep(Animal));
 
 const submitHandler = async () => {
   try {
@@ -57,7 +60,7 @@ const submitHandler = async () => {
     await create(animal.value);
     emit("added");
     show("success", "Added an animal!");
-    animal.value = {};
+    animal.value = cloneDeep(Animal);
     dialog.value = false;
   } catch ({ message }) {
     show("error", message);
