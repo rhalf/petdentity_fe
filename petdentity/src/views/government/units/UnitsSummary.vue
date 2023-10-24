@@ -58,17 +58,17 @@
     <DialogUnitAddToGovernment
       v-model="dialogUnitAddToGovernment"
       v-model:government="government"
-      @done="loadItems"
+      @added="loadItems"
     />
     <DialogUnitViewFromGovernment
       v-model="dialogUnitViewFromGovernment"
       v-model:unit="unit"
-      @done="loadItems"
+      @updated="loadItems"
     />
     <DialogUnitRemoveFromGovernment
       v-model="dialogUnitRemoveFromGovernment"
       v-model:unit="unit"
-      @done="loadItems"
+      @removed="loadItems"
     />
   </v-container>
 </template>

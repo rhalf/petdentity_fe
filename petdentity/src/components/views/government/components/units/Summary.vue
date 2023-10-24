@@ -23,13 +23,13 @@
     <DialogUnitAddToPet
       v-model="dialogUnitAddToPet"
       :government="government"
-      @done="loadItems"
+      @added="loadItems"
     />
 
     <DialogUnitRemoveFromPet
       v-model="dialogUnitRemoveFromPet"
       :unit="unit"
-      @done="loadItems"
+      @removed="loadItems"
     />
   </Panel>
 </template>

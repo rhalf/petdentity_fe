@@ -34,17 +34,17 @@
   <DialogColorAdd
     v-model="dialogColorAdd"
     v-model:animal="animal"
-    @done="loadItems"
+    @added="loadItems"
   />
   <DialogColorUpdate
     v-model="dialogColorUpdate"
     v-model:color="color"
-    @done="loadItems"
+    @updated="loadItems"
   />
   <DialogColorRemove
     v-model="dialogColorRemove"
     v-model:color="color"
-    @done="loadItems"
+    @removed="loadItems"
   />
 </template>
 

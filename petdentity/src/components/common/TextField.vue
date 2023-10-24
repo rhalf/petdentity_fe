@@ -8,13 +8,13 @@
     :persistentPlaceholder="true"
     hideDetails="auto"
     :clearable="true"
+    @update:modelValue="updateModelHandler"
   />
 </template>
 
 <script setup>
 import validation from "@/utils/validation";
 import { useModel } from "@/utils/vue";
-import { watch } from "vue";
 import { toRefs, ref, computed, onMounted } from "vue";
 
 const emit = defineEmits(["update:modelValue"]);

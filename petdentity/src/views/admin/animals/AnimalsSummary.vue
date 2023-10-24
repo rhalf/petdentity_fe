@@ -12,6 +12,7 @@
             append-inner-icon="mdi-magnify"
             variant="outlined"
             @keypress.enter="loadItems"
+            uppercase
           />
         </v-col>
       </v-row>

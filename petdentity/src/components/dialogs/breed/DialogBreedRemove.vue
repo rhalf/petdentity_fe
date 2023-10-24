@@ -46,9 +46,8 @@ const props = defineProps({
 const propsRef = toRefs(props);
 const emit = defineEmits(["update:modelValue", "update:breed", "removed"]);
 
-const isLoading = ref(false);
 const dialog = computed(useModel(propsRef, emit, "modelValue"));
-// const breed = computed(useModel(propsRef, emit, "breed"));
+const isLoading = ref(false);
 const { breed, animal } = propsRef;
 
 const submitHandler = async () => {

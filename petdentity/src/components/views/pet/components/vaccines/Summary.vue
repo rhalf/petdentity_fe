@@ -21,20 +21,20 @@
     <DialogVaccineAdd
       v-model="dialogVaccineAdd"
       v-model:pet="pet"
-      @done="loadItems"
+      @added="loadItems"
     />
 
     <DialogVaccineView
       v-model="dialogVaccineView"
       v-model:vaccine="vaccine"
       :read-only="readOnly"
-      @done="loadItems"
+      @updated="loadItems"
     />
 
     <DialogVaccineRemove
       v-model="dialogVaccineRemove"
       v-model:vaccine="vaccine"
-      @done="loadItems"
+      @removed="loadItems"
     />
   </Panel>
 </template>

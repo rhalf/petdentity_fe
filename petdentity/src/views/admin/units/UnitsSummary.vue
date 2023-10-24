@@ -38,16 +38,16 @@
         </v-col>
       </v-row>
     </Sheet>
-    <DialogUnitAdd v-model="dialogUnitAdd" @done="loadItems" />
+    <DialogUnitAdd v-model="dialogUnitAdd" @added="loadItems" />
     <DialogUnitView
       v-model="dialogUnitView"
       v-model:unit="unit"
-      @done="loadItems"
+      @updated="loadItems"
     />
     <DialogUnitRemove
       v-model="dialogUnitRemove"
       v-model:unit="unit"
-      @done="loadItems"
+      @removed="loadItems"
     />
   </v-container>
 </template>

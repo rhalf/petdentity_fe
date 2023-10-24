@@ -38,16 +38,16 @@
         </v-col>
       </v-row>
     </Sheet>
-    <DialogPetAdd v-model="dialogPetAdd" @done="loadItems" />
+    <DialogPetAdd v-model="dialogPetAdd" @added="loadItems" />
     <DialogPetView
       v-model="dialogPetView"
       v-model:pet="pet"
-      @done="loadItems"
+      @updated="loadItems"
     />
     <DialogPetRemove
       v-model="dialogPetRemove"
       v-model:pet="pet"
-      @done="loadItems"
+      @removed="loadItems"
     />
   </v-container>
 </template>

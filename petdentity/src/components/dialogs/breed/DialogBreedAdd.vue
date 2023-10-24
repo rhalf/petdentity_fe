@@ -54,9 +54,11 @@ const props = defineProps({ modelValue: Boolean, animal: Object });
 const propsRef = toRefs(props);
 const emit = defineEmits(["update:modelValue", "added"]);
 
-const isLoading = ref(false);
-const dialog = computed(useModel(propsRef, emit, "modelValue"));
 const { animal } = propsRef;
+
+const dialog = computed(useModel(propsRef, emit, "modelValue"));
+const isLoading = ref(false);
+
 const breed = ref(cloneDeep(Breed));
 
 const submitHandler = async () => {

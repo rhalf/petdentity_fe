@@ -37,16 +37,16 @@
         </v-col>
       </v-row>
     </Sheet>
-    <DialogContactAdd v-model="dialogContactAdd" @done="loadItems" />
+    <DialogContactAdd v-model="dialogContactAdd" @added="loadItems" />
     <DialogContactView
       v-model="dialogContactView"
       v-model:contact="contact"
-      @done="loadItems"
+      @updated="loadItems"
     />
     <DialogContactRemove
       v-model="dialogContactRemove"
       v-model:contact="contact"
-      @done="loadItems"
+      @removed="loadItems"
     />
   </v-container>
 </template>

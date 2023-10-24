@@ -55,16 +55,16 @@
       </Label>
     </v-alert>
 
-    <DialogUnitAddToOwner v-model="dialogUnitAddToOwner" @done="loadItems" />
+    <DialogUnitAddToOwner v-model="dialogUnitAddToOwner" @added="loadItems" />
     <DialogUnitViewFromOwner
       v-model="dialogUnitViewFromOwner"
       v-model:unit="unit"
-      @done="loadItems"
+      @updated="loadItems"
     />
     <DialogUnitRemoveFromOwner
       v-model="dialogUnitRemoveFromOwner"
       v-model:unit="unit"
-      @done="loadItems"
+      @removed="loadItems"
     />
   </v-container>
 </template>

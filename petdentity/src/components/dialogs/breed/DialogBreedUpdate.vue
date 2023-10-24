@@ -45,6 +45,7 @@ import Card from "@/components/common/Card.vue";
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
+import { cloneDeep } from "lodash";
 import { update } from "@/api/animal/breeds";
 import { useModel } from "@/utils/vue";
 
@@ -56,18 +57,16 @@ const props = defineProps({
 });
 
 const propsRef = toRefs(props);
-
-const isLoading = ref(false);
-
-const emit = defineEmits(["update:modelValue", "updated"]);
-const dialog = computed(useModel(propsRef, emit, "modelValue"));
-
 const { breed, animal } = propsRef;
 
+const emit = defineEmits(["update:modelValue", "updated"]);
+
+const dialog = computed(useModel(propsRef, emit, "modelValue"));
 const model = ref();
+const isLoading = ref(false);
 
 watchEffect(() => {
-  model.value = breed.value;
+  if (dialog.value) model.value = cloneDeep(breed.value);
 });
 
 const submitHandler = async () => {

@@ -26,13 +26,13 @@
     <DialogPetContactAdd
       v-model="dialogPetContactAdd"
       :pet="pet"
-      @done="loadItems"
+      @added="loadItems"
     />
 
     <DialogPetContactRemove
       v-model="dialogPetContactRemove"
       :contact="contact"
-      @done="loadItems"
+      @removed="loadItems"
     />
   </Panel>
 </template>
