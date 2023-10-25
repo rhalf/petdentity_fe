@@ -11,7 +11,12 @@
         <v-row dense class="py-4 px-4">
           <v-spacer />
           <v-col cols="auto">
-            <Button @click="submitHandler" :loading="isLoading" :disabled="!user.profile.name.first">Submit</Button>
+            <Button
+              @click="submitHandler"
+              :loading="isLoading"
+              :disabled="!user.profile.name.first"
+              >Submit</Button
+            >
           </v-col>
           <v-col cols="auto">
             <Button @click="closeHandler" variant="outlined">Close</Button>
@@ -34,7 +39,7 @@ const { show } = useSnackbarStore();
 
 import { update } from "@/api/users";
 
-import { useModel, syncProp } from "@/utils/vue";
+import { useModel } from "@/utils/vue";
 
 import { ref, computed, toRefs } from "vue";
 const props = defineProps({ modelValue: Boolean, user: Object });
@@ -43,15 +48,15 @@ const emit = defineEmits(["update:modelValue", "update:user", "updated"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propRef, emit, "modelValue"));
-const user = computed(syncProp(propRef, emit, "user"));
+const user = computed(useModel(propRef, emit, "user"));
 
 const submitHandler = async () => {
   try {
     isLoading.value = true;
-    const docRef = await update(user.value);
+    await update(user.value);
     emit("updated");
     show("success", "Updated a user!");
-    dialog.value = false;
+    closeHandler();
   } catch ({ message }) {
     show("error", message);
   } finally {

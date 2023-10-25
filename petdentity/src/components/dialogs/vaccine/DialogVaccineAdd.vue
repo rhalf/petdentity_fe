@@ -11,7 +11,12 @@
         <v-row dense class="py-4 px-4">
           <v-spacer />
           <v-col cols="auto">
-            <Button @click="submitHandler" :disabled="!vaccine.name" :loading="isLoading">Submit</Button>
+            <Button
+              @click="submitHandler"
+              :disabled="!vaccine.name"
+              :loading="isLoading"
+              >Submit</Button
+            >
           </v-col>
           <v-col cols="auto">
             <Button @click="closeHandler" variant="outlined">Close</Button>
@@ -32,8 +37,9 @@ import Card from "@/components/common/Card.vue";
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
+import { cloneDeep } from "lodash";
+import { Vaccine } from "@/constants";
 import { create } from "@/api/vaccine";
-
 import { useModel } from "@/utils/vue";
 
 import { ref, toRefs, computed } from "vue";
@@ -44,7 +50,8 @@ const emit = defineEmits(["update:modelValue", "added"]);
 const isLoading = ref(false);
 const dialog = computed(useModel(propsRef, emit, "modelValue"));
 const pet = computed(useModel(propsRef, emit, "pet"));
-const vaccine = ref({});
+
+const vaccine = ref(cloneDeep(Vaccine));
 
 const submitHandler = async () => {
   try {
@@ -53,8 +60,9 @@ const submitHandler = async () => {
     await create(vaccine.value);
     emit("added");
     show("success", "Added a vaccine!");
-    vaccine.value = {};
-    dialog.value = false;
+
+    vaccine.value = cloneDeep(Vaccine);
+    closeHandler();
   } catch ({ message }) {
     show("error", message);
   } finally {

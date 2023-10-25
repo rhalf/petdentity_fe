@@ -35,7 +35,7 @@ const { show } = useSnackbarStore();
 
 import { remove } from "@/api/contact";
 
-import { useModel, syncProp } from "@/utils/vue";
+import { useModel } from "@/utils/vue";
 
 import { ref, computed, toRefs } from "vue";
 const props = defineProps({ modelValue: Boolean, contact: Object });
@@ -44,7 +44,7 @@ const emit = defineEmits(["update:modelValue", "update:contact", "removed"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propRef, emit, "modelValue"));
-const contact = computed(syncProp(propRef, emit, "contact"));
+const contact = computed(useModel(propRef, emit, "contact"));
 
 const submitHandler = async () => {
   try {

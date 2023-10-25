@@ -40,9 +40,9 @@ import { getByUid, update } from "@/api/unit";
 
 import { useModel } from "@/utils/vue";
 
-import { ref, toRefs, computed } from "vue";
-import { getCurrentUser } from "@/utils/firebase";
+import { ref, toRefs, computed, inject } from "vue";
 
+const user = inject("user");
 const props = defineProps({ modelValue: Boolean });
 const propsRef = toRefs(props);
 const emit = defineEmits(["update:modelValue", "added"]);
@@ -64,8 +64,7 @@ const submitHandler = async () => {
     const unit = units[0];
     if (unit.owner) throw new Error("Unit is already added to an owner!");
 
-    const { uid } = await getCurrentUser();
-    unit.owner = uid;
+    unit.owner = user.uid;
 
     await update(unit);
     // const docRef = await create(unit.value);
@@ -73,7 +72,7 @@ const submitHandler = async () => {
     emit("added");
     show("success", "Added a unit!");
 
-    dialog.value = false;
+    closeHandler();
   } catch ({ message }) {
     show("error", message);
   } finally {

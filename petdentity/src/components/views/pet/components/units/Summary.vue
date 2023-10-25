@@ -11,6 +11,7 @@
       withView
       :withAdd="!readOnly"
       :withRemove="!readOnly"
+      @refresh="loadItems"
       @add="addHandler"
       @remove="removeHandler"
       @view="viewHandler"
@@ -47,8 +48,7 @@ import { headers } from "./data";
 import { getAllByPet, getAllByPetNext, getAllByPetPrev } from "@/api/unit";
 
 import { toRefs, ref, watch } from "vue";
-// import { useModel } from "@/utils/vue";
-// const emit = defineEmits(["update:pet"]);
+
 const props = defineProps({ pet: Object, readOnly: Boolean });
 
 const propsRef = toRefs(props);

@@ -43,7 +43,6 @@ export const search = async (government, params) => {
     endAt(searchText + "\uf8ff"),
     limit(limitNumber)
   );
-
   const snapshots = await getDocs(q);
   if (!snapshots.empty) indexes = getIndexes(snapshots);
 

@@ -69,7 +69,7 @@
         <Label class="text-primary"> Veterinarian </Label>
         <TextField
           class="mt-2"
-          v-model="vaccine.veterination"
+          v-model="vaccine.veterinarian"
           placeholder="Veterinarian"
           :disabled="disabled"
         />

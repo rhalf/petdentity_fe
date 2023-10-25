@@ -41,9 +41,9 @@ export const search = async (user, params) => {
     endAt(searchText + "\uf8ff"),
     limit(limitNumber)
   );
-
   const snapshots = await getDocs(q);
   if (!snapshots.empty) indexes = getIndexes(snapshots);
+
   return toArray(snapshots);
 };
 
@@ -59,6 +59,7 @@ export const next = async (user, params) => {
   );
   const snapshots = await getDocs(q);
   if (!snapshots.empty) indexes = getIndexes(snapshots);
+
   return toArray(snapshots);
 };
 
@@ -74,6 +75,7 @@ export const prev = async (user, params) => {
   );
   const snapshots = await getDocs(q);
   if (!snapshots.empty) indexes = getIndexes(snapshots);
+
   return toArray(snapshots);
 };
 

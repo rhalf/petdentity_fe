@@ -26,14 +26,14 @@ import Dialog from "@/components/common/Dialog.vue";
 import Card from "@/components/common/Card.vue";
 import Color from "@/components/pickers/Color.vue";
 import { computed, toRefs } from "vue";
-import { useModel, syncProp } from "@/utils/vue";
+import { useModel } from "@/utils/vue";
 
 const emit = defineEmits(["update:modelValue", "update:color"]);
 const props = defineProps({ modelValue: Boolean, color: String });
 const propsRef = toRefs(props);
 
 const dialog = computed(useModel(propsRef, emit, "modelValue"));
-const color = computed(syncProp(propsRef, emit, "color"));
+const color = computed(useModel(propsRef, emit, "color"));
 
 const closeHandler = () => {
   dialog.value = false;

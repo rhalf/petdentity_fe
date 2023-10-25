@@ -5,23 +5,31 @@
         <Label header class="text-black"> View Unit </Label>
       </v-card-title>
       <v-card-text>
-        <FormUnit v-model="unit" :disabled="disabled" :option="[
-          'uid',
-          'unitType',
-          'formType',
-          'status',
-          'applicationDate',
-          'pet',
-          'owner',
-          'veterinarian',
-          'government',
-        ]" />
+        <FormUnit
+          v-model="unit"
+          :disabled="disabled"
+          :option="[
+            'uid',
+            'unitType',
+            'formType',
+            'status',
+            'applicationDate',
+            'pet',
+            'owner',
+            'veterinarian',
+            'government',
+          ]"
+        />
       </v-card-text>
       <v-card-actions>
         <v-row dense class="py-4 px-4">
           <v-spacer />
           <v-col cols="auto">
-            <Button @click="submitHandler" :loading="isLoading" v-if="!readOnly">
+            <Button
+              @click="submitHandler"
+              :loading="isLoading"
+              v-if="!readOnly"
+            >
               {{ buttonLabel }}
             </Button>
           </v-col>
@@ -73,7 +81,7 @@ const submitHandler = async () => {
     const docRef = await update(unit.value);
     emit("updated");
     show("success", "Updated an unit!");
-    dialog.value = false;
+    closeHandler();
   } catch ({ message }) {
     show("error", message);
   } finally {

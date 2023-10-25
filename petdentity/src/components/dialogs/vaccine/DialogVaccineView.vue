@@ -11,7 +11,11 @@
         <v-row dense class="py-4 px-4">
           <v-spacer />
           <v-col cols="auto">
-            <Button @click="submitHandler" :loading="isLoading" v-if="!readOnly">
+            <Button
+              @click="submitHandler"
+              :loading="isLoading"
+              v-if="!readOnly"
+            >
               {{ buttonLabel }}
             </Button>
           </v-col>
@@ -65,6 +69,7 @@ const submitHandler = async () => {
     dialog.value = false;
     emit("updated");
     disabled.value = true;
+    closeHandler();
   } catch ({ message }) {
     show("error", message);
   } finally {

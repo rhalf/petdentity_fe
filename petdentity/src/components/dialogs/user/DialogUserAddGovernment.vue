@@ -56,7 +56,7 @@ const submitHandler = async () => {
     await add(government.value, user.value);
     emit("added");
     show("success", "Added a user!");
-    dialog.value = false;
+    closeHandler();
   } catch ({ message }) {
     show("error", message);
   } finally {

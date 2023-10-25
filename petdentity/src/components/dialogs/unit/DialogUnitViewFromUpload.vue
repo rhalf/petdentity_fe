@@ -5,17 +5,21 @@
         <Label header class="text-black"> View Unit </Label>
       </v-card-title>
       <v-card-text>
-        <FormUnit v-model="unit" :option="[
-          'uid',
-          'unitType',
-          'formType',
-          'status',
-          'applicationDate',
-          'pet',
-          'owner',
-          'veterinarian',
-          'government',
-        ]" :disabled="disabled" />
+        <FormUnit
+          v-model="unit"
+          :option="[
+            'uid',
+            'unitType',
+            'formType',
+            'status',
+            'applicationDate',
+            'pet',
+            'owner',
+            'veterinarian',
+            'government',
+          ]"
+          :disabled="disabled"
+        />
       </v-card-text>
       <v-card-actions>
         <v-row dense class="py-4 px-4">
@@ -44,7 +48,7 @@ import Card from "@/components/common/Card.vue";
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
-import { useModel, syncProp } from "@/utils/vue";
+import { useModel } from "@/utils/vue";
 
 import { ref, computed, toRefs } from "vue";
 const props = defineProps({
@@ -56,7 +60,7 @@ const emit = defineEmits(["update:modelValue", "update:unit", "updated"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propRef, emit, "modelValue"));
-const unit = computed(syncProp(propRef, emit, "unit"));
+const unit = computed(useModel(propRef, emit, "unit"));
 const disabled = ref(true);
 
 const submitHandler = async () => {
@@ -66,7 +70,7 @@ const submitHandler = async () => {
       return;
     }
     disabled.value = true;
-    dialog.value = false;
+    closeHandler();
   } catch ({ message }) {
     show("error", message);
   } finally {

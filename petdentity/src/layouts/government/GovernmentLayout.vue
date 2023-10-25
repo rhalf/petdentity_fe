@@ -40,7 +40,7 @@ const government = ref(null);
 
 provide("government", government);
 
-watchEffect(async () => {
+const navigationGuard = async () => {
   try {
     start();
     const newGovernment = await getGovernment(route.params.governmentId);
@@ -61,5 +61,9 @@ watchEffect(async () => {
   } finally {
     stop();
   }
+};
+
+watchEffect(async () => {
+  if (user.value) navigationGuard();
 });
 </script>

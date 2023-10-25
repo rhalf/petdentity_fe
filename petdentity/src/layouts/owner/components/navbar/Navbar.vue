@@ -23,13 +23,13 @@
 import Label from "@/components/common/Label.vue";
 import ButtonIcon from "@/components/common/ButtonIcon.vue";
 
-import { syncProp } from "@/utils/vue";
+import { useModel } from "@/utils/vue";
 import { toRefs, computed } from "vue";
 
 const emit = defineEmits(["update:drawer"]);
 const props = defineProps({ drawer: Boolean });
 const propsRef = toRefs(props);
-const drawer = computed(syncProp(propsRef, emit, "drawer"));
+const drawer = computed(useModel(propsRef, emit, "drawer"));
 
 const drawerHandler = () => {
   drawer.value = !drawer.value;

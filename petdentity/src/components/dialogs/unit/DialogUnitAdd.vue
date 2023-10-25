@@ -5,17 +5,20 @@
         <Label header class="text-black"> Add Unit </Label>
       </v-card-title>
       <v-card-text>
-        <FormUnit v-model="unit" :option="[
-          'uid',
-          'unitType',
-          'formType',
-          'status',
-          'applicationDate',
-          'pet',
-          'owner',
-          'veterinarian',
-          'government',
-        ]" />
+        <FormUnit
+          v-model="unit"
+          :option="[
+            'uid',
+            'unitType',
+            'formType',
+            'status',
+            'applicationDate',
+            'pet',
+            'owner',
+            'veterinarian',
+            'government',
+          ]"
+        />
       </v-card-text>
       <v-card-actions>
         <v-row dense class="py-4 px-4">
@@ -42,8 +45,9 @@ import Card from "@/components/common/Card.vue";
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
+import { cloneDeep } from "lodash";
+import { Unit } from "@/constants";
 import { create } from "@/api/unit";
-
 import { useModel } from "@/utils/vue";
 
 import { ref, toRefs, computed } from "vue";
@@ -53,27 +57,16 @@ const emit = defineEmits(["update:modelValue", "added"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propsRef, emit, "modelValue"));
-const unit = ref({
-  // name: "Dog",
-  // type: "Mammal",
-  // breeds: [
-  //   "Dobermann",
-  //   "Shih Tzu ",
-  //   "German Shepherd",
-  //   "Siberian Husky",
-  //   "Golden Retriever",
-  //   "Labrador Retriever",
-  // ],
-});
+const unit = ref(cloneDeep(Unit));
 
 const submitHandler = async () => {
   try {
     isLoading.value = true;
-    const docRef = await create(unit.value);
+    await create(unit.value);
     emit("added");
     show("success", "Added an unit!");
-    unit.value = {};
-    dialog.value = false;
+    unit.value = cloneDeep(Unit);
+    closeHandler();
   } catch ({ message }) {
     show("error", message);
   } finally {

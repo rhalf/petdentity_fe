@@ -1,30 +1,30 @@
 import { cloneDeep } from "lodash";
 
-export const UserGroups = {
+export const UserGroups = Object.freeze({
   ADMIN: "ADMIN",
   OWNER: "OWNER",
   VETERINARIAN: "VETERINARIAN",
   GOVERNMENT: "GOVERNMENT",
-};
+});
 
-export const Statuses = {
+export const Statuses = Object.freeze({
   ENABLED: "ENABLED",
   DISABLED: "DISABLED",
   SUSPENDED: "SUSPENDED",
-};
+});
 
-export const Privacies = {
+export const Privacies = Object.freeze({
   PUBLIC: "PUBLIC",
   PRIVATE: "PRIVATE",
-};
+});
 
-export const PetStatuses = {
+export const PetStatuses = Object.freeze({
   NORMAL: "NORMAL",
   MISSING: "MISSING",
   FOUND: "FOUND",
-};
+});
 
-export const Address = {
+export const Address = Object.freeze({
   country: null,
   state: null,
   region: null,
@@ -33,17 +33,17 @@ export const Address = {
   barangay: null,
   division: null,
   exact: null,
-};
+});
 
-export const Name = {
+export const Name = Object.freeze({
   title: null,
   first: null,
   middle: null,
   last: null,
   suffix: null,
-};
+});
 
-export const Profile = {
+export const Profile = Object.freeze({
   name: cloneDeep(Name),
   address: cloneDeep(Address),
   gender: null,
@@ -51,10 +51,10 @@ export const Profile = {
   photoUrl: null,
   phoneNumber: null,
   headline: null,
-};
+});
 
 //Default User
-export const User = {
+export const User = Object.freeze({
   id: null,
   email: null,
   emailVerified: null,
@@ -63,40 +63,50 @@ export const User = {
   roles: [UserGroups.OWNER],
   status: Statuses.ENABLED,
   profile: cloneDeep(Profile),
-  government: [],
-  government: [],
-};
+});
 
 //Default PET
-export const PET = {
+export const PET = Object.freeze({
   name: null,
-  animal: null,
-  color: null,
-  weight: null,
-  height: null,
-  gender: null,
   birthDate: null,
 
-  photos: [],
-  photo: [],
-};
+  weight: null,
+  height: null,
 
-export const Vaccine = {
-  pet: null, //PET
-  veterinarian: null, //VET
-};
+  animal: null,
+  type: null,
+  breed: null,
+  gender: null,
+  coat: null,
+  coatRemarks: [],
 
-export const Unit = {
-  formType: null,
-  unitType: null,
+  privacy: null,
   status: null,
+});
+
+export const Vaccine = Object.freeze({
+  serialNumber: null,
+  lotNumber: null,
+  applicationDate: null,
+  validityDate: null,
+  boosterDate: null,
+  veterinarian: null,
+  prcNumber: null,
+  ptcNumber: null,
+  pet: null,
+});
+
+export const Unit = Object.freeze({
   uid: null,
+  unitType: null,
+  formType: null,
+  status: null,
   applicationDate: null,
   pet: null,
   owner: null,
   veterinarian: null,
   government: null,
-};
+});
 
 export const Government = Object.freeze({
   name: null,

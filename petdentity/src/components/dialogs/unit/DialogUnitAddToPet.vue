@@ -15,7 +15,11 @@
         <v-row dense class="py-4 px-4">
           <v-spacer />
           <v-col cols="auto">
-            <Button @click="submitHandler" :loading="isLoading" :disabled="!unitUid">
+            <Button
+              @click="submitHandler"
+              :loading="isLoading"
+              :disabled="!unitUid"
+            >
               Submit
             </Button>
           </v-col>
@@ -73,7 +77,7 @@ const submitHandler = async () => {
     emit("added");
     show("success", "Added a unit!");
 
-    dialog.value = false;
+    closeHandler();
   } catch ({ message }) {
     show("error", message);
   } finally {

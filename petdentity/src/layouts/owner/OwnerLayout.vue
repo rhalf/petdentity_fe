@@ -32,7 +32,7 @@ const drawer = ref(false);
 
 const user = inject("user");
 
-watchEffect(async () => {
+const navigationGuard = async () => {
   try {
     start();
 
@@ -46,5 +46,9 @@ watchEffect(async () => {
   } finally {
     stop();
   }
+};
+
+watchEffect(async () => {
+  if (user.value) navigationGuard();
 });
 </script>

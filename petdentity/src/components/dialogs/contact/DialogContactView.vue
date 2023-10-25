@@ -11,7 +11,11 @@
         <v-row dense class="py-4 px-4">
           <v-spacer />
           <v-col cols="auto">
-            <Button @click="submitHandler" :loading="isLoading" v-if="!readOnly">
+            <Button
+              @click="submitHandler"
+              :loading="isLoading"
+              v-if="!readOnly"
+            >
               {{ buttonLabel }}
             </Button>
           </v-col>
@@ -36,7 +40,7 @@ const { show } = useSnackbarStore();
 
 import { update } from "@/api/contact";
 
-import { useModel, syncProp } from "@/utils/vue";
+import { useModel } from "@/utils/vue";
 
 import { ref, computed, toRefs } from "vue";
 const props = defineProps({
@@ -53,7 +57,7 @@ const { readOnly } = propRef;
 const isLoading = ref(false);
 const disabled = ref(true);
 const dialog = computed(useModel(propRef, emit, "modelValue"));
-const contact = computed(syncProp(propRef, emit, "contact"));
+const contact = computed(useModel(propRef, emit, "contact"));
 
 const submitHandler = async () => {
   if (disabled.value) {

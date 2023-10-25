@@ -62,7 +62,7 @@ const submitHandler = async () => {
     await remove(government.value, user.value);
     show("success", "Removed an item!");
     emit("removed");
-    dialog.value = false;
+    closeHandler();
   } catch ({ message }) {
     show("error", message);
   } finally {

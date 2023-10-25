@@ -22,7 +22,7 @@
 
 // import { toObject, toArray, getIndexes } from "./indexes";
 
-// const collectionName = "breeds";
+// const collectionName = "colors";
 // const collectionRef = collection(firestore, collectionName);
 
 // let indexes;
@@ -33,7 +33,7 @@
 // ) => {
 //   const q = await query(
 //     collectionRef,
-//     where("animal", "==", id),
+//     // where("animal", "==", id),
 //     orderBy(columnName, orderDirection),
 //     startAt(searchText),
 //     endAt(searchText + "\uf8ff"),
@@ -49,7 +49,7 @@
 // export const next = async (id, { columnName, orderDirection, limitNumber }) => {
 //   const q = await query(
 //     collectionRef,
-//     where("animal", "==", id),
+//     // where("animal", "==", id),
 //     orderBy(columnName, orderDirection),
 //     startAfter(indexes.lastItem),
 //     limit(limitNumber)
@@ -65,7 +65,7 @@
 // export const prev = async (id, { columnName, orderDirection, limitNumber }) => {
 //   const q = await query(
 //     collectionRef,
-//     where("animal", "==", id),
+//     // where("animal", "==", id),
 //     orderBy(columnName, orderDirection),
 //     endBefore(indexes.firstItem),
 //     limitToLast(limitNumber)
@@ -86,7 +86,7 @@
 // export const getAll = async (id) => {
 //   const q = await query(
 //     collectionRef,
-//     where("animal", "==", id),
+//     // where("animal", "==", id),
 //     orderBy("name", "asc")
 //   );
 //   const snapshots = await getDocs(q);

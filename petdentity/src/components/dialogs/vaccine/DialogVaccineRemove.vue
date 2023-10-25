@@ -35,7 +35,7 @@ const { show } = useSnackbarStore();
 
 import { remove } from "@/api/vaccine";
 
-import { useModel, syncProp } from "@/utils/vue";
+import { useModel } from "@/utils/vue";
 
 import { ref, computed, toRefs } from "vue";
 const props = defineProps({ modelValue: Boolean, vaccine: Object });
@@ -44,15 +44,15 @@ const emit = defineEmits(["update:modelValue", "update:vaccine", "removed"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propRef, emit, "modelValue"));
-const vaccine = computed(syncProp(propRef, emit, "vaccine"));
+const vaccine = computed(useModel(propRef, emit, "vaccine"));
 
 const submitHandler = async () => {
   try {
     isLoading.value = true;
-    const result = await remove(vaccine.value);
+    await remove(vaccine.value);
     show("success", "Removed an item!");
     emit("removed");
-    dialog.value = false;
+    closeHandler();
   } catch ({ message }) {
     show("error", message);
   } finally {
