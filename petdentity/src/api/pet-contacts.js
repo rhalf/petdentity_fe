@@ -29,10 +29,8 @@ const collectionRef = collection(firestore, collectionName);
 
 let indexes;
 
-export const search = async (
-  { id },
-  { searchText, columnName, orderDirection, limitNumber }
-) => {
+export const search = async (params) => {
+  const { searchText, columnName, orderDirection, limitNumber } = params;
   const q = await query(
     collectionRef,
     where("pet", "==", id),
@@ -42,16 +40,13 @@ export const search = async (
     limit(limitNumber)
   );
   const snapshots = await getDocs(q);
-  if (snapshots.empty) throw new Error("Empty page!");
+  if (!snapshots.empty) indexes = getIndexes(snapshots);
 
-  indexes = getIndexes(snapshots);
   return toArray(snapshots);
 };
 
-export const next = async (
-  { id },
-  { columnName, orderDirection, limitNumber }
-) => {
+export const next = async (params) => {
+  const { searchText, columnName, orderDirection, limitNumber } = params;
   const q = await query(
     collectionRef,
     where("pet", "==", id),
@@ -60,16 +55,13 @@ export const next = async (
     limit(limitNumber)
   );
   const snapshots = await getDocs(q);
-  if (snapshots.empty) throw new Error("Last page!");
+  if (!snapshots.empty) indexes = getIndexes(snapshots);
 
-  indexes = getIndexes(snapshots);
   return toArray(snapshots);
 };
 
-export const prev = async (
-  { id },
-  { columnName, orderDirection, limitNumber }
-) => {
+export const prev = async (params) => {
+  const { searchText, columnName, orderDirection, limitNumber } = params;
   const q = await query(
     collectionRef,
     where("pet", "==", id),
@@ -78,9 +70,8 @@ export const prev = async (
     limitToLast(limitNumber)
   );
   const snapshots = await getDocs(q);
-  if (snapshots.empty) throw new Error("First page!");
+  if (!snapshots.empty) indexes = getIndexes(snapshots);
 
-  indexes = getIndexes(snapshots);
   return toArray(snapshots);
 };
 
