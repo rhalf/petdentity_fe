@@ -3,7 +3,7 @@
     <Sheet>
       <v-row dense>
         <v-col cols="auto">
-          <Label title class="text-primary">Users </Label>
+          <Label title class="text-primary"> Users </Label>
         </v-col>
         <v-spacer />
         <v-col cols="12" md="3">
@@ -11,6 +11,7 @@
             v-model="params.searchText"
             append-inner-icon="mdi-magnify"
             variant="outlined"
+            placeholder="Email"
             @keypress.enter="loadItems"
           />
         </v-col>

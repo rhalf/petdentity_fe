@@ -33,7 +33,7 @@ import Card from "@/components/common/Card.vue";
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
-import { remove } from "@/api/contact";
+import { remove } from "@/api/owner/contacts";
 
 import { useModel } from "@/utils/vue";
 

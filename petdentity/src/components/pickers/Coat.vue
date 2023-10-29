@@ -16,7 +16,7 @@
 import Autocomplete from "@/components/common/Autocomplete.vue";
 
 import { debounce } from "lodash";
-import { getAll, search } from "@/api/coat";
+import { all, search } from "@/api/coat";
 
 import { computed, toRefs, ref, watch } from "vue";
 import { useModel } from "@/utils/vue";
@@ -42,7 +42,7 @@ const loadItems = async () => {
   try {
     isLoading.value = true;
 
-    // const items = await getAll();
+    // const items = await all();
     const items = await search(params.value);
 
     if (items.length) coat.value = items;

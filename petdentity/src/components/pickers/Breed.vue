@@ -16,7 +16,7 @@ import Autocomplete from "@/components/common/Autocomplete.vue";
 
 import { debounce } from "lodash";
 
-import { getAll, search } from "@/api/breed";
+import { search } from "@/api/animal/breeds";
 
 import { computed, toRefs, ref, watch } from "vue";
 import { useModel } from "@/utils/vue";
@@ -44,8 +44,8 @@ const loadItems = async () => {
 
     if (!animal.value) return;
 
-    // const items = await getAll(animal.value.id);
-    const items = await search(animal.value.id, params.value);
+    // const items = await all(animal.value.id);
+    const items = await search(animal.value, params.value);
 
     if (items.length) breeds.value = items;
     else breeds.value = [];

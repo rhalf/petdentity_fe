@@ -33,7 +33,7 @@ import Card from "@/components/common/Card.vue";
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
-import { remove } from "@/api/pet-contacts";
+import { remove } from "@/api/pet/contacts";
 
 import { useModel } from "@/utils/vue";
 
@@ -44,7 +44,7 @@ const emit = defineEmits(["update:modelValue", "update:contact", "removed"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propRef, emit, "modelValue"));
-const contact = computed(useModel(propRef, emit, "contact"));
+const { contact } = propRef;
 
 const submitHandler = async () => {
   try {

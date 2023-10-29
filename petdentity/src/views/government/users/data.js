@@ -11,7 +11,14 @@ export const headers = [
     align: "start",
     sortable: false,
     key: "email",
-    width: "40%",
+    width: "30%",
+  },
+  {
+    title: "Name",
+    align: "start",
+    sortable: false,
+    key: "profile.name",
+    width: "30%",
   },
   {
     title: "Status",
@@ -20,11 +27,11 @@ export const headers = [
     key: "status",
     width: "20%",
   },
-  {
-    title: "Roles",
-    align: "start",
-    sortable: false,
-    key: "roles",
-    width: "40%",
-  },
+  // {
+  //   title: "Roles",
+  //   align: "start",
+  //   sortable: false,
+  //   key: "roles",
+  //   width: "40%",
+  // },
 ];

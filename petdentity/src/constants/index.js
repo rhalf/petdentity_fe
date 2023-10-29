@@ -129,3 +129,9 @@ export const Breed = Object.freeze({
   type: null,
   animal: null,
 });
+
+export const Contact = Object.freeze({
+  name: null,
+  mobile: null,
+  address: cloneDeep(Address),
+});

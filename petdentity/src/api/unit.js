@@ -107,139 +107,139 @@ export const count = async () => {
 };
 
 //Pet
-export const getAllByPet = async (pet, param) => {
-  const q = await query(
-    collectionRef,
-    where("pet", "==", pet.id),
-    orderBy(param.columnName, param.orderDirection),
-    startAt(param.searchText),
-    endAt(param.searchText + "\uf8ff"),
-    limit(param.limitNumber)
-  );
-  const snapshots = await getDocs(q);
-  if (!snapshots.empty) indexes = getIndexes(snapshots);
-  return toArray(snapshots);
-};
+// export const getAllByPet = async (pet, param) => {
+//   const q = await query(
+//     collectionRef,
+//     where("pet", "==", pet.id),
+//     orderBy(param.columnName, param.orderDirection),
+//     startAt(param.searchText),
+//     endAt(param.searchText + "\uf8ff"),
+//     limit(param.limitNumber)
+//   );
+//   const snapshots = await getDocs(q);
+//   if (!snapshots.empty) indexes = getIndexes(snapshots);
+//   return toArray(snapshots);
+// };
 
-export const getAllByPetNext = async ({ id }, param) => {
-  const q = await query(
-    collectionRef,
-    where("pet", "==", id),
-    orderBy(param.columnName, param.orderDirection),
-    startAfter(indexes.lastItem),
-    limit(param.limitNumber)
-  );
-  const snapshots = await getDocs(q);
-  if (!snapshots.empty) indexes = getIndexes(snapshots);
-  return toArray(snapshots);
-};
+// export const getAllByPetNext = async ({ id }, param) => {
+//   const q = await query(
+//     collectionRef,
+//     where("pet", "==", id),
+//     orderBy(param.columnName, param.orderDirection),
+//     startAfter(indexes.lastItem),
+//     limit(param.limitNumber)
+//   );
+//   const snapshots = await getDocs(q);
+//   if (!snapshots.empty) indexes = getIndexes(snapshots);
+//   return toArray(snapshots);
+// };
 
-export const getAllByPetPrev = async ({ id }, param) => {
-  const q = await query(
-    collectionRef,
-    where("pet", "==", id),
-    orderBy(param.columnName, param.orderDirection),
-    endBefore(indexes.firstItem),
-    limitToLast(param.limitNumber)
-  );
-  const snapshots = await getDocs(q);
-  if (!snapshots.empty) indexes = getIndexes(snapshots);
-  return toArray(snapshots);
-};
+// export const getAllByPetPrev = async ({ id }, param) => {
+//   const q = await query(
+//     collectionRef,
+//     where("pet", "==", id),
+//     orderBy(param.columnName, param.orderDirection),
+//     endBefore(indexes.firstItem),
+//     limitToLast(param.limitNumber)
+//   );
+//   const snapshots = await getDocs(q);
+//   if (!snapshots.empty) indexes = getIndexes(snapshots);
+//   return toArray(snapshots);
+// };
 
-export const addUnitToPet = async (pet, item) => {
-  item.pet = pet.id;
-  item.updatedAt = Timestamp.fromDate(new Date());
-  const documentRef = doc(firestore, collectionName, item.id);
-  return await setDoc(documentRef, item);
-};
+// export const addUnitToPet = async (pet, item) => {
+//   item.pet = pet.id;
+//   item.updatedAt = Timestamp.fromDate(new Date());
+//   const documentRef = doc(firestore, collectionName, item.id);
+//   return await setDoc(documentRef, item);
+// };
 
-export const removeUnitFromPet = async (item) => {
-  item.pet = null;
-  item.updatedAt = Timestamp.fromDate(new Date());
-  const documentRef = doc(firestore, collectionName, item.id);
-  return await setDoc(documentRef, item);
-};
+// export const removeUnitFromPet = async (item) => {
+//   item.pet = null;
+//   item.updatedAt = Timestamp.fromDate(new Date());
+//   const documentRef = doc(firestore, collectionName, item.id);
+//   return await setDoc(documentRef, item);
+// };
 
 //owner
-export const searchByOwner = async ({
-  searchText,
-  columnName,
-  orderDirection,
-  limitNumber,
-}) => {
-  const { uid } = await getCurrentUser();
-  const q = await query(
-    collectionRef,
-    where("owner", "==", uid),
-    orderBy(columnName, orderDirection),
-    startAt(searchText),
-    endAt(searchText + "\uf8ff"),
-    limit(limitNumber)
-  );
+// export const searchByOwner = async ({
+//   searchText,
+//   columnName,
+//   orderDirection,
+//   limitNumber,
+// }) => {
+//   const { uid } = await getCurrentUser();
+//   const q = await query(
+//     collectionRef,
+//     where("owner", "==", uid),
+//     orderBy(columnName, orderDirection),
+//     startAt(searchText),
+//     endAt(searchText + "\uf8ff"),
+//     limit(limitNumber)
+//   );
 
-  const snapshots = await getDocs(q);
-  if (!snapshots.empty) indexes = getIndexes(snapshots);
-  return toArray(snapshots);
-};
+//   const snapshots = await getDocs(q);
+//   if (!snapshots.empty) indexes = getIndexes(snapshots);
+//   return toArray(snapshots);
+// };
 
-export const nextByOwner = async ({
-  columnName,
-  orderDirection,
-  limitNumber,
-}) => {
-  const { uid } = await getCurrentUser();
-  const q = await query(
-    collectionRef,
-    where("owner", "==", uid),
-    orderBy(columnName, orderDirection),
-    startAfter(indexes.lastItem),
-    limit(limitNumber)
-  );
-  const snapshots = await getDocs(q);
-  if (!snapshots.empty) indexes = getIndexes(snapshots);
-  return toArray(snapshots);
-};
+// export const nextByOwner = async ({
+//   columnName,
+//   orderDirection,
+//   limitNumber,
+// }) => {
+//   const { uid } = await getCurrentUser();
+//   const q = await query(
+//     collectionRef,
+//     where("owner", "==", uid),
+//     orderBy(columnName, orderDirection),
+//     startAfter(indexes.lastItem),
+//     limit(limitNumber)
+//   );
+//   const snapshots = await getDocs(q);
+//   if (!snapshots.empty) indexes = getIndexes(snapshots);
+//   return toArray(snapshots);
+// };
 
-export const prevByOwner = async ({
-  columnName,
-  orderDirection,
-  limitNumber,
-}) => {
-  const { uid } = await getCurrentUser();
-  const q = await query(
-    collectionRef,
-    where("owner", "==", uid),
-    orderBy(columnName, orderDirection),
-    endBefore(indexes.firstItem),
-    limitToLast(limitNumber)
-  );
-  const snapshots = await getDocs(q);
-  if (!snapshots.empty) indexes = getIndexes(snapshots);
-  return toArray(snapshots);
-};
+// export const prevByOwner = async ({
+//   columnName,
+//   orderDirection,
+//   limitNumber,
+// }) => {
+//   const { uid } = await getCurrentUser();
+//   const q = await query(
+//     collectionRef,
+//     where("owner", "==", uid),
+//     orderBy(columnName, orderDirection),
+//     endBefore(indexes.firstItem),
+//     limitToLast(limitNumber)
+//   );
+//   const snapshots = await getDocs(q);
+//   if (!snapshots.empty) indexes = getIndexes(snapshots);
+//   return toArray(snapshots);
+// };
 
-export const getAllByOwner = async () => {
-  const { uid } = await getCurrentUser();
-  const q = await query(collectionRef, where("owner", "==", uid));
-  const snapshots = await getDocs(q);
-  if (!snapshots.empty) indexes = getIndexes(snapshots);
-  return toArray(snapshots);
-};
+// export const getAllByOwner = async () => {
+//   const { uid } = await getCurrentUser();
+//   const q = await query(collectionRef, where("owner", "==", uid));
+//   const snapshots = await getDocs(q);
+//   if (!snapshots.empty) indexes = getIndexes(snapshots);
+//   return toArray(snapshots);
+// };
 
-export const removeOwner = async (item) => {
-  item.updatedAt = Timestamp.fromDate(new Date());
-  item.owner = null;
-  const documentRef = doc(firestore, collectionName, item.id);
-  return await setDoc(documentRef, item);
-};
+// export const removeOwner = async (item) => {
+//   item.updatedAt = Timestamp.fromDate(new Date());
+//   item.owner = null;
+//   const documentRef = doc(firestore, collectionName, item.id);
+//   return await setDoc(documentRef, item);
+// };
 
-export const countByOwner = async () => {
-  const { uid } = await getCurrentUser();
-  const q = query(collectionRef, where("owner", "==", uid));
-  const snapshot = await getCountFromServer(q);
-  return snapshot.data().count;
-};
+// export const countByOwner = async () => {
+//   const { uid } = await getCurrentUser();
+//   const q = query(collectionRef, where("owner", "==", uid));
+//   const snapshot = await getCountFromServer(q);
+//   return snapshot.data().count;
+// };
 
 export const getByOwnerAndId = async (unitId) => {
   const { uid } = await getCurrentUser();
@@ -255,95 +255,95 @@ export const getByOwnerAndId = async (unitId) => {
 };
 
 //government
-export const searchByUsers = async (government, params) => {
-  const { id } = government;
-  const { searchText, columnName, orderDirection, limitNumber } = params;
-  const q = await query(
-    collectionRef,
-    where("government", "==", id),
-    orderBy(columnName, orderDirection),
-    startAt(searchText),
-    endAt(searchText + "\uf8ff"),
-    limit(limitNumber)
-  );
+// export const searchByUsers = async (government, params) => {
+//   const { id } = government;
+//   const { searchText, columnName, orderDirection, limitNumber } = params;
+//   const q = await query(
+//     collectionRef,
+//     where("government", "==", id),
+//     orderBy(columnName, orderDirection),
+//     startAt(searchText),
+//     endAt(searchText + "\uf8ff"),
+//     limit(limitNumber)
+//   );
 
-  const snapshots = await getDocs(q);
+//   const snapshots = await getDocs(q);
 
-  if (!snapshots.empty) indexes = getIndexes(snapshots);
-  return toArray(snapshots);
-};
+//   if (!snapshots.empty) indexes = getIndexes(snapshots);
+//   return toArray(snapshots);
+// };
 
-export const nextByUsers = async (government, params) => {
-  const { id } = government;
-  const { columnName, orderDirection, limitNumber } = params;
-  const q = await query(
-    collectionRef,
-    where("government", "==", id),
-    orderBy(columnName, orderDirection),
-    startAfter(indexes.lastItem),
-    limit(limitNumber)
-  );
-  const snapshots = await getDocs(q);
-  if (!snapshots.empty) indexes = getIndexes(snapshots);
-  return toArray(snapshots);
-};
+// export const nextByUsers = async (government, params) => {
+//   const { id } = government;
+//   const { columnName, orderDirection, limitNumber } = params;
+//   const q = await query(
+//     collectionRef,
+//     where("government", "==", id),
+//     orderBy(columnName, orderDirection),
+//     startAfter(indexes.lastItem),
+//     limit(limitNumber)
+//   );
+//   const snapshots = await getDocs(q);
+//   if (!snapshots.empty) indexes = getIndexes(snapshots);
+//   return toArray(snapshots);
+// };
 
-export const prevByUsers = async (government, params) => {
-  const { id } = government;
-  const { columnName, orderDirection, limitNumber } = params;
-  const q = await query(
-    collectionRef,
-    where("government", "==", id),
-    orderBy(columnName, orderDirection),
-    endBefore(indexes.firstItem),
-    limitToLast(limitNumber)
-  );
-  const snapshots = await getDocs(q);
-  if (!snapshots.empty) indexes = getIndexes(snapshots);
-  return toArray(snapshots);
-};
+// export const prevByUsers = async (government, params) => {
+//   const { id } = government;
+//   const { columnName, orderDirection, limitNumber } = params;
+//   const q = await query(
+//     collectionRef,
+//     where("government", "==", id),
+//     orderBy(columnName, orderDirection),
+//     endBefore(indexes.firstItem),
+//     limitToLast(limitNumber)
+//   );
+//   const snapshots = await getDocs(q);
+//   if (!snapshots.empty) indexes = getIndexes(snapshots);
+//   return toArray(snapshots);
+// };
 
-export const getAllByGovernment = async (uid) => {
-  const q = await query(collectionRef, where("government", "==", uid));
-  const snapshots = await getDocs(q);
-  if (!snapshots.empty) indexes = getIndexes(snapshots);
-  return toArray(snapshots);
-};
+// export const getAllByGovernment = async (uid) => {
+//   const q = await query(collectionRef, where("government", "==", uid));
+//   const snapshots = await getDocs(q);
+//   if (!snapshots.empty) indexes = getIndexes(snapshots);
+//   return toArray(snapshots);
+// };
 
-export const addGovernment = async (government, unit) => {
-  const { id: governmentId } = government;
+// export const addGovernment = async (government, unit) => {
+//   const { id: governmentId } = government;
 
-  unit.updatedAt = Timestamp.fromDate(new Date());
-  unit.government = governmentId;
-  const documentRef = doc(firestore, collectionName, unit.id);
-  return await setDoc(documentRef, unit);
-};
+//   unit.updatedAt = Timestamp.fromDate(new Date());
+//   unit.government = governmentId;
+//   const documentRef = doc(firestore, collectionName, unit.id);
+//   return await setDoc(documentRef, unit);
+// };
 
-export const removeGovernment = async (item) => {
-  item.updatedAt = Timestamp.fromDate(new Date());
-  item.government = null;
-  const documentRef = doc(firestore, collectionName, item.id);
-  return await setDoc(documentRef, item);
-};
+// export const remove = async (item) => {
+//   item.updatedAt = Timestamp.fromDate(new Date());
+//   item.government = null;
+//   const documentRef = doc(firestore, collectionName, item.id);
+//   return await setDoc(documentRef, item);
+// };
 
-export const countByGovernment = async (government) => {
-  const { id } = government;
-  const q = query(collectionRef, where("government", "==", id));
-  const snapshot = await getCountFromServer(q);
-  return snapshot.data().count;
-};
+// export const countByGovernment = async (government) => {
+//   const { id } = government;
+//   const q = query(collectionRef, where("government", "==", id));
+//   const snapshot = await getCountFromServer(q);
+//   return snapshot.data().count;
+// };
 
-export const getByGovernmentAndId = async (government, unitUid) => {
-  const { id: governmentId } = government;
-  const q = await query(
-    collectionRef,
-    where("government", "==", governmentId),
-    where("uid", "==", unitUid),
-    limit(1)
-  );
-  const snapshots = await getDocs(q);
-  return toArray(snapshots);
-};
+// export const getByGovernmentAndId = async (government, unitUid) => {
+//   const { id: governmentId } = government;
+//   const q = await query(
+//     collectionRef,
+//     where("government", "==", governmentId),
+//     where("uid", "==", unitUid),
+//     limit(1)
+//   );
+//   const snapshots = await getDocs(q);
+//   return toArray(snapshots);
+// };
 
 //BatchAdd
 export const batchAdd = async (items) => {

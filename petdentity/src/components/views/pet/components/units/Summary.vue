@@ -15,8 +15,8 @@
       @add="addHandler"
       @remove="removeHandler"
       @view="viewHandler"
-      @next="next"
-      @prev="prev"
+      @next="nextHandler"
+      @prev="prevHandler"
     />
 
     <DialogUnitView v-model="dialogUnitView" :unit="unit" readOnly />
@@ -45,7 +45,7 @@ import DialogUnitRemoveFromPet from "@/components/dialogs/unit/DialogUnitRemoveF
 import DialogUnitView from "@/components/dialogs/unit/DialogUnitView.vue";
 
 import { headers } from "./data";
-import { getAllByPet, getAllByPetNext, getAllByPetPrev } from "@/api/unit";
+import { search, next, prev } from "@/api/pet/units";
 
 import { toRefs, ref, watch } from "vue";
 
@@ -81,7 +81,7 @@ watch(
 const loadItems = async () => {
   try {
     isLoading.value = true;
-    units.value = await getAllByPet(pet.value, params.value);
+    units.value = await search(pet.value, params.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {
@@ -89,10 +89,10 @@ const loadItems = async () => {
   }
 };
 
-const next = async () => {
+const nextHandler = async () => {
   try {
     isLoading.value = true;
-    units.value = await getAllByPetNext(pet.value, params.value);
+    units.value = await next(pet.value, params.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {
@@ -100,10 +100,10 @@ const next = async () => {
   }
 };
 
-const prev = async () => {
+const prevHandler = async () => {
   try {
     isLoading.value = true;
-    units.value = await getAllByPetPrev(pet.value, params.value);
+    units.value = await prev(pet.value, params.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {

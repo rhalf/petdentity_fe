@@ -79,7 +79,7 @@ export const prev = async (user, params) => {
   return toArray(snapshots);
 };
 
-export const getAll = async () => {
+export const all = async () => {
   const { uid } = await getCurrentUser();
   const q = await query(collectionRef, where("owner", "==", uid));
   const snapshots = await getDocs(q);
@@ -87,7 +87,7 @@ export const getAll = async () => {
   return toArray(snapshots);
 };
 
-export const removeOwner = async (item) => {
+export const remove = async (user, item) => {
   item.updatedAt = Timestamp.fromDate(new Date());
   item.owner = null;
   const documentRef = doc(firestore, collectionName, item.id);

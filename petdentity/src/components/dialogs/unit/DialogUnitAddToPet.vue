@@ -42,7 +42,8 @@ import Card from "@/components/common/Card.vue";
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
-import { getByOwnerAndId, addUnitToPet } from "@/api/unit";
+import { getByOwnerAndId } from "@/api/unit";
+import { add } from "@/api/pet/units";
 
 import { useModel } from "@/utils/vue";
 
@@ -71,7 +72,7 @@ const submitHandler = async () => {
     const unit = units[0];
     if (unit.pet) throw new Error("Unit is already added to other pet!");
 
-    await addUnitToPet(pet.value, unit);
+    await add(pet.value, unit);
     // const docRef = await create(unit.value);
 
     emit("added");

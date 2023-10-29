@@ -1,31 +1,31 @@
-// import { firestore } from "@/plugins/firebase";
-// import { Timestamp } from "firebase/firestore";
-// import {
-//   collection,
-//   getDocs,
-//   getDoc,
-//   setDoc,
-//   addDoc,
-//   deleteDoc,
-//   doc,
-//   query,
-//   where,
-//   orderBy,
-//   limit,
-//   startAt,
-//   startAfter,
-//   endAt,
-//   endBefore,
-//   limitToLast,
-//   getCountFromServer,
-// } from "firebase/firestore";
+import { firestore } from "@/plugins/firebase";
+import { Timestamp } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  getDoc,
+  setDoc,
+  addDoc,
+  deleteDoc,
+  doc,
+  query,
+  where,
+  orderBy,
+  limit,
+  startAt,
+  startAfter,
+  endAt,
+  endBefore,
+  limitToLast,
+  getCountFromServer,
+} from "firebase/firestore";
 
-// import { toObject, toArray, getIndexes } from "./indexes";
+import { toObject, toArray, getIndexes } from "./indexes";
 
-// const collectionName = "breeds";
-// const collectionRef = collection(firestore, collectionName);
+const collectionName = "breeds";
+const collectionRef = collection(firestore, collectionName);
 
-// let indexes;
+let indexes;
 
 // export const search = async (
 //   id,
@@ -83,7 +83,7 @@
 //   return toObject(snapshot);
 // };
 
-// export const getAll = async (id) => {
+// export const all = async (id) => {
 //   const q = await query(
 //     collectionRef,
 //     where("animal", "==", id),
@@ -99,7 +99,7 @@
 // };
 
 // export const update = async (item) => {
-//   document.updatedAt = Timestamp.fromDate(new Date());
+//   item.updatedAt = Timestamp.fromDate(new Date());
 //   const documentRef = doc(firestore, collectionName, item.id);
 //   return await setDoc(documentRef, item);
 // };
@@ -109,13 +109,7 @@
 //   return await deleteDoc(documentRef);
 // };
 
-// export const count = async () => {
-//   const snapshot = await getCountFromServer(collectionRef);
-//   return snapshot.data().count;
-// };
-
-// export const countByAnimal = async (id) => {
-//   const q = await query(collectionRef, where("animal", "==", id));
-//   const snapshot = await getCountFromServer(q);
-//   return snapshot.data().count;
-// };
+export const count = async () => {
+  const snapshot = await getCountFromServer(collectionRef);
+  return snapshot.data().count;
+};

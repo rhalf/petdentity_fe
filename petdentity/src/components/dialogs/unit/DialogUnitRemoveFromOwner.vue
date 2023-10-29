@@ -33,11 +33,11 @@ import Card from "@/components/common/Card.vue";
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
-import { removeOwner } from "@/api/unit";
+import { remove } from "@/api/owner/units";
 
 import { useModel } from "@/utils/vue";
 
-import { ref, computed, toRefs } from "vue";
+import { ref, computed, toRefs, inject } from "vue";
 const props = defineProps({ modelValue: Boolean, unit: Object });
 const propRef = toRefs(props);
 const emit = defineEmits(["update:modelValue", "update:unit", "removed"]);
@@ -46,10 +46,12 @@ const isLoading = ref(false);
 const dialog = computed(useModel(propRef, emit, "modelValue"));
 const unit = computed(useModel(propRef, emit, "unit"));
 
+const user = inject("user");
+
 const submitHandler = async () => {
   try {
     isLoading.value = true;
-    await removeOwner(unit.value);
+    await remove(user.value, unit.value);
     show("success", "Removed an item!");
     emit("removed");
     closeHandler();

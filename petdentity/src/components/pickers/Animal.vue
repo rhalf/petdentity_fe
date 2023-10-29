@@ -17,7 +17,7 @@ import Autocomplete from "@/components/common/Autocomplete.vue";
 
 import { debounce } from "lodash";
 
-import { getAll, search } from "@/api/animal";
+import { all, search } from "@/api/animal";
 
 import { computed, toRefs, ref, watch } from "vue";
 import { useModel } from "@/utils/vue";

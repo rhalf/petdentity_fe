@@ -46,9 +46,8 @@ export const search = async (government, params) => {
     limit(limitNumber)
   );
   const snapshots = await getDocs(q);
-  if (snapshots.empty) throw new Error("Empty page!");
+  if (!snapshots.empty) indexes = getIndexes(snapshots);
 
-  indexes = getIndexes(snapshots);
   return toArray(snapshots);
 };
 
@@ -64,9 +63,8 @@ export const next = async (government, params) => {
     limit(limitNumber)
   );
   const snapshots = await getDocs(q);
-  if (snapshots.empty) throw new Error("Last page!");
+  if (!snapshots.empty) indexes = getIndexes(snapshots);
 
-  indexes = getIndexes(snapshots);
   return toArray(snapshots);
 };
 
@@ -83,9 +81,8 @@ export const prev = async (government, params) => {
   );
 
   const snapshots = await getDocs(q);
-  if (snapshots.empty) throw new Error("First page!");
+  if (!snapshots.empty) indexes = getIndexes(snapshots);
 
-  indexes = getIndexes(snapshots);
   return toArray(snapshots);
 };
 
@@ -95,21 +92,21 @@ export const get = async (id) => {
   return toObject(snapshot);
 };
 
-export const create = async (document) => {
+export const create = async (item) => {
   const { uid } = await getCurrentUser();
-  document.createdAt = Timestamp.fromDate(new Date());
-  document.owner = uid;
-  return await addDoc(collectionRef, document);
+  item.createdAt = Timestamp.fromDate(new Date());
+  item.owner = uid;
+  return await addDoc(collectionRef, item);
 };
 
-export const update = async (document) => {
-  document.updateAt = Timestamp.fromDate(new Date());
-  const documentRef = doc(firestore, collectionName, document.id);
-  return await setDoc(documentRef, document);
+export const update = async (item) => {
+  item.updateAt = Timestamp.fromDate(new Date());
+  const documentRef = doc(firestore, collectionName, item.id);
+  return await setDoc(documentRef, item);
 };
 
-export const remove = async (document) => {
-  const documentRef = doc(firestore, collectionName, document.id);
+export const remove = async (item) => {
+  const documentRef = doc(firestore, collectionName, item.id);
   return await deleteDoc(documentRef);
 };
 
@@ -117,6 +114,7 @@ export const count = async (government) => {
   const units = await unitsByGovernment(government);
 
   const petList = units.map((unit) => unit.pet);
+  if (!petList.length) return 0;
 
   const q = await query(collectionRef, where("id", "in", petList));
 

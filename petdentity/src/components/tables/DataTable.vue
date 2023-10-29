@@ -113,6 +113,18 @@
       </v-row>
     </template>
 
+    <template v-slot:item.profile.name="{ item, index }">
+      <v-row class="pa-1">
+        <v-col>
+          <Label text class="mt-2">
+            {{ item.selectable.profile.name.last }},
+            {{ item.selectable.profile.name.first }}
+            {{ item.selectable.profile.name.middle }}
+          </Label>
+        </v-col>
+      </v-row>
+    </template>
+
     <!-- <template v-slot:item.colors="{ item, index }">
       <Colors :colors="item.selectable.colors" />
     </template> -->

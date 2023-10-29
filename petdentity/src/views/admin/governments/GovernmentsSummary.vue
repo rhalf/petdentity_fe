@@ -12,6 +12,7 @@
             append-inner-icon="mdi-magnify"
             variant="outlined"
             @keypress.enter="loadItems"
+            placeholder="Name"
             uppercase
           />
         </v-col>
@@ -29,6 +30,7 @@
             withView
             withRemove
             withAdd
+            @refresh="loadItems"
             @remove="removeHandler"
             @add="addHandler"
             @view="viewHandler"

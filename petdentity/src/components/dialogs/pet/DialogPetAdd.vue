@@ -11,7 +11,12 @@
         <v-row dense class="py-4 px-4">
           <v-spacer />
           <v-col cols="auto">
-            <Button @click="submitHandler" :disabled="!pet.name" :loading="isLoading">Submit</Button>
+            <Button
+              @click="submitHandler"
+              :disabled="!pet.name"
+              :loading="isLoading"
+              >Submit</Button
+            >
           </v-col>
           <v-col cols="auto">
             <Button @click="closeHandler" variant="outlined">Close</Button>
@@ -32,11 +37,11 @@ import Card from "@/components/common/Card.vue";
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
-import { create } from "@/api/pet";
+import { create } from "@/api/owner/pets";
 
 import { useModel } from "@/utils/vue";
 
-import { ref, toRefs, computed } from "vue";
+import { ref, toRefs, computed, inject } from "vue";
 const props = defineProps({ modelValue: Boolean });
 const propsRef = toRefs(props);
 const emit = defineEmits(["update:modelValue", "added"]);
@@ -48,10 +53,12 @@ const pet = ref({
   color2: "#FFFFFF01",
 });
 
+const user = inject("user");
+
 const submitHandler = async () => {
   try {
     isLoading.value = true;
-    const docRef = await create(pet.value);
+    await create(user.value, pet.value);
     emit("added");
     show("success", "Added an pet!");
     pet.value = {};

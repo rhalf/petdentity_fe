@@ -86,21 +86,21 @@ export const get = async (id) => {
   return toObject(snapshot);
 };
 
-export const create = async (document) => {
-  const { uid } = await getCurrentUser();
-  document.createdAt = Timestamp.fromDate(new Date());
-  document.owner = uid;
-  return await addDoc(collectionRef, document);
+export const create = async (user, item) => {
+  const { id } = user;
+  item.createdAt = Timestamp.fromDate(new Date());
+  item.owner = id;
+  return await addDoc(collectionRef, item);
 };
 
-export const update = async (document) => {
-  document.updateAt = Timestamp.fromDate(new Date());
-  const documentRef = doc(firestore, collectionName, document.id);
-  return await setDoc(documentRef, document);
+export const update = async (item) => {
+  item.updateAt = Timestamp.fromDate(new Date());
+  const documentRef = doc(firestore, collectionName, item.id);
+  return await setDoc(documentRef, item);
 };
 
-export const remove = async (document) => {
-  const documentRef = doc(firestore, collectionName, document.id);
+export const remove = async (item) => {
+  const documentRef = doc(firestore, collectionName, item.id);
   return await deleteDoc(documentRef);
 };
 

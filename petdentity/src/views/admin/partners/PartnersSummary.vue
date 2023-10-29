@@ -3,7 +3,7 @@
     <Sheet>
       <v-row dense>
         <v-col cols="auto">
-          <Label title class="text-primary"> Contacts </Label>
+          <Label title class="text-primary">Governments</Label>
         </v-col>
         <v-spacer />
         <v-col cols="12" md="3">
@@ -12,7 +12,7 @@
             append-inner-icon="mdi-magnify"
             variant="outlined"
             @keypress.enter="loadItems"
-            placeholder="Name"
+            uppercase
           />
         </v-col>
       </v-row>
@@ -23,31 +23,29 @@
             hover
             :loading="isLoading"
             :headers="headers"
-            :items="contacts"
-            :items-per-pageNumber="params.limitNumber"
+            :items="governments"
+            :items-per-page="params.limit"
             hide-default-footer
-            withRemove
             withView
+            withRemove
             withAdd
+            @refresh="loadItems"
             @remove="removeHandler"
-            @view="viewHandler"
             @add="addHandler"
+            @view="viewHandler"
             @next="nextHandler"
             @prev="prevHandler"
           />
         </v-col>
       </v-row>
     </Sheet>
-    <DialogContactAdd v-model="dialogContactAdd" @added="loadItems" />
-    <DialogContactView
-      v-model="dialogContactView"
-      v-model:contact="contact"
-      @updated="loadItems"
-    />
-    <DialogContactRemove
-      v-model="dialogContactRemove"
-      v-model:contact="contact"
-      @removed="loadItems"
+
+    <DialogGovernmentAdd v-model="dialogGovernmentAdd" @add="loadItems" />
+
+    <DialogGovernmentRemove
+      v-model="dialogGovernmentRemove"
+      v-model:government="government"
+      @remove="loadItems"
     />
   </v-container>
 </template>
@@ -60,26 +58,22 @@ import TextField from "@/components/common/TextField.vue";
 import DataTable from "@/components/tables/DataTable.vue";
 import { headers } from "./data";
 
-import DialogContactAdd from "@/components/dialogs/contact/DialogContactAdd.vue";
-import DialogContactView from "@/components/dialogs/contact/DialogContactView.vue";
-import DialogContactRemove from "@/components/dialogs/contact/DialogContactRemove.vue";
+import DialogGovernmentRemove from "@/components/dialogs/government/DialogGovernmentRemove.vue";
+import DialogGovernmentAdd from "@/components/dialogs/government/DialogGovernmentAdd.vue";
 
-import { useSnackbarStore } from "@/store/snackbar";
-const { show } = useSnackbarStore();
+import { useRouter } from "vue-router";
+const router = useRouter();
 
-import { search, next, prev } from "@/api/owner/contacts";
+import { search, next, prev } from "@/api/government";
 
-import { ref, watchEffect, inject } from "vue";
+import { ref, onMounted } from "vue";
 
-const dialogContactAdd = ref(false);
-const dialogContactView = ref(false);
-const dialogContactRemove = ref(false);
-
-const user = inject("user");
+const dialogGovernmentAdd = ref(false);
+const dialogGovernmentRemove = ref(false);
 
 const isLoading = ref(false);
-const contacts = ref([]);
-const contact = ref({});
+const governments = ref();
+const government = ref();
 const params = ref({
   searchText: "",
   columnName: "name",
@@ -87,24 +81,30 @@ const params = ref({
   limitNumber: 5,
 });
 
-const addHandler = async () => {
-  dialogContactAdd.value = true;
+const viewHandler = ({ id }) => {
+  router.push({
+    name: "GovernmentDashboard",
+    params: { governmentId: id },
+  });
 };
 
-const viewHandler = (item) => {
-  contact.value = item;
-  dialogContactView.value = true;
+const addHandler = async () => {
+  dialogGovernmentAdd.value = true;
 };
 
 const removeHandler = async (item) => {
-  contact.value = item;
-  dialogContactRemove.value = true;
+  government.value = item;
+  dialogGovernmentRemove.value = true;
 };
+
+onMounted(async () => {
+  loadItems();
+});
 
 const loadItems = async () => {
   try {
     isLoading.value = true;
-    contacts.value = await search(user.value, params.value);
+    governments.value = await search(params.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {
@@ -115,7 +115,7 @@ const loadItems = async () => {
 const nextHandler = async () => {
   try {
     isLoading.value = true;
-    contacts.value = await next(user.value, params.value);
+    governments.value = await next(params.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {
@@ -126,15 +126,11 @@ const nextHandler = async () => {
 const prevHandler = async () => {
   try {
     isLoading.value = true;
-    contacts.value = await prev(user.value, params.value);
+    governments.value = await prev(params.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {
     isLoading.value = false;
   }
 };
-
-watchEffect(async () => {
-  if (user.value) loadItems();
-});
 </script>

@@ -49,7 +49,7 @@ const pet = computed(useModel(propRef, emit, "pet"));
 const submitHandler = async () => {
   try {
     isLoading.value = true;
-    const result = await remove(pet.value);
+    await remove(pet.value);
     show("success", "Removed an item!");
     emit("removed");
     dialog.value = false;

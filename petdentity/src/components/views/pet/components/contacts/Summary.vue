@@ -10,6 +10,7 @@
       withView
       :withAdd="!readOnly"
       :withRemove="!readOnly"
+      @refresh="loadItems"
       @add="addHandler"
       @remove="removeHandler"
       @view="viewHandler"
@@ -47,7 +48,7 @@ import DialogPetContactAdd from "@/components/dialogs/pet-contact/DialogPetConta
 import DialogPetContactRemove from "@/components/dialogs/pet-contact/DialogPetContactRemove.vue";
 
 import { headers } from "./data";
-import { search, next, prev } from "@/api/pet-contacts";
+import { search, next, prev } from "@/api/pet/contacts";
 
 import { toRefs, ref, watch } from "vue";
 

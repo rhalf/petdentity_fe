@@ -33,7 +33,7 @@ import Card from "@/components/common/Card.vue";
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
-import { removeUnitFromPet } from "@/api/unit";
+import { remove } from "@/api/pet/units";
 
 import { useModel } from "@/utils/vue";
 
@@ -49,7 +49,7 @@ const unit = computed(useModel(propRef, emit, "unit"));
 const submitHandler = async () => {
   try {
     isLoading.value = true;
-    await removeUnitFromPet(unit.value);
+    await remove(unit.value);
     show("success", "Removed a unit!");
     emit("removed");
     unit.value = null;

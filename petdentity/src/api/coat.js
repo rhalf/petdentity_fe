@@ -78,7 +78,7 @@ export const get = async (id) => {
   return toObject(snapshot);
 };
 
-export const getAll = async (id) => {
+export const all = async (id) => {
   const q = await query(collectionRef, orderBy("name", "asc"));
   const snapshots = await getDocs(q);
   return toArray(snapshots);
@@ -90,7 +90,7 @@ export const create = async (item) => {
 };
 
 export const update = async (item) => {
-  document.updatedAt = Timestamp.fromDate(new Date());
+  item.updatedAt = Timestamp.fromDate(new Date());
   const documentRef = doc(firestore, collectionName, item.id);
   return await setDoc(documentRef, item);
 };

@@ -11,7 +11,12 @@
         <v-row dense class="py-4 px-4">
           <v-spacer />
           <v-col cols="auto">
-            <Button @click="submitHandler" :disabled="!contact.name" :loading="isLoading">Submit</Button>
+            <Button
+              @click="submitHandler"
+              :disabled="!contact.name"
+              :loading="isLoading"
+              >Submit</Button
+            >
           </v-col>
           <v-col cols="auto">
             <Button @click="closeHandler" variant="outlined">Close</Button>
@@ -34,7 +39,7 @@ const { show } = useSnackbarStore();
 
 import { Address } from "@/constants";
 
-import { create } from "@/api/contact";
+import { create } from "@/api/owner/contacts";
 
 import { useModel } from "@/utils/vue";
 

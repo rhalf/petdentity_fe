@@ -12,6 +12,7 @@
             append-inner-icon="mdi-magnify"
             variant="outlined"
             @keypress.enter="loadItems"
+            placeholder="Email"
           />
         </v-col>
       </v-row>
@@ -27,6 +28,7 @@
             hide-default-footer
             withView
             withRemove
+            @refresh="loadItems"
             @remove="removeHandler"
             @view="viewHandler"
             @next="nextHandler"

@@ -13,11 +13,10 @@
 </template>
 
 <script setup>
-import { getAll } from "@/api/contact";
+import { all } from "@/api/owner/contacts";
 
-import { computed, toRefs, ref } from "vue";
+import { computed, toRefs, ref, watchEffect, inject } from "vue";
 import { useModel } from "@/utils/vue";
-import { onMounted } from "vue";
 
 const emit = defineEmits(["update:modelValue"]);
 const props = defineProps({ modelValue: Object });
@@ -27,17 +26,18 @@ const item = computed(useModel(propsRef, emit, "modelValue"));
 const isLoading = ref(false);
 const items = ref();
 
+const user = inject("user");
+
 const params = ref({
   searchText: null,
   columnName: "name",
   orderDirection: "asc",
-  limitNumber: null,
 });
 
 const loadItems = async () => {
   try {
     isLoading.value = true;
-    items.value = await getAll(params.value);
+    items.value = await all(user.value, params.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {
@@ -45,7 +45,7 @@ const loadItems = async () => {
   }
 };
 
-onMounted(async () => {
+watchEffect(async () => {
   await loadItems();
 });
 </script>

@@ -73,7 +73,7 @@ export const prev = async (id, { columnName, orderDirection, limitNumber }) => {
   return toArray(snapshots);
 };
 
-export const getAll = async (id, { columnName, orderDirection }) => {
+export const all = async (id, { columnName, orderDirection }) => {
   const q = await query(
     collectionRef,
     where("pet", "==", id),

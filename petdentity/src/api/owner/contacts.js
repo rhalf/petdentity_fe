@@ -81,11 +81,12 @@ export const prev = async (user, params) => {
   return toArray(snapshots);
 };
 
-export const getAll = async ({ columnName, orderDirection }) => {
-  const { uid } = await getCurrentUser();
+export const all = async (user, params) => {
+  const { id } = user;
+  const { columnName, orderDirection } = params;
   const q = await query(
     collectionRef,
-    where("owner", "==", uid),
+    where("owner", "==", id),
     orderBy(columnName, orderDirection)
   );
   const snapshots = await getDocs(q);
@@ -106,13 +107,13 @@ export const createForContact = async (id, item) => {
 };
 
 export const update = async (item) => {
-  document.updatedAt = Timestamp.fromDate(new Date());
+  item.updatedAt = Timestamp.fromDate(new Date());
   const documentRef = doc(firestore, collectionName, item.id);
   return await setDoc(documentRef, item);
 };
 
-export const remove = async (document) => {
-  const documentRef = doc(firestore, collectionName, document.id);
+export const remove = async (item) => {
+  const documentRef = doc(firestore, collectionName, item.id);
   return await deleteDoc(documentRef);
 };
 

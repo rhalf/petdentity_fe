@@ -12,6 +12,7 @@
             append-inner-icon="mdi-magnify"
             variant="outlined"
             @keypress.enter="loadItems"
+            placeholder="UID"
             @click:clear="loadItems"
           />
         </v-col>
@@ -29,6 +30,7 @@
             withRemove
             withView
             withAdd
+            @refresh="loadItems"
             @view="viewHandler"
             @remove="removeHandler"
             @add="dialogUnitAdd = true"

@@ -12,6 +12,7 @@
             append-inner-icon="mdi-magnify"
             variant="outlined"
             @keypress.enter="loadItems"
+            placeholder="Name"
           />
         </v-col>
       </v-row>
@@ -71,7 +72,7 @@ import { useRouter, useRoute } from "vue-router";
 const router = useRouter();
 
 import { search, next, prev, count as countPets } from "@/api/owner/pets";
-import { countByOwner as countUnits } from "@/api/unit";
+import { count as countUnits } from "@/api/owner/units";
 
 import { ref, watchEffect, inject } from "vue";
 

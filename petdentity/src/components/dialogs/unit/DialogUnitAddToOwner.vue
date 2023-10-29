@@ -2,7 +2,7 @@
   <Dialog v-model="dialog" :width="480">
     <Card>
       <v-card-title class="bg-primary pa-4">
-        <Label header class="text-black"> Add Unit </Label>
+        <Label header class="text-black"> Add Unit To Owner</Label>
       </v-card-title>
       <v-card-text>
         <v-row>
@@ -43,6 +43,7 @@ import { useModel } from "@/utils/vue";
 import { ref, toRefs, computed, inject } from "vue";
 
 const user = inject("user");
+
 const props = defineProps({ modelValue: Boolean });
 const propsRef = toRefs(props);
 const emit = defineEmits(["update:modelValue", "added"]);
@@ -64,7 +65,7 @@ const submitHandler = async () => {
     const unit = units[0];
     if (unit.owner) throw new Error("Unit is already added to an owner!");
 
-    unit.owner = user.uid;
+    unit.owner = user.value.id;
 
     await update(unit);
     // const docRef = await create(unit.value);

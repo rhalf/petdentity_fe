@@ -42,7 +42,8 @@ import Card from "@/components/common/Card.vue";
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
-import { getByUid, addGovernment } from "@/api/unit";
+import { getByUid } from "@/api/unit";
+import { add } from "@/api/government/units";
 
 import { useModel } from "@/utils/vue";
 
@@ -73,7 +74,7 @@ const submitHandler = async () => {
     if (unit.government)
       throw new Error("Unit is already added to other government!");
 
-    await addGovernment(government.value, unit);
+    await add(government.value, unit);
 
     emit("added");
     show("success", "Added a unit!");

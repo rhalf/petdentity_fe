@@ -39,7 +39,7 @@ const { show } = useSnackbarStore();
 
 import { cloneDeep } from "lodash";
 import { Vaccine } from "@/constants";
-import { create } from "@/api/vaccine";
+import { create } from "@/api/pet/vaccines";
 import { useModel } from "@/utils/vue";
 
 import { ref, toRefs, computed } from "vue";
@@ -57,7 +57,7 @@ const submitHandler = async () => {
   try {
     isLoading.value = true;
     vaccine.value.pet = pet.value.id;
-    await create(vaccine.value);
+    await create(pet.value, vaccine.value);
     emit("added");
     show("success", "Added a vaccine!");
 

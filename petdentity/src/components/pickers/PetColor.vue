@@ -15,7 +15,7 @@ import Select from "@/components/common/Select.vue";
 import Label from "@/components/common/Label.vue";
 import Card from "@/components/common/Card.vue";
 
-import { getAll } from "@/api/color";
+import { all } from "@/api/color";
 
 import { computed, toRefs, ref, watch } from "vue";
 import { useModel } from "@/utils/vue";
@@ -37,7 +37,7 @@ const loadItems = async () => {
 
     if (!animal.value) return;
 
-    const items = await getAll(animal.value.id);
+    const items = await all(animal.value.id);
 
     if (items.length) petColor.value = items;
     else petColor.value = [];

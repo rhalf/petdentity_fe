@@ -11,6 +11,7 @@
             v-model="params.searchText"
             append-inner-icon="mdi-magnify"
             variant="outlined"
+            placeholder="Name"
             @keypress.enter="loadItems"
             uppercase
           />

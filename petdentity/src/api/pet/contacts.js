@@ -1,6 +1,5 @@
 import { firestore } from "@/plugins/firebase";
 import { Timestamp } from "firebase/firestore";
-
 import {
   collection,
   getDocs,
@@ -21,32 +20,36 @@ import {
   getCountFromServer,
 } from "firebase/firestore";
 
-import { toObject, toArray, getIndexes } from "./indexes";
+import { toObject, toArray, getIndexes } from "../indexes";
 
-const collectionName = "users";
+const collectionName = "pet-contacts";
 const collectionRef = collection(firestore, collectionName);
 
 let indexes;
 
-export const search = async (params) => {
+export const search = async (pet, params) => {
+  const { id } = pet;
   const { searchText, columnName, orderDirection, limitNumber } = params;
   const q = await query(
     collectionRef,
+    where("pet", "==", id),
     orderBy(columnName, orderDirection),
     startAt(searchText),
     endAt(searchText + "\uf8ff"),
     limit(limitNumber)
   );
   const snapshots = await getDocs(q);
-  if (!snapshots.empty) indexes = getIndexes(snapshots);
 
+  indexes = getIndexes(snapshots);
   return toArray(snapshots);
 };
 
-export const next = async (params) => {
+export const next = async (pet, params) => {
+  const { id } = pet;
   const { columnName, orderDirection, limitNumber } = params;
   const q = await query(
     collectionRef,
+    where("pet", "==", id),
     orderBy(columnName, orderDirection),
     startAfter(indexes.lastItem),
     limit(limitNumber)
@@ -57,10 +60,12 @@ export const next = async (params) => {
   return toArray(snapshots);
 };
 
-export const prev = async (params) => {
+export const prev = async (pet, params) => {
+  const { id } = pet;
   const { columnName, orderDirection, limitNumber } = params;
   const q = await query(
     collectionRef,
+    where("pet", "==", id),
     orderBy(columnName, orderDirection),
     endBefore(indexes.firstItem),
     limitToLast(limitNumber)
@@ -71,36 +76,18 @@ export const prev = async (params) => {
   return toArray(snapshots);
 };
 
-export const get = async (id) => {
-  const docRef = doc(firestore, collectionName, id);
-  const snapshot = await getDoc(docRef);
-
-  if (snapshot.exists()) return { id: snapshot.id, ...snapshot.data() };
-  else return null;
-};
-
-export const create = async (item) => {
-  item.createdAt = Timestamp.fromDate(new Date());
-  const docRef = doc(firestore, collectionName, item.id);
-  return setDoc(docRef, item);
-};
-
-export const update = async (item) => {
+export const create = async (pet, item) => {
+  const { id } = pet;
+  item.pet = id;
   item.updatedAt = Timestamp.fromDate(new Date());
-
-  // item.birthDate = Timestamp.fromDate(item.profile.birthDate);
-
-  const docRef = doc(firestore, collectionName, item.id);
-  const result = await setDoc(docRef, item);
-  return result;
+  const documentRef = doc(firestore, collectionName, item.id);
+  return await addDoc(documentRef, item);
 };
 
 export const remove = async (item) => {
-  const docRef = doc(firestore, collectionName, item.id);
-  return await deleteDoc(docRef, item);
-};
-
-export const count = async () => {
-  const snapshot = await getCountFromServer(collectionRef);
-  return snapshot.data().count;
+  // const { id } = pet;
+  // item.pet = null;
+  // item.updatedAt = Timestamp.fromDate(new Date());
+  const documentRef = doc(firestore, collectionName, item.id);
+  return await removeDoc(documentRef, item);
 };

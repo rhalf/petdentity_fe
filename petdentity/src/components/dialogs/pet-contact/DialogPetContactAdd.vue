@@ -5,7 +5,7 @@
         <Label header class="text-black"> Add Contact</Label>
       </v-card-title>
       <v-card-text>
-        <Contact v-model="contact" />
+        <ContactPicker v-model="contact" />
       </v-card-text>
       <v-card-actions>
         <v-row dense class="py-4 px-4">
@@ -26,17 +26,20 @@
 import Button from "@/components/common/Button.vue";
 import Label from "@/components/common/Label.vue";
 import Dialog from "@/components/common/Dialog.vue";
-import Contact from "@/components/pickers/Contact.vue";
+import ContactPicker from "@/components/pickers/ContactPicker.vue";
 import Card from "@/components/common/Card.vue";
 
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
+import { cloneDeep } from "lodash";
+
+import { Contact } from "@/constants";
+
 import { useModel } from "@/utils/vue";
 
-import { create } from "@/api/pet-contacts";
+import { create } from "@/api/pet/contacts";
 
-import _ from "lodash";
 import { ref, toRefs, computed } from "vue";
 const props = defineProps({ modelValue: Boolean, pet: Object });
 const propsRef = toRefs(props);
@@ -44,7 +47,9 @@ const emit = defineEmits(["update:modelValue", "added"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propsRef, emit, "modelValue"));
-const contact = ref();
+
+const contact = ref(cloneDeep(Contact));
+
 const { pet } = propsRef;
 
 const submitHandler = async () => {
