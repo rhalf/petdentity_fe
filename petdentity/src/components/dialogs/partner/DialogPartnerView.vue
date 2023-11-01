@@ -2,16 +2,10 @@
   <Dialog v-model="dialog" :width="640" expand>
     <Card>
       <v-card-title class="bg-primary pa-4">
-        <Label header class="text-black"> Add Coat </Label>
+        <Label header class="text-black"> View Partner </Label>
       </v-card-title>
       <v-card-text>
-        <Label text class="text-primary">Coat</Label>
-
-        <TextField
-          v-model="coat.name"
-          class="mt-3"
-          placeholder="Enter coat here!"
-        />
+        <FormPartner v-model="partner" :disabled="disabled" />
       </v-card-text>
       <v-card-actions>
         <v-row dense class="py-4 px-4">
@@ -19,10 +13,10 @@
           <v-col cols="auto">
             <Button
               @click="submitHandler"
-              :disabled="!coat.name"
               :loading="isLoading"
+              v-if="!readOnly"
             >
-              Submit
+              {{ buttonLabel }}
             </Button>
           </v-col>
           <v-col cols="auto">
@@ -37,43 +31,60 @@
 <script setup>
 import Button from "@/components/common/Button.vue";
 import Label from "@/components/common/Label.vue";
-import TextField from "@/components/common/TextField.vue";
 import Dialog from "@/components/common/Dialog.vue";
+import FormPartner from "@/components/forms/partner/FormPartner.vue";
 import Card from "@/components/common/Card.vue";
 
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
 import { cloneDeep } from "lodash";
-import { Coat } from "@/constants";
-
-import { create } from "@/api/coat";
-
+import { update } from "@/api/partner";
 import { useModel } from "@/utils/vue";
 
-import { ref, toRefs, computed } from "vue";
-const props = defineProps({ modelValue: Boolean });
-const propsRef = toRefs(props);
-const emit = defineEmits(["update:modelValue", "added"]);
+import { ref, computed, toRefs, watchEffect } from "vue";
+const props = defineProps({
+  modelValue: Boolean,
+  partner: Object,
+  readOnly: Boolean,
+});
+const propRef = toRefs(props);
+const emit = defineEmits(["update:modelValue", "update:partner", "updated"]);
 
 const isLoading = ref(false);
-const dialog = computed(useModel(propsRef, emit, "modelValue"));
-const coat = ref(cloneDeep(Coat));
+const disabled = ref(true);
+const dialog = computed(useModel(propRef, emit, "modelValue"));
+const item = computed(useModel(propRef, emit, "partner"));
+
+const partner = ref();
+
+watchEffect(() => {
+  if (dialog.value) partner.value = cloneDeep(item.value);
+});
 
 const submitHandler = async () => {
+  if (disabled.value) {
+    disabled.value = false;
+    return;
+  }
+
   try {
     isLoading.value = true;
-    await create(coat.value);
-    emit("added");
-    show("success", "Added an coat!");
-    coat.value = {};
+    await update(partner.value);
+    show("success", "Updated a partner!");
     dialog.value = false;
+    emit("updated");
+    disabled.value = true;
   } catch ({ message }) {
     show("error", message);
   } finally {
     isLoading.value = false;
   }
 };
+
+const buttonLabel = computed(() => {
+  return disabled.value ? "Update" : "Save";
+});
 
 const closeHandler = () => {
   dialog.value = false;

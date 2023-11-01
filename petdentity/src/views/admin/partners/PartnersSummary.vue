@@ -3,7 +3,7 @@
     <Sheet>
       <v-row dense>
         <v-col cols="auto">
-          <Label title class="text-primary">Governments</Label>
+          <Label title class="text-primary">Partners</Label>
         </v-col>
         <v-spacer />
         <v-col cols="12" md="3">
@@ -23,7 +23,7 @@
             hover
             :loading="isLoading"
             :headers="headers"
-            :items="governments"
+            :items="partners"
             :items-per-page="params.limit"
             hide-default-footer
             withView
@@ -40,12 +40,16 @@
       </v-row>
     </Sheet>
 
-    <DialogGovernmentAdd v-model="dialogGovernmentAdd" @add="loadItems" />
-
-    <DialogGovernmentRemove
-      v-model="dialogGovernmentRemove"
-      v-model:government="government"
-      @remove="loadItems"
+    <DialogPartnerAdd v-model="dialogPartnerAdd" @added="loadItems" />
+    <DialogPartnerView
+      v-model="dialogPartnerView"
+      v-model:partner="partner"
+      @updated="loadItems"
+    />
+    <DialogPartnerRemove
+      v-model="dialogPartnerRemove"
+      v-model:partner="partner"
+      @removed="loadItems"
     />
   </v-container>
 </template>
@@ -58,22 +62,24 @@ import TextField from "@/components/common/TextField.vue";
 import DataTable from "@/components/tables/DataTable.vue";
 import { headers } from "./data";
 
-import DialogGovernmentRemove from "@/components/dialogs/government/DialogGovernmentRemove.vue";
-import DialogGovernmentAdd from "@/components/dialogs/government/DialogGovernmentAdd.vue";
+import DialogPartnerRemove from "@/components/dialogs/partner/DialogPartnerRemove.vue";
+import DialogPartnerView from "@/components/dialogs/partner/DialogPartnerView.vue";
+import DialogPartnerAdd from "@/components/dialogs/partner/DialogPartnerAdd.vue";
 
 import { useRouter } from "vue-router";
 const router = useRouter();
 
-import { search, next, prev } from "@/api/government";
+import { search, next, prev } from "@/api/partner";
 
 import { ref, onMounted } from "vue";
 
-const dialogGovernmentAdd = ref(false);
-const dialogGovernmentRemove = ref(false);
+const dialogPartnerAdd = ref(false);
+const dialogPartnerView = ref(false);
+const dialogPartnerRemove = ref(false);
 
 const isLoading = ref(false);
-const governments = ref();
-const government = ref();
+const partners = ref();
+const partner = ref();
 const params = ref({
   searchText: "",
   columnName: "name",
@@ -81,20 +87,18 @@ const params = ref({
   limitNumber: 5,
 });
 
-const viewHandler = ({ id }) => {
-  router.push({
-    name: "GovernmentDashboard",
-    params: { governmentId: id },
-  });
+const viewHandler = (item) => {
+  partner.value = item;
+  dialogPartnerView.value = true;
 };
 
 const addHandler = async () => {
-  dialogGovernmentAdd.value = true;
+  dialogPartnerAdd.value = true;
 };
 
 const removeHandler = async (item) => {
-  government.value = item;
-  dialogGovernmentRemove.value = true;
+  partner.value = item;
+  dialogPartnerRemove.value = true;
 };
 
 onMounted(async () => {
@@ -104,7 +108,7 @@ onMounted(async () => {
 const loadItems = async () => {
   try {
     isLoading.value = true;
-    governments.value = await search(params.value);
+    partners.value = await search(params.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {
@@ -115,7 +119,7 @@ const loadItems = async () => {
 const nextHandler = async () => {
   try {
     isLoading.value = true;
-    governments.value = await next(params.value);
+    partners.value = await next(params.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {
@@ -126,7 +130,7 @@ const nextHandler = async () => {
 const prevHandler = async () => {
   try {
     isLoading.value = true;
-    governments.value = await prev(params.value);
+    partners.value = await prev(params.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {

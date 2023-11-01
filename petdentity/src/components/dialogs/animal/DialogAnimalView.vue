@@ -68,9 +68,9 @@ const submitHandler = async () => {
       isLoading.value = true;
       await update(animal.value);
       show("success", "Updated an animal!");
-      dialog.value = false;
       emit("updated");
       disabled.value = true;
+      closeHandler();
     } catch ({ message }) {
       show("error", message);
     } finally {

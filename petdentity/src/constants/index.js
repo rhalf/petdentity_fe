@@ -1,6 +1,7 @@
 import { cloneDeep } from "lodash";
 
 export const UserGroups = Object.freeze({
+  SUPER: "SUPER",
   ADMIN: "ADMIN",
   OWNER: "OWNER",
   VETERINARIAN: "VETERINARIAN",
@@ -134,4 +135,31 @@ export const Contact = Object.freeze({
   name: null,
   mobile: null,
   address: cloneDeep(Address),
+});
+
+export const Coat = Object.freeze({
+  name: null,
+});
+
+export const Pet = Object.freeze({
+  name: null,
+  animal: null,
+  birthDate: null,
+  breed: null,
+  coat: null,
+  coatRemarks: null,
+  gender: null,
+  photoUrl: null,
+  height: null,
+  weight: null,
+  petStatus: null,
+  photoUrl: null,
+  owner: null,
+  privacy: null,
+});
+
+export const Partner = Object.freeze({
+  name: null,
+  link: null,
+  privacy: null,
 });

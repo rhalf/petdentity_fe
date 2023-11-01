@@ -48,4 +48,10 @@ export const items = [
     subtitle: "Manage Government",
     to: { name: "AdminGovernmentsSummary" },
   },
+  {
+    icon: "mdi-handshake",
+    title: "Partners",
+    subtitle: "Manage Partners",
+    to: { name: "AdminPartnersSummary" },
+  },
 ];

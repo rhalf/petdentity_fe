@@ -97,8 +97,8 @@ const addHandler = async () => {
   try {
     isLoading.value = true;
 
-    const unitCount = await countUnits();
-    const petCount = await countPets();
+    const unitCount = await countUnits(user.value);
+    const petCount = await countPets(user.value);
 
     if (unitCount <= petCount)
       throw new Error("Please add more units to continue!");

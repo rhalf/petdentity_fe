@@ -2,21 +2,21 @@
   <Dialog v-model="dialog" :width="640">
     <Card>
       <v-card-title class="bg-primary pa-4">
-        <Label header class="text-black"> Remove Color</Label>
+        <Label header class="text-black"> Remove Partner </Label>
       </v-card-title>
       <v-card-text>
         <Label text> Are you sure you want to remove this item?</Label>
         <br />
-        <Label header>Name : "{{ color.name }}" </Label>
+        <Label header>Name : "{{ partner.name }}"" </Label>
       </v-card-text>
       <v-card-actions>
         <v-row dense class="py-4 px-4">
           <v-spacer />
           <v-col cols="auto">
-            <Button @click="submitHandler" :loading="isLoading"> Yes </Button>
+            <Button @click="submitHandler" :loading="isLoading">Yes</Button>
           </v-col>
           <v-col cols="auto">
-            <Button @click="closeHandler" variant="outlined"> No </Button>
+            <Button @click="closeHandler" variant="outlined">No</Button>
           </v-col>
         </v-row>
       </v-card-actions>
@@ -33,23 +33,23 @@ import Card from "@/components/common/Card.vue";
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
-import { remove } from "@/api/color";
+import { remove } from "@/api/partner";
 
 import { useModel } from "@/utils/vue";
 
 import { ref, computed, toRefs } from "vue";
-const props = defineProps({ modelValue: Boolean, color: Object });
+const props = defineProps({ modelValue: Boolean, partner: Object });
 const propRef = toRefs(props);
-const emit = defineEmits(["update:modelValue", "update:color", "removed"]);
+const emit = defineEmits(["update:modelValue", "update:partner", "removed"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propRef, emit, "modelValue"));
-const color = computed(useModel(propRef, emit, "color"));
+const partner = computed(useModel(propRef, emit, "partner"));
 
 const submitHandler = async () => {
   try {
     isLoading.value = true;
-    await remove(color.value);
+    const result = await remove(partner.value);
     show("success", "Removed an item!");
     emit("removed");
     dialog.value = false;

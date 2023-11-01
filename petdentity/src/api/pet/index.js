@@ -20,7 +20,7 @@ import {
   getCountFromServer,
 } from "firebase/firestore";
 
-import { toObject, toArray, getIndexes } from "./indexes";
+import { toObject, toArray, getIndexes } from "../indexes";
 
 const collectionName = "pets";
 const collectionRef = collection(firestore, collectionName);

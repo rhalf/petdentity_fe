@@ -29,6 +29,7 @@
             withRemove
             withView
             withAdd
+            @refresh="loadItems"
             @remove="removeHandler"
             @view="viewHandler"
             @add="addHandler"
@@ -79,7 +80,8 @@ const user = inject("user");
 
 const isLoading = ref(false);
 const contacts = ref([]);
-const contact = ref({});
+const contact = ref();
+
 const params = ref({
   searchText: "",
   columnName: "name",

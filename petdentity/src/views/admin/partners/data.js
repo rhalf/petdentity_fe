@@ -32,7 +32,7 @@ export const headers = [
     title: "Link",
     align: "start",
     sortable: false,
-    key: "level",
+    key: "link",
     width: "200px",
   },
 ];
