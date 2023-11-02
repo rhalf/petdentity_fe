@@ -8,7 +8,9 @@
     item-title="email"
     item-value="email"
     return-object
-  />
+    @click:clear="loadItems"
+  >
+  </Autocomplete>
 </template>
 
 <script setup>

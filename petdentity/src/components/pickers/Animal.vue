@@ -1,27 +1,26 @@
 <template>
   <Autocomplete
     v-model="item"
-    :items="items"
     v-model:search="params.searchText"
+    :items="items"
     placeholder="Animal"
     :loading="isLoading"
     item-title="name"
     item-value="name"
     return-object
-    @update:search="updateSearchHandler"
+    uppercase
   />
 </template>
 
 <script setup>
 import Autocomplete from "@/components/common/Autocomplete.vue";
 
-import { debounce } from "lodash";
-
-import { all, search } from "@/api/animal";
+import { search } from "@/api/animal";
 
 import { computed, toRefs, ref, watch } from "vue";
 import { useModel } from "@/utils/vue";
 import { onMounted } from "vue";
+import { watchEffect } from "vue";
 
 const emit = defineEmits(["update:modelValue"]);
 const props = defineProps({ modelValue: Object });
@@ -32,7 +31,7 @@ const isLoading = ref(false);
 const items = ref();
 
 const params = ref({
-  searchText: null,
+  searchText: "",
   columnName: "name",
   orderDirection: "asc",
   limitNumber: 5,
@@ -49,27 +48,9 @@ const loadItems = async () => {
   }
 };
 
-onMounted(async () => {
+watchEffect(async () => {
   await loadItems();
 });
-
-const load = debounce(() => {
-  if (!params.value.searchText) return;
-  loadItems();
-}, 500);
-
-watch(
-  params,
-  () => {
-    load();
-  },
-  { immediate: true, deep: true }
-);
-
-const updateSearchHandler = () => {
-  if (typeof params.value.searchText != "string") return;
-  params.value.searchText = params.value.searchText.toUpperCase();
-};
 </script>
 
 <style></style>

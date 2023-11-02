@@ -42,7 +42,7 @@ import { debounce } from "lodash";
 import { useProgressLineStore } from "@/store/progress-line";
 const { start, stop } = useProgressLineStore();
 
-import { getAllByName } from "@/api/government";
+import { search } from "@/api/government";
 
 import { ref, onMounted } from "vue";
 
@@ -52,7 +52,7 @@ const params = ref({
   searchText: "",
   columnName: "name",
   orderDirection: "asc",
-  limitNumber: 5,
+  limitNumber: 100,
 });
 
 const keypressHandler = debounce(() => {
@@ -62,7 +62,7 @@ const keypressHandler = debounce(() => {
 const getItems = async () => {
   try {
     start();
-    governments.value = await getAllByName(params.value);
+    governments.value = await search(params.value);
   } catch ({ message }) {
     console.log(message);
   } finally {
@@ -77,8 +77,7 @@ onMounted(() => {
 const submitHandler = async () => {
   try {
     start();
-    governments.value = await getAllByName(params.value);
-    console.log("governments", governments.value);
+    governments.value = await search(params.value);
   } catch ({ message }) {
     console.log(message);
   } finally {

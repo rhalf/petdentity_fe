@@ -80,8 +80,7 @@ export const create = async (pet, item) => {
   const { id } = pet;
   item.pet = id;
   item.updatedAt = Timestamp.fromDate(new Date());
-  const documentRef = doc(firestore, collectionName, item.id);
-  return await addDoc(documentRef, item);
+  return await addDoc(collectionRef, item);
 };
 
 export const remove = async (item) => {
@@ -89,5 +88,5 @@ export const remove = async (item) => {
   // item.pet = null;
   // item.updatedAt = Timestamp.fromDate(new Date());
   const documentRef = doc(firestore, collectionName, item.id);
-  return await removeDoc(documentRef, item);
+  return await deleteDoc(documentRef, item);
 };

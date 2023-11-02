@@ -64,7 +64,8 @@
     </v-col>
     <v-col cols="12" md="6">
       <Label class="text-primary"> Owner </Label>
-      <TextField
+
+      <OwnerPicker
         class="mt-3"
         v-model="unit.owner"
         placeholder="Owner"
@@ -85,7 +86,7 @@
     </v-col>
     <v-col cols="12" md="6">
       <Label class="text-primary"> Government </Label>
-      <TextField
+      <GovernmentPicker
         class="mt-3"
         v-model="unit.government"
         placeholder="Government"
@@ -98,6 +99,8 @@
 <script setup>
 import Label from "@/components/common/Label.vue";
 import TextField from "@/components/common/TextField.vue";
+import OwnerPicker from "@/components/pickers/OwnerPicker.vue";
+import GovernmentPicker from "@/components/pickers/GovernmentPicker.vue";
 
 import UnitFormType from "@/components/pickers/UnitFormType.vue";
 import UnitType from "@/components/pickers/UnitType.vue";

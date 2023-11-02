@@ -37,31 +37,34 @@ import Card from "@/components/common/Card.vue";
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
-import { Address } from "@/constants";
-
 import { create } from "@/api/owner/contacts";
+import { Contact } from "@/constants";
 
 import { useModel } from "@/utils/vue";
 
-import _ from "lodash";
-import { ref, toRefs, computed } from "vue";
+import { cloneDeep } from "lodash";
+import { ref, toRefs, computed, inject } from "vue";
+
 const props = defineProps({ modelValue: Boolean });
 const propsRef = toRefs(props);
 const emit = defineEmits(["update:modelValue", "added"]);
 
 const isLoading = ref(false);
 const dialog = computed(useModel(propsRef, emit, "modelValue"));
-const contact = ref({
-  address: _.cloneDeep(Address),
-});
+const contact = ref(cloneDeep(Contact));
+
+const user = inject("user");
 
 const submitHandler = async () => {
   try {
     isLoading.value = true;
-    const docRef = await create(contact.value);
+
+    await create(user.value, contact.value);
     emit("added");
     show("success", "Added an contact!");
-    dialog.value = false;
+
+    contact.value = cloneDeep(Contact);
+    closeHandler();
   } catch ({ message }) {
     show("error", message);
   } finally {

@@ -5,7 +5,7 @@
         <Label header class="text-black"> Add User To Government </Label>
       </v-card-title>
       <v-card-text>
-        <Email v-model="user" />
+        <UserPicker v-model="user" />
       </v-card-text>
       <v-card-actions>
         <v-row dense class="py-4 px-4">
@@ -26,7 +26,7 @@
 import Button from "@/components/common/Button.vue";
 import Label from "@/components/common/Label.vue";
 import Dialog from "@/components/common/Dialog.vue";
-import Email from "@/components/pickers/Email.vue";
+import UserPicker from "@/components/pickers/UserPicker.vue";
 import Card from "@/components/common/Card.vue";
 
 import { useSnackbarStore } from "@/store/snackbar";

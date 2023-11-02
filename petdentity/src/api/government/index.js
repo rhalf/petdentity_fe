@@ -27,12 +27,8 @@ const collectionRef = collection(firestore, collectionName);
 
 let indexes;
 
-export const search = async ({
-  searchText,
-  columnName,
-  orderDirection,
-  limitNumber,
-}) => {
+export const search = async (params) => {
+  const { searchText, columnName, orderDirection, limitNumber } = params;
   const q = await query(
     collectionRef,
     orderBy(columnName, orderDirection),
@@ -45,10 +41,10 @@ export const search = async ({
   return toArray(snapshots);
 };
 
-export const next = async (id, { columnName, orderDirection, limitNumber }) => {
+export const next = async (params) => {
+  const { columnName, orderDirection, limitNumber } = params;
   const q = await query(
     collectionRef,
-    where("pet", "==", id),
     orderBy(columnName, orderDirection),
     startAfter(indexes.lastItem),
     limit(limitNumber)
@@ -59,10 +55,10 @@ export const next = async (id, { columnName, orderDirection, limitNumber }) => {
   return toArray(snapshots);
 };
 
-export const prev = async (id, { columnName, orderDirection, limitNumber }) => {
+export const prev = async (params) => {
+  const { columnName, orderDirection, limitNumber } = params;
   const q = await query(
     collectionRef,
-    where("pet", "==", id),
     orderBy(columnName, orderDirection),
     endBefore(indexes.firstItem),
     limitToLast(limitNumber)
@@ -73,12 +69,9 @@ export const prev = async (id, { columnName, orderDirection, limitNumber }) => {
   return toArray(snapshots);
 };
 
-export const all = async (id, { columnName, orderDirection }) => {
-  const q = await query(
-    collectionRef,
-    where("pet", "==", id),
-    orderBy(columnName, orderDirection)
-  );
+export const all = async (params) => {
+  const { columnName, orderDirection } = params;
+  const q = await query(collectionRef, orderBy(columnName, orderDirection));
   const snapshots = await getDocs(q);
   return toArray(snapshots);
 };
@@ -89,19 +82,6 @@ export const get = async (id) => {
 
   if (snapshot.exists()) return { id: snapshot.id, ...snapshot.data() };
   else return null;
-};
-
-export const getAllByName = async (params) => {
-  const q = await query(
-    collectionRef,
-    orderBy(params.columnName, params.orderDirection),
-    startAt(params.searchText),
-    endAt(params.searchText + "\uf8ff"),
-    limit(params.limitNumber)
-  );
-  const snapshots = await getDocs(q);
-  if (!snapshots.empty) indexes = getIndexes(snapshots);
-  return toArray(snapshots);
 };
 
 export const create = async (item) => {

@@ -2,12 +2,13 @@
   <Autocomplete
     v-model="item"
     v-model:search="params.searchText"
-    :items="breeds"
-    placeholder="Breed"
+    :items="items"
+    placeholder="Government"
     :loading="isLoading"
     item-title="name"
-    item-value="name"
+    item-value="id"
     uppercase
+    @click:clear="params.searchText = ''"
   />
 </template>
 
@@ -16,20 +17,18 @@ import Autocomplete from "@/components/common/Autocomplete.vue";
 
 import { debounce } from "lodash";
 
-import { search } from "@/api/animal/breeds";
+import { get, search } from "@/api/government";
 
 import { computed, toRefs, ref, watchEffect } from "vue";
 import { useModel } from "@/utils/vue";
 
 const emit = defineEmits(["update:modelValue"]);
-const props = defineProps({ modelValue: String, animal: Object });
+const props = defineProps({ modelValue: String });
 const propsRef = toRefs(props);
-
-const { animal } = propsRef;
 
 const item = computed(useModel(propsRef, emit, "modelValue"));
 const isLoading = ref(false);
-const breeds = ref();
+const items = ref();
 
 const params = ref({
   searchText: "",
@@ -42,18 +41,12 @@ const loadItems = async () => {
   try {
     isLoading.value = true;
 
-    if (!animal.value) return;
-
-    // const items = await all(animal.value.id);
-    const items = await search(animal.value, params.value);
-
-    if (items.length) {
-      breeds.value = items;
-    } else {
-      breeds.value = [];
+    if (item.value) {
+      const government = await get(item.value);
+      if (government) params.value.searchText = government.name;
     }
 
-    breeds.value = items;
+    items.value = await search(params.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {
@@ -61,14 +54,26 @@ const loadItems = async () => {
   }
 };
 
-watchEffect(() => {
-  if (animal.value) loadItems();
-});
+// onMounted(async () => {
+//   await loadItems();
+// });
 
 // const load = debounce(() => {
 //   if (!params.value.searchText) return;
 //   loadItems();
 // }, 500);
+
+// watch(
+//   params,
+//   () => {
+//     load();
+//   },
+//   { immediate: true, deep: true }
+// );
+
+watchEffect(() => {
+  loadItems();
+});
 </script>
 
 <style></style>

@@ -1,5 +1,5 @@
 <template>
-  <Dialog v-model="dialog" :width="640">
+  <Dialog v-model="dialog" :width="480">
     <Card>
       <v-card-title class="bg-primary pa-4">
         <Label header class="text-black"> Add Contact</Label>
@@ -56,12 +56,11 @@ const submitHandler = async () => {
   try {
     isLoading.value = true;
 
-    const newContact = { ...contact.value, pet: pet.value.id };
-    await create(newContact);
+    await create(pet.value, contact.value);
 
     emit("added");
     show("success", "Added a contact!");
-    dialog.value = false;
+    closeHandler();
   } catch ({ message }) {
     show("error", message);
   } finally {

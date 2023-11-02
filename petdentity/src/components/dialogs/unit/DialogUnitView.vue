@@ -78,7 +78,7 @@ const submitHandler = async () => {
     }
 
     isLoading.value = true;
-    const docRef = await update(unit.value);
+    await update(unit.value);
     emit("updated");
     show("success", "Updated an unit!");
     closeHandler();

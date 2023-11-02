@@ -93,9 +93,9 @@ export const all = async (user, params) => {
   return toArray(snapshots);
 };
 
-export const create = async (item) => {
-  const { uid } = await getCurrentUser();
-  item.owner = uid;
+export const create = async (user, item) => {
+  const { id } = user;
+  item.owner = id;
   item.createdAt = Timestamp.fromDate(new Date());
   return await addDoc(collectionRef, item);
 };
