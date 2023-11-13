@@ -33,7 +33,10 @@ let indexes;
 
 export const search = async (government, params) => {
   const units = await unitsByGovernment(government);
-  const petList = units.map((unit) => unit.pet);
+  const petList = units.map((unit) => {
+    if (!unit.pet) return null;
+    return unit.pet;
+  });
 
   const { searchText, columnName, orderDirection, limitNumber } = params;
 
@@ -113,7 +116,11 @@ export const remove = async (item) => {
 export const count = async (government) => {
   const units = await unitsByGovernment(government);
 
-  const petList = units.map((unit) => unit.pet);
+  const petList = units.map((unit) => {
+    if (!unit.pet) return null;
+    return unit.pet;
+  });
+
   if (!petList.length) return 0;
 
   const q = await query(collectionRef, where("id", "in", petList));

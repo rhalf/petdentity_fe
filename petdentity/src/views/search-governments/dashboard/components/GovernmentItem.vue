@@ -2,16 +2,16 @@
   <v-hover>
     <template v-slot:default="{ isHovering, props }">
       <!-- :variant="isHovering ? 'outlined' : 'elevated'" -->
-      <Card v-bind="props" color="primary" min-width="100%">
-        <Image cover :src="government.photoUrl" :aspectRatio="16 / 9">
-          <v-card-title
-            class="titleColor text-primary"
-            v-text="government.name"
-          />
-        </Image>
+      <Card v-bind="props" min-width="100%">
+        <v-card-title
+          class="bg-primary text-black text-body-1"
+          v-text="title"
+        />
+        <Image cover :src="government.photoUrl" :aspectRatio="16 / 9" />
 
         <v-card-actions class="bg-primary" color="">
-          <div>{{ likes }}</div>
+          <div class="text-body-1">Likes: {{ likes }}</div>
+          <!-- <div class="text-truncate">{{ government.name }}</div> -->
           <v-spacer />
           <ButtonIcon icon="mdi-login" @click="viewHandler(government)" />
           <ButtonIcon
@@ -66,6 +66,10 @@ const propsRef = toRefs(props);
 
 const government = computed(useModel(propsRef, emit, "modelValue"));
 
+const title = computed(() => {
+  return government.value.name;
+});
+
 const show = ref(false);
 const likes = ref(0);
 const likeStatus = ref(false);
@@ -113,7 +117,7 @@ watch(
 
 <style>
 .titleColor {
-  background-color: rgba(64, 64, 64, 0.5) !important;
+  background-color: rgba(32, 32, 32, 0.5) !important;
   border-color: white !important;
 }
 </style>

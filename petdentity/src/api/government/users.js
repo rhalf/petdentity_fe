@@ -31,9 +31,9 @@ const userCollectionRef = collection(firestore, userCollectionName);
 let indexes;
 
 export const search = async (government, params) => {
+  const { searchText, columnName, orderDirection, limitNumber } = params;
   const users = await list(government);
   const userList = users.map((user) => user.id);
-  const { searchText, columnName, orderDirection, limitNumber } = params;
 
   const q = await query(
     userCollectionRef,
