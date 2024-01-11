@@ -26,12 +26,31 @@
           <GovernmentItem v-model="governments[index]" />
         </v-col>
       </v-row>
+
+      <v-row dense class="mt-4">
+        <v-col cols="3" md="auto">
+          <Button @click="prevHandler" block>
+            <v-icon>mdi-skip-previous</v-icon>
+          </Button>
+        </v-col>
+        <v-col cols="3" md="auto">
+          <Button @click="submitHandler" block>
+            <v-icon>mdi-refresh</v-icon>
+          </Button>
+        </v-col>
+        <v-col cols="3" md="auto">
+          <Button @click="nextHandler" block>
+            <v-icon>mdi-skip-next</v-icon>
+          </Button>
+        </v-col>
+      </v-row>
     </Sheet>
   </v-container>
 </template>
 
 <script setup>
 import TextField from "@/components/common/TextField.vue";
+import Button from "@/components/common/Button.vue";
 import Label from "@/components/common/Label.vue";
 import Sheet from "@/components/common/Sheet.vue";
 
@@ -42,7 +61,7 @@ import { debounce } from "lodash";
 import { useProgressLineStore } from "@/store/progress-line";
 const { start, stop } = useProgressLineStore();
 
-import { search } from "@/api/government";
+import { search, next, prev } from "@/api/government";
 
 import { ref, onMounted } from "vue";
 
@@ -52,7 +71,7 @@ const params = ref({
   searchText: "",
   columnName: "name",
   orderDirection: "asc",
-  limitNumber: 10,
+  limitNumber: 6,
 });
 
 const keypressHandler = debounce(() => {
@@ -78,6 +97,28 @@ const submitHandler = async () => {
   try {
     start();
     governments.value = await search(params.value);
+  } catch ({ message }) {
+    console.log(message);
+  } finally {
+    stop();
+  }
+};
+
+const nextHandler = async () => {
+  try {
+    start();
+    governments.value = await next(params.value);
+  } catch ({ message }) {
+    console.log(message);
+  } finally {
+    stop();
+  }
+};
+
+const prevHandler = async () => {
+  try {
+    start();
+    governments.value = await prev(params.value);
   } catch ({ message }) {
     console.log(message);
   } finally {
