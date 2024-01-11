@@ -52,7 +52,7 @@ const params = ref({
   searchText: "",
   columnName: "name",
   orderDirection: "asc",
-  limitNumber: 100,
+  limitNumber: 10,
 });
 
 const keypressHandler = debounce(() => {
