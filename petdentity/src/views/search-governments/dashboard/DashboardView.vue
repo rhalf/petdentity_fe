@@ -28,19 +28,9 @@
       </v-row>
 
       <v-row dense class="mt-4">
-        <v-col cols="3" md="auto">
-          <Button @click="prevHandler" block>
-            <v-icon>mdi-skip-previous</v-icon>
-          </Button>
-        </v-col>
-        <v-col cols="3" md="auto">
-          <Button @click="submitHandler" block>
-            <v-icon>mdi-refresh</v-icon>
-          </Button>
-        </v-col>
-        <v-col cols="3" md="auto">
-          <Button @click="nextHandler" block>
-            <v-icon>mdi-skip-next</v-icon>
+        <v-col cols="3" md="1">
+          <Button @click="moreHandler" block>
+            <v-icon>mdi-dots-horizontal</v-icon>
           </Button>
         </v-col>
       </v-row>
@@ -104,21 +94,11 @@ const submitHandler = async () => {
   }
 };
 
-const nextHandler = async () => {
+const moreHandler = async () => {
   try {
     start();
-    governments.value = await next(params.value);
-  } catch ({ message }) {
-    console.log(message);
-  } finally {
-    stop();
-  }
-};
-
-const prevHandler = async () => {
-  try {
-    start();
-    governments.value = await prev(params.value);
+    const result = await next(params.value);
+    governments.value = [...governments.value, ...result];
   } catch ({ message }) {
     console.log(message);
   } finally {

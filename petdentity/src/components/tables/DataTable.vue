@@ -1,5 +1,5 @@
 <template>
-  <v-data-table height="330">
+  <v-data-table min-height="330">
     <template v-slot:item.actions="{ item, index }">
       <ButtonIcon
         v-if="withView"
@@ -28,29 +28,20 @@
 
     <template v-slot:bottom="{ item, index }">
       <v-row dense class="mt-2">
-        <v-col cols="3" md="auto">
-          <Button @click="emit('prev')" block>
-            <v-icon>mdi-skip-previous</v-icon>
+        <v-col cols="3" md="1" v-if="withMore">
+          <Button @click="emit('more')" block>
+            <v-icon>mdi-dots-horizontal</v-icon>
           </Button>
         </v-col>
-        <v-col cols="3" md="auto">
-          <Button @click="emit('refresh')" block>
-            <v-icon>mdi-refresh</v-icon>
-          </Button>
-        </v-col>
-        <v-col cols="3" md="auto">
-          <Button @click="emit('next')" block>
-            <v-icon>mdi-skip-next</v-icon>
-          </Button>
-        </v-col>
-        <v-spacer v-if="md || lg || xl" />
+
+        <v-spacer />
         <v-col
           cols="3"
-          md="auto"
+          md="1"
           class="d-flex justify-end"
           v-if="withAdd && !disabled"
         >
-          <Button @click="emit('add')">
+          <Button @click="emit('add')" block>
             <v-icon>mdi-plus</v-icon>
           </Button>
         </v-col>
@@ -150,21 +141,14 @@ import Button from "@/components/common/Button";
 
 import { getAge, toStringAge } from "@/utils/vue";
 
-const emit = defineEmits([
-  "view",
-  "update",
-  "remove",
-  "add",
-  "prev",
-  "refresh",
-  "next",
-]);
+const emit = defineEmits(["view", "update", "remove", "add", "more"]);
 const props = defineProps({
   withView: Boolean,
   withUpdate: Boolean,
   withRemove: Boolean,
   disabled: Boolean,
   withAdd: Boolean,
+  withMore: Boolean,
 });
 </script>
 

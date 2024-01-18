@@ -47,7 +47,7 @@ export const search = async (user, params) => {
   return toArray(snapshots);
 };
 
-export const next = async (user, params) => {
+export const more = async (user, params) => {
   const { id } = user;
   const { columnName, orderDirection, limitNumber } = params;
 
@@ -57,23 +57,6 @@ export const next = async (user, params) => {
     orderBy(columnName, orderDirection),
     startAfter(indexes.lastItem),
     limit(limitNumber)
-  );
-  const snapshots = await getDocs(q);
-  if (!snapshots.empty) indexes = getIndexes(snapshots);
-
-  return toArray(snapshots);
-};
-
-export const prev = async (user, params) => {
-  const { id } = user;
-  const { columnName, orderDirection, limitNumber } = params;
-
-  const q = await query(
-    collectionRef,
-    where("owner", "==", id),
-    orderBy(columnName, orderDirection),
-    endBefore(indexes.firstItem),
-    limitToLast(limitNumber)
   );
   const snapshots = await getDocs(q);
   if (!snapshots.empty) indexes = getIndexes(snapshots);

@@ -29,12 +29,12 @@
             withRemove
             withAdd
             withView
+            withMore
             @refresh="loadItems"
             @remove="removeHandler"
             @view="viewHandler"
             @add="addHandler"
-            @next="nextHandler"
-            @prev="prevHandler"
+            @more="moreHandler"
           />
         </v-col>
       </v-row>
@@ -71,7 +71,7 @@ const { show } = useSnackbarStore();
 import { useRouter, useRoute } from "vue-router";
 const router = useRouter();
 
-import { search, next, prev, count as countPets } from "@/api/owner/pets";
+import { search, more, count as countPets } from "@/api/owner/pets";
 import { count as countUnits } from "@/api/owner/units";
 
 import { ref, watchEffect, inject } from "vue";
@@ -136,21 +136,11 @@ const loadItems = async () => {
   }
 };
 
-const nextHandler = async () => {
+const moreHandler = async () => {
   try {
     isLoading.value = true;
-    pets.value = await next(user.value, params.value);
-  } catch ({ message }) {
-    console.log("error", message);
-  } finally {
-    isLoading.value = false;
-  }
-};
-
-const prevHandler = async () => {
-  try {
-    isLoading.value = true;
-    pets.value = await prev(user.value, params.value);
+    const result = await more(user.value, params.value);
+    pets.value = [...pets.value, ...result];
   } catch ({ message }) {
     console.log("error", message);
   } finally {

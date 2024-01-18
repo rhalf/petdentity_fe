@@ -29,12 +29,12 @@
             withRemove
             withView
             withAdd
+            withMore
             @refresh="loadItems"
             @remove="removeHandler"
             @view="viewHandler"
             @add="addHandler"
-            @next="nextHandler"
-            @prev="prevHandler"
+            @more="moreHandler"
           />
         </v-col>
       </v-row>
@@ -83,7 +83,7 @@ import DialogUnitAddToOwner from "@/components/dialogs/unit/DialogUnitAddToOwner
 import DialogUnitViewFromOwner from "@/components/dialogs/unit/DialogUnitViewFromOwner.vue";
 import DialogUnitRemoveFromOwner from "@/components/dialogs/unit/DialogUnitRemoveFromOwner.vue";
 
-import { search, next, prev } from "@/api/owner/units";
+import { search, more } from "@/api/owner/units";
 
 import { ref, watchEffect, inject } from "vue";
 
@@ -135,23 +135,11 @@ const loadItems = async () => {
   }
 };
 
-const nextHandler = async () => {
+const moreHandler = async () => {
   try {
     isLoading.value = true;
-
-    units.value = await next(user.value, params.value);
-  } catch ({ message }) {
-    console.log("error", message);
-  } finally {
-    isLoading.value = false;
-  }
-};
-
-const prevHandler = async () => {
-  try {
-    isLoading.value = true;
-
-    units.value = await prev(user.value, params.value);
+    const result = await more(user.value, params.value);
+    units.value = [...units.value, ...result];
   } catch ({ message }) {
     console.log("error", message);
   } finally {

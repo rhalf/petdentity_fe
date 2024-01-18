@@ -29,12 +29,12 @@
             withRemove
             withView
             withAdd
+            withMore
             @refresh="loadItems"
             @remove="removeHandler"
             @view="viewHandler"
             @add="addHandler"
-            @next="nextHandler"
-            @prev="prevHandler"
+            @more="moreHandler"
           />
         </v-col>
       </v-row>
@@ -68,7 +68,7 @@ import DialogContactRemove from "@/components/dialogs/contact/DialogContactRemov
 import { useSnackbarStore } from "@/store/snackbar";
 const { show } = useSnackbarStore();
 
-import { search, next, prev } from "@/api/owner/contacts";
+import { search, more } from "@/api/owner/contacts";
 
 import { ref, watchEffect, inject } from "vue";
 
@@ -114,21 +114,11 @@ const loadItems = async () => {
   }
 };
 
-const nextHandler = async () => {
+const moreHandler = async () => {
   try {
     isLoading.value = true;
-    contacts.value = await next(user.value, params.value);
-  } catch ({ message }) {
-    console.log("error", message);
-  } finally {
-    isLoading.value = false;
-  }
-};
-
-const prevHandler = async () => {
-  try {
-    isLoading.value = true;
-    contacts.value = await prev(user.value, params.value);
+    const result = await more(user.value, params.value);
+    contacts.value = [...contacts.value, ...result];
   } catch ({ message }) {
     console.log("error", message);
   } finally {
