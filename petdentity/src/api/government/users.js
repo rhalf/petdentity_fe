@@ -31,57 +31,38 @@ const userCollectionRef = collection(firestore, userCollectionName);
 let indexes;
 
 export const search = async (government, params) => {
-  const { searchText, columnName, orderDirection, limitNumber } = params;
-  const users = await list(government);
-  const userList = users.map((user) => user.id);
-
-  const q = await query(
-    userCollectionRef,
-    where("id", "in", userList),
-    orderBy(columnName, orderDirection),
-    startAt(searchText),
-    endAt(searchText + "\uf8ff"),
-    limit(limitNumber)
-  );
-  const snapshots = await getDocs(q);
-  if (!snapshots.empty) indexes = getIndexes(snapshots);
-
-  return toArray(snapshots);
+  // const { searchText, columnName, orderDirection, limitNumber } = params;
+  // const users = await list(government);
+  // const userList = users.map((user) => user.id);
+  // const q = await query(
+  //   userCollectionRef,
+  //   where("id", "in", userList),
+  //   orderBy(columnName, orderDirection),
+  //   startAt(searchText),
+  //   endAt(searchText + "\uf8ff"),
+  //   limit(limitNumber)
+  // );
+  // const snapshots = await getDocs(q);
+  // if (!snapshots.empty) indexes = getIndexes(snapshots);
+  // return toArray(snapshots);
+  return [];
 };
 
-export const next = async (government, params) => {
-  const users = await list(government);
-  const userList = users.map((user) => user.id);
-
-  const { columnName, orderDirection, limitNumber } = params;
-  const q = await query(
-    userCollectionRef,
-    where("id", "in", userList),
-    orderBy(columnName, orderDirection),
-    startAfter(indexes.lastItem),
-    limit(limitNumber)
-  );
-  const snapshots = await getDocs(q);
-  if (!snapshots.empty) indexes = getIndexes(snapshots);
-
-  return toArray(snapshots);
-};
-
-export const prev = async (government, params) => {
-  const users = await list(government);
-  const userList = users.map((user) => user.id);
-  const { columnName, orderDirection, limitNumber } = params;
-  const q = await query(
-    userCollectionRef,
-    where("id", "in", userList),
-    orderBy(columnName, orderDirection),
-    endBefore(indexes.firstItem),
-    limitToLast(limitNumber)
-  );
-  const snapshots = await getDocs(q);
-  if (!snapshots.empty) indexes = getIndexes(snapshots);
-
-  return toArray(snapshots);
+export const more = async (government, params) => {
+  // const users = await list(government);
+  // const userList = users.map((user) => user.id);
+  // const { columnName, orderDirection, limitNumber } = params;
+  // const q = await query(
+  //   userCollectionRef,
+  //   where("id", "in", userList),
+  //   orderBy(columnName, orderDirection),
+  //   startAfter(indexes.lastItem),
+  //   limit(limitNumber)
+  // );
+  // const snapshots = await getDocs(q);
+  // if (!snapshots.empty) indexes = getIndexes(snapshots);
+  // return toArray(snapshots);
+  return [];
 };
 
 export const add = async (government, user) => {

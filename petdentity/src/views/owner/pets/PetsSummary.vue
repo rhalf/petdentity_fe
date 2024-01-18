@@ -24,8 +24,8 @@
             :loading="isLoading"
             :headers="headers"
             :items="pets"
-            :items-per-pageNumber="params.limitNumber"
             hide-default-footer
+            :items-per-page="pets.length"
             withRemove
             withAdd
             withView
@@ -81,7 +81,7 @@ const dialogPetView = ref(false);
 const dialogPetRemove = ref(false);
 
 const isLoading = ref(false);
-const pets = ref();
+const pets = ref([]);
 const pet = ref();
 
 const user = inject("user");

@@ -24,17 +24,16 @@
             :loading="isLoading"
             :headers="headers"
             :items="units"
-            :items-per-page="params.limitNumber"
+            :items-per-page="units.length"
             hide-default-footer
             withRemove
             withView
             withAdd
-            @refresh="loadItems"
+            withMore
             @remove="removeHandler"
             @view="viewHandler"
             @add="addHandler"
-            @next="nextHandler"
-            @prev="prevHandler"
+            @more="moreHandler"
           />
         </v-col>
       </v-row>
@@ -87,9 +86,9 @@ import DialogUnitAddToGovernment from "@/components/dialogs/unit/DialogUnitAddTo
 import DialogUnitViewFromGovernment from "@/components/dialogs/unit/DialogUnitViewFromGovernment.vue";
 import DialogUnitRemoveFromGovernment from "@/components/dialogs/unit/DialogUnitRemoveFromGovernment.vue";
 
-import { search, next, prev, count } from "@/api/government/units";
+import { search, more } from "@/api/government/units";
 
-import { ref, watch, inject } from "vue";
+import { ref, watchEffect, inject } from "vue";
 
 const dialogUnitAddToGovernment = ref(false);
 const dialogUnitViewFromGovernment = ref(false);
@@ -98,7 +97,7 @@ const dialogUnitRemoveFromGovernment = ref(false);
 const isLoading = ref(false);
 const government = inject("government");
 
-const units = ref();
+const units = ref([]);
 const unit = ref();
 const params = ref({
   searchText: "",
@@ -130,18 +129,19 @@ const loadItems = async () => {
     isLoading.value = true;
     units.value = await search(government.value, params.value);
   } catch ({ message }) {
-    units.value = [];
     console.log("error", message);
   } finally {
     isLoading.value = false;
   }
 };
 
-const nextHandler = async () => {
+const moreHandler = async () => {
   try {
     isLoading.value = true;
+    const result = await more(government.value, params.value);
+    units.value = [...units.value, ...result];
 
-    units.value = await next(government.value, params.value);
+    console.log("units.value", units.value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {
@@ -149,23 +149,7 @@ const nextHandler = async () => {
   }
 };
 
-const prevHandler = async () => {
-  try {
-    isLoading.value = true;
-
-    units.value = await prev(government.value, params.value);
-  } catch ({ message }) {
-    console.log("error", message);
-  } finally {
-    isLoading.value = false;
-  }
-};
-
-watch(
-  government,
-  () => {
-    if (government.value) loadItems();
-  },
-  { immediate: true }
-);
+watchEffect(async () => {
+  if (government.value) loadItems();
+});
 </script>

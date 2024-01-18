@@ -24,8 +24,8 @@
             :loading="isLoading"
             :headers="headers"
             :items="units"
-            :items-per-page="params.limitNumber"
             hide-default-footer
+            :items-per-page="units.length"
             withRemove
             withView
             withAdd

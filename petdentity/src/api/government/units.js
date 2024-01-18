@@ -41,12 +41,12 @@ export const search = async (government, params) => {
   );
 
   const snapshots = await getDocs(q);
-
   if (!snapshots.empty) indexes = getIndexes(snapshots);
+
   return toArray(snapshots);
 };
 
-export const next = async (government, params) => {
+export const more = async (government, params) => {
   const { id } = government;
   const { columnName, orderDirection, limitNumber } = params;
   const q = await query(
@@ -58,23 +58,24 @@ export const next = async (government, params) => {
   );
   const snapshots = await getDocs(q);
   if (!snapshots.empty) indexes = getIndexes(snapshots);
+
   return toArray(snapshots);
 };
 
-export const prev = async (government, params) => {
-  const { id } = government;
-  const { columnName, orderDirection, limitNumber } = params;
-  const q = await query(
-    collectionRef,
-    where("government", "==", id),
-    orderBy(columnName, orderDirection),
-    endBefore(indexes.firstItem),
-    limitToLast(limitNumber)
-  );
-  const snapshots = await getDocs(q);
-  if (!snapshots.empty) indexes = getIndexes(snapshots);
-  return toArray(snapshots);
-};
+// export const prev = async (government, params) => {
+//   const { id } = government;
+//   const { columnName, orderDirection, limitNumber } = params;
+//   const q = await query(
+//     collectionRef,
+//     where("government", "==", id),
+//     orderBy(columnName, orderDirection),
+//     endBefore(indexes.firstItem),
+//     limitToLast(limitNumber)
+//   );
+//   const snapshots = await getDocs(q);
+//   if (!snapshots.empty) indexes = getIndexes(snapshots);
+//   return toArray(snapshots);
+// };
 
 export const all = async (uid) => {
   const q = await query(collectionRef, where("government", "==", uid));

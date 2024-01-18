@@ -24,15 +24,15 @@
             :loading="isLoading"
             :headers="headers"
             :items="pets"
-            :items-per-pageNumber="params.limitNumber"
+            :items-per-page="pets.length"
             hide-default-footer
             withRemove
             withView
+            withMore
             @refresh="loadItems"
             @remove="removeHandler"
             @view="viewHandler"
-            @next="nextHandler"
-            @prev="prevHandler"
+            @more="moreHandler"
           />
         </v-col>
       </v-row>
@@ -64,9 +64,9 @@ import DialogPetRemove from "@/components/dialogs/pet/DialogPetRemove.vue";
 import { useRouter } from "vue-router";
 const router = useRouter();
 
-import { search, next, prev, count } from "@/api/government/pets";
+import { search, more } from "@/api/government/pets";
 
-import { ref, watch, inject } from "vue";
+import { ref, watchEffect, inject } from "vue";
 
 const dialogPetView = ref(false);
 const dialogPetRemove = ref(false);
@@ -74,7 +74,7 @@ const dialogPetRemove = ref(false);
 const isLoading = ref(false);
 const government = inject("government");
 
-const pets = ref();
+const pets = ref([]);
 const pet = ref();
 
 const params = ref({
@@ -110,10 +110,11 @@ const loadItems = async () => {
   }
 };
 
-const nextHandler = async () => {
+const moreHandler = async () => {
   try {
     isLoading.value = true;
-    pets.value = await next(government.value, params.value);
+    const result = await more(government.value, params.value);
+    pets.value = [...pets.value, ...result];
   } catch ({ message }) {
     console.log("error", message);
   } finally {
@@ -121,22 +122,7 @@ const nextHandler = async () => {
   }
 };
 
-const prevHandler = async () => {
-  try {
-    isLoading.value = true;
-    pets.value = await prev(government.value, params.value);
-  } catch ({ message }) {
-    console.log("error", message);
-  } finally {
-    isLoading.value = false;
-  }
-};
-
-watch(
-  government,
-  () => {
-    if (government.value) loadItems();
-  },
-  { immediate: true }
-);
+watchEffect(async () => {
+  if (government.value) loadItems();
+});
 </script>

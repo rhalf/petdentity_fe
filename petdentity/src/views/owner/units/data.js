@@ -3,7 +3,7 @@ export const headers = [
     title: "Actions",
     align: "start",
     sortable: false,
-    width: "120",
+    minWidth: "150",
     key: "actions",
   },
   {
@@ -11,21 +11,21 @@ export const headers = [
     align: "start",
     sortable: false,
     key: "uid",
-    width: "200",
+    minWidth: "150",
   },
   {
     title: "UnitType",
     align: "start",
     sortable: false,
     key: "unitType",
-    width: "100",
+    minWidth: "150",
   },
   {
     title: "FormType",
     align: "start",
     sortable: false,
     key: "formType",
-    width: "160",
+    minWidth: "150",
   },
 
   {
@@ -33,6 +33,6 @@ export const headers = [
     align: "start",
     sortable: false,
     key: "povg",
-    width: "160",
+    minWidth: "150",
   },
 ];

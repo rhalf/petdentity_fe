@@ -10,6 +10,7 @@ import {
   doc,
   query,
   where,
+  and,
   orderBy,
   limit,
   startAt,
@@ -32,43 +33,40 @@ const collectionRef = collection(firestore, collectionName);
 let indexes;
 
 export const search = async (government, params) => {
-  const units = await unitsByGovernment(government);
-  const petList = units.map((unit) => {
-    if (!unit.pet) return null;
-    return unit.pet;
-  });
-
-  const { searchText, columnName, orderDirection, limitNumber } = params;
-
-  const q = await query(
-    collectionRef,
-    where("id", "in", petList),
-    orderBy(columnName, orderDirection),
-    startAt(searchText),
-    endAt(searchText + "\uf8ff"),
-    limit(limitNumber)
-  );
-  const snapshots = await getDocs(q);
-  if (!snapshots.empty) indexes = getIndexes(snapshots);
-
-  return toArray(snapshots);
+  // const units = await unitsByGovernment(government);
+  // const petList = units.map((unit) => {
+  //   if (!unit.pet) return null;
+  //   return unit.pet;
+  // });
+  // const { searchText, columnName, orderDirection, limitNumber } = params;
+  // const q = await query(
+  //   collectionRef,
+  //   where("id", "in", petList),
+  //   orderBy(columnName, orderDirection),
+  //   startAt(searchText),
+  //   endAt(searchText + "\uf8ff"),
+  //   limit(limitNumber)
+  // );
+  // const snapshots = await getDocs(q);
+  // if (!snapshots.empty) indexes = getIndexes(snapshots);
+  // return toArray(snapshots);
+  return [];
 };
 
-export const next = async (government, params) => {
-  const { id } = government;
-  const { columnName, orderDirection, limitNumber } = params;
-
-  const q = await query(
-    collectionRef,
-    where("government", "==", id),
-    orderBy(columnName, orderDirection),
-    startAfter(indexes.lastItem),
-    limit(limitNumber)
-  );
-  const snapshots = await getDocs(q);
-  if (!snapshots.empty) indexes = getIndexes(snapshots);
-
-  return toArray(snapshots);
+export const more = async (government, params) => {
+  // const { id } = government;
+  // const { columnName, orderDirection, limitNumber } = params;
+  // const q = await query(
+  //   collectionRef,
+  //   where("government", "==", id),
+  //   orderBy(columnName, orderDirection),
+  //   startAfter(indexes.lastItem),
+  //   limit(limitNumber)
+  // );
+  // const snapshots = await getDocs(q);
+  // if (!snapshots.empty) indexes = getIndexes(snapshots);
+  // return toArray(snapshots);
+  return [];
 };
 
 export const prev = async (government, params) => {
@@ -114,16 +112,15 @@ export const remove = async (item) => {
 };
 
 export const count = async (government) => {
-  const units = await unitsByGovernment(government);
+  const { id } = government;
 
-  const petList = units.map((unit) => {
-    if (!unit.pet) return null;
-    return unit.pet;
-  });
+  const cName = "units";
+  const cRef = collection(firestore, cName);
 
-  if (!petList.length) return 0;
-
-  const q = await query(collectionRef, where("id", "in", petList));
+  const q = await query(
+    cRef,
+    and(where("government", "==", id), where("pet", "!=", null))
+  );
 
   const snapshot = await getCountFromServer(q);
   return snapshot.data().count;

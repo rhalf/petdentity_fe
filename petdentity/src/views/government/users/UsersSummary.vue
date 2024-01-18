@@ -24,17 +24,17 @@
             :loading="isLoading"
             :headers="headers"
             :items="users"
-            :items-per-page="params.limit"
+            :items-per-page="users.length"
             hide-default-footer
             withView
             withRemove
             withAdd
+            withMore
             @add="addHandler"
             @refresh="loadItems"
             @remove="removeHandler"
             @view="viewHandler"
-            @next="nextHandler"
-            @prev="prevHandler"
+            @more="moreHandler"
           />
         </v-col>
       </v-row>
@@ -67,7 +67,7 @@ import { headers } from "./data";
 import DialogUserRemoveGovernment from "@/components/dialogs/user/DialogUserRemoveGovernment.vue";
 import DialogUserAddGovernment from "@/components/dialogs/user/DialogUserAddGovernment.vue";
 
-import { search, next, prev, count } from "@/api/government/users";
+import { search, more } from "@/api/government/users";
 
 import { ref, watch, inject } from "vue";
 
@@ -81,7 +81,7 @@ const dialogUserAddGovernment = ref(false);
 const isLoading = ref(false);
 const government = inject("government");
 
-const users = ref();
+const users = ref([]);
 const user = ref();
 
 const params = ref({
@@ -119,21 +119,11 @@ const loadItems = async () => {
   }
 };
 
-const nextHandler = async () => {
+const moreHandler = async () => {
   try {
     isLoading.value = true;
-    users.value = await next(government.value, params.value);
-  } catch ({ message }) {
-    console.log("error", message);
-  } finally {
-    isLoading.value = false;
-  }
-};
-
-const prevHandler = async () => {
-  try {
-    isLoading.value = true;
-    users.value = await prev(government.value, params.value);
+    const result = await more(government.value, params.value);
+    users.value = [...users.value, ...result];
   } catch ({ message }) {
     console.log("error", message);
   } finally {

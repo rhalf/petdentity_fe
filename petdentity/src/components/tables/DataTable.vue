@@ -1,9 +1,9 @@
 <template>
-  <v-data-table min-height="330">
+  <v-data-table>
     <template v-slot:item.actions="{ item, index }">
       <ButtonIcon
         v-if="withView"
-        @click="emit('view', item.selectable, index)"
+        @click="emit('view', item, index)"
         icon="mdi-eye"
         variant="flat"
         class="text-primary"
@@ -11,7 +11,7 @@
 
       <ButtonIcon
         v-if="withUpdate"
-        @click="emit('update', item.selectable, index)"
+        @click="emit('update', item, index)"
         icon="mdi-pencil"
         variant="flat"
         class="text-primary"
@@ -19,7 +19,7 @@
 
       <ButtonIcon
         v-if="withRemove && !disabled"
-        @click="emit('remove', item.selectable, index)"
+        @click="emit('remove', item, index)"
         icon="mdi-trash-can"
         variant="flat"
         class="text-red"
@@ -49,11 +49,7 @@
     </template>
 
     <template v-slot:item.roles="{ item, index }">
-      <Chip
-        class="primary"
-        v-for="(role, key) in item.selectable.roles"
-        :key="key"
-      >
+      <Chip class="primary" v-for="(role, key) in item.roles" :key="key">
         <Label caption>{{ role }}</Label>
       </Chip>
     </template>
@@ -61,23 +57,21 @@
     <template v-slot:item.povg="{ item, index }">
       <v-row dense>
         <v-col>
-          <v-icon v-if="item.selectable.pet" color="primary">mdi-paw</v-icon>
+          <v-icon v-if="item.pet" color="primary">mdi-paw</v-icon>
           <v-icon v-else color="error">mdi-close</v-icon>
         </v-col>
         <v-col>
-          <v-icon v-if="item.selectable.owner" color="primary"
-            >mdi-account</v-icon
-          >
+          <v-icon v-if="item.owner" color="primary">mdi-account</v-icon>
           <v-icon v-else color="error">mdi-close</v-icon>
         </v-col>
         <v-col>
-          <v-icon v-if="item.selectable.veterinarian" color="primary"
+          <v-icon v-if="item.veterinarian" color="primary"
             >mdi-stethoscope</v-icon
           >
           <v-icon v-else color="error">mdi-close</v-icon>
         </v-col>
         <v-col>
-          <v-icon v-if="item.selectable.government" color="primary"
+          <v-icon v-if="item.government" color="primary"
             >mdi-shield-star</v-icon
           >
           <v-icon v-else color="error">mdi-close</v-icon>
@@ -89,16 +83,14 @@
       <v-row class="pa-1">
         <v-col>
           <Label text class="mt-2">
-            {{ item.selectable.address.exact }}
-            {{ item.selectable.address.division }}
+            {{ item.address.exact }}
+            {{ item.address.division }}
           </Label>
           <Label caption class="text-grey">
-            {{ item.selectable.address.barangay }},
-            {{ item.selectable.address.city }},
-            {{ item.selectable.address.province }},
-            {{ item.selectable.address.region }},
-            {{ item.selectable.address.country }},
-            {{ item.selectable.address.zipcode }}
+            {{ item.address.barangay }}, {{ item.address.city }},
+            {{ item.address.province }}, {{ item.address.region }},
+            {{ item.address.country }},
+            {{ item.address.zipcode }}
           </Label>
         </v-col>
       </v-row>
@@ -108,29 +100,27 @@
       <v-row class="pa-1">
         <v-col>
           <Label text class="mt-2">
-            {{ item.selectable.profile.name.last }},
-            {{ item.selectable.profile.name.first }}
-            {{ item.selectable.profile.name.middle }}
+            {{ item.profile.name.last }},
+            {{ item.profile.name.first }}
+            {{ item.profile.name.middle }}
           </Label>
         </v-col>
       </v-row>
     </template>
 
     <!-- <template v-slot:item.colors="{ item, index }">
-      <Colors :colors="item.selectable.colors" />
+      <Colors :colors="item.colors" />
     </template> -->
 
     <template v-slot:item.age="{ item, index }">
       <Label text class="mt-2">
-        {{ toStringAge(getAge(item.selectable.birthDate)) }}
+        {{ toStringAge(getAge(item.birthDate)) }}
       </Label>
     </template>
   </v-data-table>
 </template>
 
 <script setup>
-import { VDataTable } from "vuetify/labs/VDataTable";
-
 import { useDisplay } from "vuetify";
 const { xs, sm, md, lg, xl } = useDisplay();
 

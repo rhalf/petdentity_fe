@@ -44,10 +44,11 @@ const government = inject("government");
 const loadCounters = async () => {
   try {
     start();
-    counters.value[0].count = await countLikes(government.value);
-    counters.value[1].count = await countPets(government.value);
-    counters.value[2].count = await countUnits(government.value);
-    counters.value[3].count = await countUsers(government.value);
+    const { value } = government;
+    counters.value[0].count = await countLikes(value);
+    counters.value[1].count = await countPets(value);
+    counters.value[2].count = await countUnits(value);
+    counters.value[3].count = await countUsers(value);
   } catch ({ message }) {
     console.log("error", message);
   } finally {

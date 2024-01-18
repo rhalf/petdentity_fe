@@ -24,7 +24,7 @@
             :loading="isLoading"
             :headers="headers"
             :items="contacts"
-            :items-per-pageNumber="params.limitNumber"
+            :items-per-page="contacts.length"
             hide-default-footer
             withRemove
             withView
