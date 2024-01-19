@@ -6,16 +6,16 @@
       :loading="isLoading"
       :headers="headers"
       :items="units"
-      :items-per-pageNumber="params.limitNumber"
+      :items-per-pageNumber="units.length"
       hide-default-footer
       withView
       :withAdd="!readOnly"
       :withRemove="!readOnly"
+      withMore
       @add="addHandler"
       @remove="removeHandler"
       @view="viewHandler"
-      @next="nextHandler"
-      @prev="prevHandler"
+      @more="moreHandler"
     />
 
     <DialogUnitView v-model="dialogUnitView" :unit="unit" readOnly />
@@ -44,7 +44,7 @@ import DialogUnitRemoveFromPet from "@/components/dialogs/unit/DialogUnitRemoveF
 import DialogUnitView from "@/components/dialogs/unit/DialogUnitView.vue";
 
 import { headers } from "./data";
-import { search, next, prev } from "@/api/government/units";
+import { search, more } from "@/api/government/units";
 
 import { toRefs, ref, watch } from "vue";
 // import { useModel } from "@/utils/vue";
@@ -89,21 +89,11 @@ const loadItems = async () => {
   }
 };
 
-const nextHandler = async () => {
+const moreHandler = async () => {
   try {
     isLoading.value = true;
-    units.value = await next(government.value, params.value);
-  } catch ({ message }) {
-    console.log("error", message);
-  } finally {
-    isLoading.value = false;
-  }
-};
-
-const prevHandler = async () => {
-  try {
-    isLoading.value = true;
-    units.value = await prev(government.value, params.value);
+    const result = await more(government.value, params.value);
+    units.value = [units.value, ...result];
   } catch ({ message }) {
     console.log("error", message);
   } finally {

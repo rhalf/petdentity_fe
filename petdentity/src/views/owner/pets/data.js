@@ -10,8 +10,8 @@ export const headers = [
     title: "Actions",
     align: "start",
     sortable: false,
-    minWidth: "150",
     key: "actions",
+    minWidth: "150",
   },
   {
     title: "Name",

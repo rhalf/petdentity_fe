@@ -24,15 +24,15 @@
             :loading="isLoading"
             :headers="headers"
             :items="users"
-            :items-per-page="params.limit"
+            :items-per-page="users.length"
             hide-default-footer
             withView
             withRemove
+            withMore
             @refresh="loadItems"
             @remove="removeHandler"
             @view="viewHandler"
-            @next="nextHandler"
-            @prev="prevHandler"
+            @more="moreHandler"
           />
         </v-col>
       </v-row>
@@ -63,14 +63,14 @@ import { useRouter, useRoute } from "vue-router";
 const router = useRouter();
 const route = useRoute();
 
-import { search, next, prev } from "@/api/users";
+import { search, more } from "@/api/users";
 
 import { ref, onMounted } from "vue";
 
 const dialogUserRemove = ref(false);
 
 const isLoading = ref(false);
-const users = ref();
+const users = ref([]);
 const user = ref();
 const params = ref({
   searchText: "",
@@ -107,21 +107,11 @@ const loadItems = async () => {
   }
 };
 
-const nextHandler = async () => {
+const moreHandler = async () => {
   try {
     isLoading.value = true;
-    users.value = await next(params.value);
-  } catch ({ message }) {
-    console.log("error", message);
-  } finally {
-    isLoading.value = false;
-  }
-};
-
-const prevHandler = async () => {
-  try {
-    isLoading.value = true;
-    users.value = await prev(params.value);
+    const result = await more(params.value);
+    users.value = [...users.value, ...result];
   } catch ({ message }) {
     console.log("error", message);
   } finally {

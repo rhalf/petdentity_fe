@@ -32,19 +32,18 @@
       <v-row dense class="mt-5">
         <v-col>
           <DataTable
-            v-model:page="params.pageNumber"
             hover
             :loading="isLoading"
             :headers="headers"
             :items="units"
-            :items-per-page="params.limitNumber"
+            :items-per-page="params.itemsPerPage"
             show-current-page
             withRemove
             withView
+            withMore
             @view="viewHandler"
             @remove="removeHandler"
-            @next="nextHandler"
-            @prev="prevHandler"
+            @more="moreHandler"
           />
         </v-col>
       </v-row>
@@ -96,7 +95,6 @@ const { show } = useSnackbarStore();
 import { batchAdd } from "@/api/unit";
 
 import { ref } from "vue";
-import { computed } from "vue";
 
 const dialogUnitProperties = ref(false);
 const dialogUnitGenerate = ref(false);
@@ -104,7 +102,7 @@ const dialogUnitViewFromUpload = ref(false);
 
 const MAX_UNIT = 500;
 const isLoading = ref(false);
-const units = ref();
+const units = ref([]);
 const unit = ref({
   unitType: "RFID",
   formType: "Microchip",
@@ -121,7 +119,7 @@ const params = ref({
   columnName: "uid",
   orderDirection: "asc",
   limitNumber: 5,
-  pageNumber: 1,
+  itemsPerPage: 5,
 });
 
 const propertiesHandler = () => {
@@ -134,6 +132,7 @@ const generateHandler = () => {
 
 const generateItems = (items) => {
   units.value = items.value;
+  params.value.itemsPerPage = 5;
 };
 
 const viewHandler = async (item, index) => {
@@ -145,19 +144,9 @@ const removeHandler = async (item, index) => {
   units.value.splice(index, 1);
 };
 
-const nextHandler = async () => {
-  if (params.value.pageNumber < totalPage.value) params.value.pageNumber++;
+const moreHandler = async () => {
+  params.value.itemsPerPage += 5;
 };
-
-const prevHandler = async () => {
-  if (params.value.pageNumber > 1) params.value.pageNumber--;
-};
-
-const totalPage = computed(() => {
-  if (!units.value) return 0;
-  const result = units.value.length / params.value.limitNumber;
-  return Math.ceil(result);
-});
 
 const uploadHandler = async () => {
   try {

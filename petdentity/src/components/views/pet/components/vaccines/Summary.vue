@@ -6,17 +6,17 @@
       :loading="isLoading"
       :headers="headers"
       :items="vaccines"
-      :items-per-pageNumber="params.limitNumber"
+      :items-per-pageNumber="vaccines.length"
       hide-default-footer
       withView
+      withMore
       :withAdd="!readOnly"
       :withRemove="!readOnly"
       @refresh="loadItems"
       @add="addHandler"
       @remove="removeHandler"
       @view="viewHandler"
-      @next="nextHandler"
-      @prev="prevHandler"
+      @more="moreHandler"
     />
 
     <DialogVaccineAdd
@@ -51,7 +51,7 @@ import DialogVaccineRemove from "@/components/dialogs/vaccine/DialogVaccineRemov
 
 import { cloneDeep } from "lodash";
 import { headers } from "./data";
-import { search, next, prev } from "@/api/pet/vaccines";
+import { search, more } from "@/api/pet/vaccines";
 
 import { toRefs, ref, computed, watch } from "vue";
 import { Vaccine } from "@/constants";
@@ -79,7 +79,7 @@ const params = ref({
   limitNumber: 5,
 });
 
-const vaccines = ref();
+const vaccines = ref([]);
 const vaccine = ref(cloneDeep(Vaccine));
 
 watch(
@@ -101,21 +101,11 @@ const loadItems = async () => {
   }
 };
 
-const nextHandler = async () => {
+const moreHandler = async () => {
   try {
     isLoading.value = true;
-    vaccines.value = await next(pet.value, params.value);
-  } catch ({ message }) {
-    console.log("error", message);
-  } finally {
-    isLoading.value = false;
-  }
-};
-
-const prevHandler = async () => {
-  try {
-    isLoading.value = true;
-    vaccines.value = await prev(pet.value, params.value);
+    const result = await more(pet.value, params.value);
+    vaccines.value = [...vaccines.value, ...result];
   } catch ({ message }) {
     console.log("error", message);
   } finally {

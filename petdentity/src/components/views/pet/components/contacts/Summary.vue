@@ -5,17 +5,17 @@
       :loading="isLoading"
       :headers="headers"
       :items="contacts"
-      :items-per-pageNumber="params.limitNumber"
+      :items-per-pageNumber="contacts.length"
       hide-default-footer
       withView
       :withAdd="!readOnly"
       :withRemove="!readOnly"
+      withMore
       @refresh="loadItems"
       @add="addHandler"
       @remove="removeHandler"
       @view="viewHandler"
-      @next="nextHandler"
-      @prev="prevHandler"
+      @more="moreHandler"
     />
 
     <DialogContactView
@@ -48,7 +48,7 @@ import DialogPetContactAdd from "@/components/dialogs/pet-contact/DialogPetConta
 import DialogPetContactRemove from "@/components/dialogs/pet-contact/DialogPetContactRemove.vue";
 
 import { headers } from "./data";
-import { search, next, prev } from "@/api/pet/contacts";
+import { search, more } from "@/api/pet/contacts";
 
 import { toRefs, ref, watch } from "vue";
 
@@ -63,7 +63,7 @@ const dialogPetContactRemove = ref(false);
 
 const isLoading = ref(false);
 
-const contacts = ref();
+const contacts = ref([]);
 const contact = ref();
 
 const params = ref({
@@ -92,21 +92,11 @@ const loadItems = async () => {
   }
 };
 
-const nextHandler = async () => {
+const moreHandler = async () => {
   try {
     isLoading.value = true;
-    contacts.value = await next(pet.value, params.value);
-  } catch ({ message }) {
-    console.log("error", message);
-  } finally {
-    isLoading.value = false;
-  }
-};
-
-const prevHandler = async () => {
-  try {
-    isLoading.value = true;
-    contacts.value = await prev(pet.value, params.value);
+    const result = await more(pet.value, params.value);
+    contacts.value = [...contacts.value, ...result];
   } catch ({ message }) {
     console.log("error", message);
   } finally {

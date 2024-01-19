@@ -25,17 +25,17 @@
             :loading="isLoading"
             :headers="headers"
             :items="units"
-            :items-per-page="params.limitNumber"
+            :items-per-page="units.length"
             hide-default-footer
             withRemove
             withView
             withAdd
+            withMore
             @refresh="loadItems"
             @view="viewHandler"
             @remove="removeHandler"
             @add="dialogUnitAdd = true"
-            @next="nextHandler"
-            @prev="prevHandler"
+            @more="moreHandler"
           />
         </v-col>
       </v-row>
@@ -66,10 +66,7 @@ import DialogUnitAdd from "@/components/dialogs/unit/DialogUnitAdd.vue";
 import DialogUnitView from "@/components/dialogs/unit/DialogUnitView.vue";
 import DialogUnitRemove from "@/components/dialogs/unit/DialogUnitRemove.vue";
 
-// import { useSnackbarStore } from "@/store/snackbar";
-// const { show } = useSnackbarStore();
-
-import { search, next, prev } from "@/api/unit";
+import { search, more } from "@/api/unit";
 
 import { ref, onMounted } from "vue";
 
@@ -78,7 +75,7 @@ const dialogUnitView = ref(false);
 const dialogUnitRemove = ref(false);
 
 const isLoading = ref(false);
-const units = ref();
+const units = ref([]);
 const unit = ref();
 const params = ref({
   searchText: "",
@@ -112,21 +109,11 @@ const loadItems = async () => {
   }
 };
 
-const nextHandler = async () => {
+const moreHandler = async () => {
   try {
     isLoading.value = true;
-    units.value = await next(params.value);
-  } catch ({ message }) {
-    console.log("error", message);
-  } finally {
-    isLoading.value = false;
-  }
-};
-
-const prevHandler = async () => {
-  try {
-    isLoading.value = true;
-    units.value = await prev(params.value);
+    const result = await more(params.value);
+    units.value = [...units.value, ...result];
   } catch ({ message }) {
     console.log("error", message);
   } finally {

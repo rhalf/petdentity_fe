@@ -25,17 +25,17 @@
             :loading="isLoading"
             :headers="headers"
             :items="coats"
-            :items-per-page="params.limitNumber"
+            :items-per-page="coats.length"
             hide-default-footer
             withRemove
             withUpdate
             withAdd
+            withMore
             @refresh="loadItems"
             @remove="removeHandler"
             @update="updateHandler"
             @add="dialogCoatAdd = true"
-            @next="nextHandler"
-            @prev="prevHandler"
+            @more="moreHandler"
           />
         </v-col>
       </v-row>
@@ -66,7 +66,7 @@ import DialogCoatAdd from "@/components/dialogs/coat/DialogCoatAdd.vue";
 import DialogCoatUpdate from "@/components/dialogs/coat/DialogCoatUpdate.vue";
 import DialogCoatRemove from "@/components/dialogs/coat/DialogCoatRemove.vue";
 
-import { search, next, prev } from "@/api/coat";
+import { search, more } from "@/api/coat";
 
 import { ref, onMounted } from "vue";
 
@@ -75,7 +75,7 @@ const dialogCoatUpdate = ref(false);
 const dialogCoatRemove = ref(false);
 
 const isLoading = ref(false);
-const coats = ref();
+const coats = ref([]);
 const coat = ref();
 const params = ref({
   searchText: "",
@@ -109,21 +109,11 @@ const loadItems = async () => {
   }
 };
 
-const nextHandler = async () => {
+const moreHandler = async () => {
   try {
     isLoading.value = true;
-    coats.value = await next(params.value);
-  } catch ({ message }) {
-    console.log("error", message);
-  } finally {
-    isLoading.value = false;
-  }
-};
-
-const prevHandler = async () => {
-  try {
-    isLoading.value = true;
-    coats.value = await prev(params.value);
+    const result = await more(params.value);
+    coats.value = [...coats.value, ...result];
   } catch ({ message }) {
     console.log("error", message);
   } finally {

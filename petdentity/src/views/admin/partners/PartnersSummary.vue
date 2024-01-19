@@ -24,17 +24,17 @@
             :loading="isLoading"
             :headers="headers"
             :items="partners"
-            :items-per-page="params.limit"
+            :items-per-page="partners.length"
             hide-default-footer
             withView
             withRemove
             withAdd
+            withMore
             @refresh="loadItems"
             @remove="removeHandler"
             @add="addHandler"
             @view="viewHandler"
-            @next="nextHandler"
-            @prev="prevHandler"
+            @more="moreHandler"
           />
         </v-col>
       </v-row>
@@ -69,7 +69,7 @@ import DialogPartnerAdd from "@/components/dialogs/partner/DialogPartnerAdd.vue"
 import { useRouter } from "vue-router";
 const router = useRouter();
 
-import { search, next, prev } from "@/api/partner";
+import { search, more } from "@/api/partner";
 
 import { ref, onMounted } from "vue";
 
@@ -78,7 +78,7 @@ const dialogPartnerView = ref(false);
 const dialogPartnerRemove = ref(false);
 
 const isLoading = ref(false);
-const partners = ref();
+const partners = ref([]);
 const partner = ref();
 const params = ref({
   searchText: "",
@@ -116,21 +116,11 @@ const loadItems = async () => {
   }
 };
 
-const nextHandler = async () => {
+const moreHandler = async () => {
   try {
     isLoading.value = true;
-    partners.value = await next(params.value);
-  } catch ({ message }) {
-    console.log("error", message);
-  } finally {
-    isLoading.value = false;
-  }
-};
-
-const prevHandler = async () => {
-  try {
-    isLoading.value = true;
-    partners.value = await prev(params.value);
+    const result = await more(params.value);
+    partners.value = [...partners.value, ...result];
   } catch ({ message }) {
     console.log("error", message);
   } finally {

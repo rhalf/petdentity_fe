@@ -44,7 +44,7 @@ export const search = async (animal, params) => {
   return toArray(snapshots);
 };
 
-export const next = async (animal, params) => {
+export const more = async (animal, params) => {
   const { id } = animal;
   const { columnName, orderDirection, limitNumber } = params;
   const q = await query(
@@ -53,22 +53,6 @@ export const next = async (animal, params) => {
     orderBy(columnName, orderDirection),
     startAfter(indexes.lastItem),
     limit(limitNumber)
-  );
-  const snapshots = await getDocs(q);
-  if (!snapshots.empty) indexes = getIndexes(snapshots);
-
-  return toArray(snapshots);
-};
-
-export const prev = async (animal, params) => {
-  const { id } = animal;
-  const { columnName, orderDirection, limitNumber } = params;
-  const q = await query(
-    collectionRef,
-    where("animal", "==", id),
-    orderBy(columnName, orderDirection),
-    endBefore(indexes.firstItem),
-    limitToLast(limitNumber)
   );
   const snapshots = await getDocs(q);
   if (!snapshots.empty) indexes = getIndexes(snapshots);

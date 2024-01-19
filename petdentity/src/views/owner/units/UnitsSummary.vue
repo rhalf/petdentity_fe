@@ -94,7 +94,7 @@ const dialogUnitRemoveFromOwner = ref(false);
 const user = inject("user");
 
 const isLoading = ref(false);
-const units = ref();
+const units = ref([]);
 const unit = ref();
 
 const params = ref({

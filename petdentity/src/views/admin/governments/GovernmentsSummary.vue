@@ -25,17 +25,17 @@
             :loading="isLoading"
             :headers="headers"
             :items="governments"
-            :items-per-page="params.limit"
+            :items-per-page="governments.length"
             hide-default-footer
             withView
             withRemove
             withAdd
+            withMore
             @refresh="loadItems"
             @remove="removeHandler"
             @add="addHandler"
             @view="viewHandler"
-            @next="nextHandler"
-            @prev="prevHandler"
+            @more="moreHandler"
           />
         </v-col>
       </v-row>
@@ -65,7 +65,7 @@ import DialogGovernmentAdd from "@/components/dialogs/government/DialogGovernmen
 import { useRouter } from "vue-router";
 const router = useRouter();
 
-import { search, next, prev } from "@/api/government";
+import { search, more } from "@/api/government";
 
 import { ref, onMounted } from "vue";
 
@@ -73,7 +73,7 @@ const dialogGovernmentAdd = ref(false);
 const dialogGovernmentRemove = ref(false);
 
 const isLoading = ref(false);
-const governments = ref();
+const governments = ref([]);
 const government = ref();
 const params = ref({
   searchText: "",
@@ -113,21 +113,11 @@ const loadItems = async () => {
   }
 };
 
-const nextHandler = async () => {
+const moreHandler = async () => {
   try {
     isLoading.value = true;
-    governments.value = await next(params.value);
-  } catch ({ message }) {
-    console.log("error", message);
-  } finally {
-    isLoading.value = false;
-  }
-};
-
-const prevHandler = async () => {
-  try {
-    isLoading.value = true;
-    governments.value = await prev(params.value);
+    const result = await more(params.value);
+    governments.value = [...governments.value, ...result];
   } catch ({ message }) {
     console.log("error", message);
   } finally {

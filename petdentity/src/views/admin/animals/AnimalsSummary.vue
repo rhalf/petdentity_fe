@@ -25,17 +25,17 @@
             :loading="isLoading"
             :headers="headers"
             :items="animals"
-            :items-per-pageNumber="params.limitNumber"
+            :items-per-pageNumber="animals.length"
             hide-default-footer
             withRemove
             withAdd
             withView
+            withMore
             @refresh="loadItems"
             @remove="removeHandler"
             @view="viewHandler"
             @add="addHandler"
-            @next="nextHandler"
-            @prev="prevHandler"
+            @more="moreHandler"
           />
         </v-col>
       </v-row>
@@ -66,7 +66,7 @@ import DialogAnimalAdd from "@/components/dialogs/animal/DialogAnimalAdd.vue";
 import DialogAnimalRemove from "@/components/dialogs/animal/DialogAnimalRemove.vue";
 import DialogAnimalView from "@/components/dialogs/animal/DialogAnimalView.vue";
 
-import { search, next, prev } from "@/api/animal";
+import { search, more } from "@/api/animal";
 
 import { ref, onMounted } from "vue";
 
@@ -75,7 +75,7 @@ const dialogAnimalRemove = ref(false);
 const dialogAnimalView = ref(false);
 
 const isLoading = ref(false);
-const animals = ref();
+const animals = ref([]);
 const animal = ref();
 
 const params = ref({
@@ -114,10 +114,11 @@ const loadItems = async () => {
   }
 };
 
-const nextHandler = async () => {
+const moreHandler = async () => {
   try {
     isLoading.value = true;
-    animals.value = await next(params.value);
+    const result = await more(params.value);
+    animals.value = [...animals.value, ...result];
   } catch ({ message }) {
     console.log("error", message);
   } finally {
@@ -125,19 +126,8 @@ const nextHandler = async () => {
   }
 };
 
-const prevHandler = async () => {
-  try {
-    isLoading.value = true;
-    animals.value = await prev(params.value);
-  } catch ({ message }) {
-    console.log("error", message);
-  } finally {
-    isLoading.value = false;
-  }
-};
-
-const updateModelHandler = () => {
-  if (typeof params.value.searchText != "string") return;
-  params.value.searchText = params.value.searchText.toUpperCase();
-};
+// const updateModelHandler = () => {
+//   if (typeof params.value.searchText != "string") return;
+//   params.value.searchText = params.value.searchText.toUpperCase();
+// };
 </script>

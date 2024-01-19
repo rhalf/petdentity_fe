@@ -49,24 +49,12 @@ export const search = async ({
   return toArray(snapshots);
 };
 
-export const next = async ({ columnName, orderDirection, limitNumber }) => {
+export const more = async ({ columnName, orderDirection, limitNumber }) => {
   const q = await query(
     collectionRef,
     orderBy(columnName, orderDirection),
     startAfter(indexes.lastItem),
     limit(limitNumber)
-  );
-  const snapshots = await getDocs(q);
-  if (!snapshots.empty) indexes = getIndexes(snapshots);
-  return toArray(snapshots);
-};
-
-export const prev = async ({ columnName, orderDirection, limitNumber }) => {
-  const q = await query(
-    collectionRef,
-    orderBy(columnName, orderDirection),
-    endBefore(indexes.firstItem),
-    limitToLast(limitNumber)
   );
   const snapshots = await getDocs(q);
   if (!snapshots.empty) indexes = getIndexes(snapshots);

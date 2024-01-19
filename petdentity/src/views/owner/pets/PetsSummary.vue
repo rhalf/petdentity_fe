@@ -24,8 +24,8 @@
             :loading="isLoading"
             :headers="headers"
             :items="pets"
-            hide-default-footer
             :items-per-page="pets.length"
+            hide-default-footer
             withRemove
             withAdd
             withView

@@ -80,9 +80,9 @@
     </template>
 
     <template v-slot:item.address="{ item, index }">
-      <v-row class="pa-1">
+      <v-row dense>
         <v-col>
-          <Label text class="mt-2">
+          <Label text>
             {{ item.address.exact }}
             {{ item.address.division }}
           </Label>
@@ -97,9 +97,9 @@
     </template>
 
     <template v-slot:item.profile.name="{ item, index }">
-      <v-row class="pa-1">
+      <v-row dense>
         <v-col>
-          <Label text class="mt-2">
+          <Label text>
             {{ item.profile.name.last }},
             {{ item.profile.name.first }}
             {{ item.profile.name.middle }}
@@ -113,7 +113,7 @@
     </template> -->
 
     <template v-slot:item.age="{ item, index }">
-      <Label text class="mt-2">
+      <Label text>
         {{ toStringAge(getAge(item.birthDate)) }}
       </Label>
     </template>

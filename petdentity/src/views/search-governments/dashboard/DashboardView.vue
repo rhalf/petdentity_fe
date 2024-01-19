@@ -51,7 +51,7 @@ import { debounce } from "lodash";
 import { useProgressLineStore } from "@/store/progress-line";
 const { start, stop } = useProgressLineStore();
 
-import { search, next, prev } from "@/api/government";
+import { search, more, prev } from "@/api/government";
 
 import { ref, onMounted } from "vue";
 
@@ -97,7 +97,7 @@ const submitHandler = async () => {
 const moreHandler = async () => {
   try {
     start();
-    const result = await next(params.value);
+    const result = await more(params.value);
     governments.value = [...governments.value, ...result];
   } catch ({ message }) {
     console.log(message);

@@ -20,17 +20,17 @@
     :loading="isLoading"
     :headers="headers"
     :items="breeds"
-    :items-per-pageNumber="params.limitNumber"
+    :items-per-page="breeds.length"
     hide-default-footer
     withRemove
     withUpdate
     withAdd
+    withMore
     @refresh="loadItems"
     @add="addHandler"
     @update="updateHandler"
     @remove="removeHandler"
-    @next="nextHandler"
-    @prev="prevHandler"
+    @more="moreHandler"
   />
 
   <DialogBreedAdd
@@ -63,7 +63,7 @@ import DialogBreedAdd from "@/components/dialogs/breed/DialogBreedAdd.vue";
 import DialogBreedUpdate from "@/components/dialogs/breed/DialogBreedUpdate.vue";
 import DialogBreedRemove from "@/components/dialogs/breed/DialogBreedRemove.vue";
 
-import { search, next, prev, count } from "@/api/animal/breeds";
+import { search, more, count } from "@/api/animal/breeds";
 
 import { computed, toRefs, ref } from "vue";
 import { useModel } from "@/utils/vue";
@@ -83,7 +83,7 @@ const dialogBreedAdd = ref(false);
 const dialogBreedUpdate = ref(false);
 const dialogBreedRemove = ref(false);
 
-const breeds = ref();
+const breeds = ref([]);
 const breed = ref();
 const totalCount = ref();
 
@@ -110,21 +110,11 @@ const loadItems = async () => {
   }
 };
 
-const nextHandler = async () => {
+const moreHandler = async () => {
   try {
     isLoading.value = true;
-    breeds.value = await next(animal.value, params.value);
-  } catch ({ message }) {
-    console.log("error", message);
-  } finally {
-    isLoading.value = false;
-  }
-};
-
-const prevHandler = async () => {
-  try {
-    isLoading.value = true;
-    breeds.value = await prev(animal.value, params.value);
+    const result = await more(animal.value, params.value);
+    breeds.value = [...breeds.value, ...result];
   } catch ({ message }) {
     console.log("error", message);
   } finally {
